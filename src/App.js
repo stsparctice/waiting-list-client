@@ -14,10 +14,17 @@ import TableTeacher from './components/Teachers/TableTeachers/TableTeacher';
 import SendToFormSchedule from "./components/Teachers/FormTeacherSchedule/SendToFormSchedule/SendToFormSchedule"
 import SmallTable from './small-components/SmallTable/SmallTable';
 import FormSchedule from './components/Teachers/FormTeacherSchedule/FormSchedule/FormSchedule';
+import PoolTableContext, { PoolTable } from './context/PoolTable';
+import HoursContext, { HoursReducer } from './context/Hours'
+import PoolData from './components/PoolData/PoolData';
+import GenderData from './components/GenderData/GenderData'
 
 import ClientDetails from './components/ClientDetails/ClientDetails';
 
 function App() {
+  const [data, setData] = useReducer(PoolTable, {})
+  const [activeHours, setActiveHours] = useReducer(HoursReducer, [])
+
   const [arrdatamanager] = useState([
     { text: "שעות פעילות", link: "/datamanager/schedule", color: 'purple' },
     { text: "בריכות", link: "/datamanager/pool", color: 'green' },
@@ -35,6 +42,19 @@ function App() {
   ])
 
   return <>
+
+
+<HoursContext.Provider value={{ activeHours, setActiveHours }}>
+      <PoolTableContext.Provider value={{ data, setData }}>
+
+        <PoolData />
+        <PoolTableInformation data={data} />
+        <GenderData />
+
+
+      </PoolTableContext.Provider>
+    </HoursContext.Provider>
+
     <BrowserRouter>
       <Routes>
         <Route path='/' element={<Headers arr={headers} />} >

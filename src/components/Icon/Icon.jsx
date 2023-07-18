@@ -1,0 +1,50 @@
+import React from "react"
+import { createUseStyles } from "react-jss"
+import add from '../../assets/add.png'
+import deleteImg from '../../assets/delete.png'
+import details from '../../assets/details.png'
+import edit from '../../assets/edit.png'
+import exclamationMark from '../../assets/exclamationMark.png'
+import find from '../../assets/find.png'
+import vi from '../../assets/vi.png'
+import empty from '../../assets/empty.png'
+import { getData, postData } from "../../services/axios"
+import Details from "../Details/Details"
+import { type } from "@testing-library/user-event/dist/type"
+
+const images = {
+    add: add,
+    deleteImg: deleteImg,
+    details: details,
+    edit: edit,
+    exclamationMark: exclamationMark,
+    find: find,
+    vi: vi,
+    empty: empty
+}
+
+const useStyles = createUseStyles({
+    wrapper: {
+        // display: 'flex',
+        // justifyContent:'space-around',
+        // alignItems:'center'
+    },
+    comp: {
+        width: '50%'
+    }
+})
+
+const Icon = ({ imgName, funcDelete, funcDetails }) => {
+    const css = useStyles()
+    
+    return <>
+        <div className={css.wrapper} >
+            {
+                imgName === 'deleteImg' ?
+                    <img src={images[imgName]} alt={imgName} className={css.img} onClick={() => funcDelete()} /> :
+                    <img src={images[imgName]} alt={imgName} className={css.img} onClick={() => funcDetails()} />
+            }
+        </div>
+    </>
+}
+export default Icon
