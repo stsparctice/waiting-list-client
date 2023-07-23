@@ -1,9 +1,9 @@
 import React, { useEffect, useContext, useState, useRef, useCallback } from "react";
 import { getData, postData } from "../../services/axios";
 import { createUseStyles } from "react-jss";
-import HoursContext from "../../context/Hours";
+import HoursContext from "../../contexts/Hours";
 // import DetailsContext from "../../../../contexts/DetailsContext";
-import ActiveHoursRef from "../../context/ActiveHoursRef"
+import ActiveHoursRef from "../../contexts/ActiveHoursRef"
 // import '../../../OpenModalStyle.css'
 import RowOfHour from './RowOfHour'
 
@@ -74,67 +74,21 @@ const MainHours = ({ times, color, poolName, gender }) => {
             }
         }
 
-        const ifExclamationMarkBool = (async (day) => {
-            console.log("in ifExclamationMarkBool");
-            let d = await getDetails(day)
-            console.log(d);
-            let j = 1
-            let bool
-            if (d.length > 1) {
-                for (let i in d) {
-                    for (j in d) {
-                        if (d[i].endHour < d[j].startHour) {
-                            bool = true
-                            setFlagExclamationMarkBool(bool)
-                            return true
-                        }
-                    }
-                }
-            }
-            bool = false
-
-            setFlagExclamationMarkBool(bool)
-            return false
-        })
 
 
         allcards()
-        const set = (() => {
-            try {
-                setActiveHours(activeHours.map(a => {
-                    a.exclamationMarkBool = ifExclamationMarkBool(a.day)
-                }))
-            }
-            catch {
-                console.log('error');
-            }
-        })
-        set()
+       
     }, []);
-    // const openDetailsHours = useCallback(async(day) => {
-    //     if (divRef.current.style.display == 'block') {
-    //         divRef.current.style.display = 'none'
-    //         return;
-    //     }
-    //     divRef.current.style.display = 'block'
-    //     let d = await getData(`/schedule/getAllActiveHoursByDay?poolName=ashdod&day=${day}`)
-    //     d = d[0].schedule[0].activeHours
-    //     setDetails(d)
-    //     console.log(day);
-    //     console.log(details);
-    // },[])    
 
 
-    const openDetailsHours = useCallback(async (day, ref) => {
-        console.log('in openDetailsHours');
+
+    const openDetailsHours = useCallback(async (day, ref, type) => {
         if (ref.current.style.display === 'block') {
-            console.log('block');
             ref.current.style.display = 'none'
             return [];
         }
-        console.log('none');
         ref.current.style.display = 'block'
-        return getDetails(day)
+        return getDetails(day, type)
     }, [])
 
     const funcDelete = useCallback(async (day) => {
@@ -142,72 +96,67 @@ const MainHours = ({ times, color, poolName, gender }) => {
         setActiveHours({ day: day, option: 'remove' })
     }, [])
 
-    const getDetails = useCallback(async (day) => {
-        let detail = await postData(`/schedule/getAllHoursByDay?poolName=${poolName}&day=${day}`)
+
+
+    const getDetails = useCallback(async (day, type ) => {
+        let detail
         let ndetail = [];
-        detail.forEach((h, place) => {
-            if (h.gender == gender) {
-                ndetail.push(...detail.slice(place, place + 1))
+        switch (type) {
+            case 'hour': {
+                detail = await postData(`/schedule/getAllHoursByDay?poolName=${poolName}&day=${day}`)
+                detail.forEach((h, place) => {
+                    if (h.gender == gender) {
+                        ndetail.push(...detail.slice(place, place + 1))
+                    }
+                })
             }
-        })
-        return ndetail
-    }, [])
-
-    const getActiveDetails = useCallback(async (day) => {
-        let d = await getData(`/schedule/getAllActiveHoursByDay?poolName=${poolName}&day=${day}`)
-        console.log(d)
-        setDetails(d.activeHours)
-        return d
-    },[])
-
-    const ifExclamationMarkBool = (async (day) => {
-        console.log("in ifExclamationMarkBool");
-        let d = await getActiveDetails(day)
-        console.log(d);
-        let j = 1
-        let bool
-        if (d.length > 1) {
-            for (let i in d) {
-                for (j in d) {
-                    if (d[i].endHour < d[j].startHour) {
-                        bool = true
-                        // setFlagExclamationMarkBool(bool)
-                        return bool
+                break;
+            case 'notInActiveHours': {
+                detail = await postData(`/schedule/getAllActiveHoursByDay?poolName=${poolName}&day=${day}`)
+                detail=detail.activeHours;
+                let j = 1
+                for (let i in detail) {
+                    for (j in detail) {
+                        if (detail[i].endActiveHour < detail[j].startActiveHour) {
+                            ndetail.push({ 'StartNotInActiveHour': detail[i].endActiveHour, 'endNotInActiveHour': detail[j].startActiveHour })
+                        }
                     }
                 }
-            }
-        }
-        bool = false
-        // setFlagExclamationMarkBool(bool)
-        return bool
-    })
 
-    const func = (async (day) => {
-        console.log("in func");
-        return await ifExclamationMarkBool(day)
-    })
+            }
+                break;
+            case 'activeHours': {
+                detail = await postData(`/schedule/getAllActiveHoursByDay?poolName=${poolName}&day=${day}`)
+                ndetail= detail.activeHours
+            }
+                break;
+            default: { }
+                break;
+        }
+        return ndetail;
+    }, [])
+    
 
     return <>
 
         <ActiveHoursRef.Provider value={{ activeHoursRef, setActiveHoursRef }}>
+
             {
+
                 activeHours.map((r) =>
                     <RowOfHour
                         key={r.day}
                         day={r.day}
                         stratHour={r.startHour}
                         endHour={r.endHour}
-                        //  exclamationMarkBool={true}
-                        exclamationMarkBool={ans = func(r.day)}
-                        
+                        poolName={poolName}
+                        // exclamationMarkBool={flagExclamationMarkBool}
                         backgroundColor={r.color}
                         funcDetails={openDetailsHours}
                         funcDelete={funcDelete}
-                        ></RowOfHour>
-                        )
-                    }
-                    {console.log(ans)}
-
+                    ></RowOfHour>
+                )
+            }
         </ActiveHoursRef.Provider>
 
     </>

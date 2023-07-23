@@ -31,12 +31,16 @@ const useStyles = createUseStyles({
     },
     comp: {
         width: '50%'
+    },
+    space: {
+        width: '48px',
+        height: '48px'
     }
 })
 
-const Icon = ({ imgName, funcDelete, funcDetails }) => {
+const Icon = ({ imgName, funcDelete, funcDetails, type = false }) => {
     const css = useStyles()
-    
+    console.log(type, 'in Icon');
     return <>
         <div className={css.wrapper} >
             {
@@ -44,6 +48,8 @@ const Icon = ({ imgName, funcDelete, funcDetails }) => {
                     <img src={images[imgName]} alt={imgName} className={css.img} onClick={() => funcDelete()} /> :
                     <img src={images[imgName]} alt={imgName} className={css.img} onClick={() => funcDetails()} />
             }
+            {/* {type ? <span>הבריכה אינה פעילה בין השעות:</span> : <div className={css.space}></div>} */}
+
         </div>
     </>
 }

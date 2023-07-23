@@ -4,15 +4,11 @@ export const updatePool = (state, item) => {
     item.forEach(i => {
         switch (i.status) {
             case 'add':
-                console.log('in add++++++++++++++');
                 delete i.status
                 state = [...state, i]
                 break;
             case 'remove':
-                console.log('===============');
                 delete i.status
-                console.log('index',state.findIndex(p => p.poolName === i.poolName));
-                console.log('state',state);
                 state.splice(state.findIndex(p => p.poolName === i.poolName), 1)
                 state = [...state]
                 break;

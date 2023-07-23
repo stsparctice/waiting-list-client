@@ -2,7 +2,7 @@ import { logDOM } from "@testing-library/react";
 import React, { useContext, useEffect, useRef, useState } from "react";
 import { createUseStyles } from "react-jss";
 import { ListContext, setbackgroundColor } from "./Checkbox";
-import PoolTableContext from "../../context/PoolTable";
+import PoolTableContext from "../../contexts/PoolTable";
 
 const useStyles = createUseStyles({
     out: {
@@ -38,12 +38,9 @@ const OneCheckbox = ({ obj }) => {
     const ref1 = useRef()
 
     const isChecked = () => {
-        // console.log({obj});
         setObject({ obj, newStatus: !obj.checked })
         setData({ gender: obj.text })
     }
-    // console.log({object});
-    // console.log({data});
 
     if (obj.checked === true) {
         setbackgroundColor(obj)

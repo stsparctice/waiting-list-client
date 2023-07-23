@@ -23,24 +23,52 @@ const useStyles = createUseStyles({
         border: '1px solid black',
         borderRadius: '5px'
     },
-    rowdeleted:{
-        display:'none'
+    rowdeleted: {
+        display: 'none'
     }
 })
 
-
-const RowOfHour = ({ day, stratHour, endHour, exclamationMarkBool, backgroundColor, funcDetails, funcDelete }) => {
+const RowOfHour = ({ day, stratHour, endHour, poolName, backgroundColor, funcDetails, funcDelete }) => {
+    console.log('in RowOfHour');
+    const [flagExclamationMarkBool, setFlagExclamationMarkBool] = useState(false)
     const css = useStyles();
     const [det, setDet] = useState([])
     const divRef = useRef()
+    useEffect(() => {
 
+        const ifExclamationMarkBool = async () => {
+            let d = await getActiveDetails()
+            let j = 1
+            let bool = false
+            if(d!==undefined){
+            if (d.length > 1) {
+                for (let i in d) {
+                    for (j in d) {
+                        if (d[i].endActiveHour < d[j].startActiveHour) {
+                            bool = true
+                        }
+                    }
+                }
+
+            }
+            setFlagExclamationMarkBool(bool)}
+            return bool
+        }
+
+        const getActiveDetails = async () => {
+            let detail = await postData(`/schedule/getAllActiveHoursByDay?poolName=${poolName}&day=${day}`)
+            return detail.activeHours
+        }
+
+        ifExclamationMarkBool();
+    }, [])
     return <>
-        <div className={css.wrapper} style={{ backgroundColor: backgroundColor }} onDoubleClick={async () => setDet(await funcDetails(day, divRef))}>
+        <div className={css.wrapper} style={{ backgroundColor: backgroundColor }} onDoubleClick={async () => setDet(await funcDetails(day, divRef,'hour'))}>
             <div className={css.basicDetailsInRow}>
-                <BasicDetailsInRow key={day} day={day} stratHour={stratHour} endHour={endHour} exclamationMarkBool={exclamationMarkBool} funcDelete={async() =>await funcDelete(day)} funcDetails={async () => setDet(await funcDetails(day, divRef))}></BasicDetailsInRow>
+                <BasicDetailsInRow key={day} day={day} stratHour={stratHour} endHour={endHour} exclamationMarkBool={flagExclamationMarkBool} funcDelete={async () => await funcDelete(day)} funcDetails={async () => setDet(await funcDetails(day, divRef,'notInActiveHours'))}></BasicDetailsInRow>
             </div>
             <div>
-                <Icon imgName={"details"} funcDelete={async() =>await funcDelete(day)} funcDetails={async () => setDet(await funcDetails(day, divRef))}></Icon>
+                <Icon imgName={"details"} funcDelete={async () => await funcDelete(day)} funcDetails={async () => setDet(await funcDetails(day, divRef,'hour'))}></Icon>
             </div>
             {/* <button onClick={() => funcDelete(day)}>gfh26gfffffffffffff</button> */}
         </div>

@@ -16,16 +16,15 @@ const useStyles = createUseStyles({
 })
 
 const BasicDetailsInRow = ({ day, stratHour, endHour, exclamationMarkBool ,funcDelete,funcDetails}) => {
-    console.log(";;;;;;;;;;;;;;;;;");
+    console.log('in BasicDetailsInRow');
     const css = useStyles();
-    console.log('BasicDetailsInRow --- exclamationMarkBool',exclamationMarkBool);
     return <>
         <div className={css.wrapper}>
             <Icon imgName={"deleteImg"} funcDelete={funcDelete} funcDetails={funcDetails}></Icon>
             <span>יום {day}</span>
             <span>משעה {stratHour}</span>
             <span>עד שעה {endHour}</span>
-            {exclamationMarkBool ? <Icon imgName={"exclamationMark"}  funcDelete={funcDelete} funcDetails={funcDetails}></Icon> : <div className={css.space}></div>}
+            {exclamationMarkBool ? <Icon imgName={"exclamationMark"}  funcDelete={funcDelete} funcDetails={funcDetails} type={true}></Icon> : <div className={css.space}></div>}
         </div>
     </>
 }

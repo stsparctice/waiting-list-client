@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState,useReducer } from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import './App.css';
 
@@ -14,12 +14,12 @@ import TableTeacher from './components/Teachers/TableTeachers/TableTeacher';
 import SendToFormSchedule from "./components/Teachers/FormTeacherSchedule/SendToFormSchedule/SendToFormSchedule"
 import SmallTable from './small-components/SmallTable/SmallTable';
 import FormSchedule from './components/Teachers/FormTeacherSchedule/FormSchedule/FormSchedule';
-import PoolTableContext, { PoolTable } from './context/PoolTable';
-import HoursContext, { HoursReducer } from './context/Hours'
+import PoolTableContext, { PoolTable } from './contexts/PoolTable';
+import HoursContext, { HoursReducer } from './contexts/Hours'
 import PoolData from './components/PoolData/PoolData';
 import GenderData from './components/GenderData/GenderData'
-
 import ClientDetails from './components/ClientDetails/ClientDetails';
+import PoolTableInformation from './components/PoolTableInformation/PoolTableInformation';
 
 function App() {
   const [data, setData] = useReducer(PoolTable, {})
@@ -54,33 +54,33 @@ function App() {
 
       </PoolTableContext.Provider>
     </HoursContext.Provider>
+</>
+    // <BrowserRouter>
+    //   <Routes>
+    //     <Route path='/' element={<Headers arr={headers} />} >
+    //       <Route path='/patients' element={<Patients />}></Route>
+    //       {/* <Route path='/settingpatients'></Route> */}
+    //       {/* <Route path='/archives'></Route> */}
+    //       {/* <Route path='/noMedicalInformation'></Route> */}
+    //       <Route path='datamanager' element={<MainDataManager arr={arrdatamanager} />} >
+    //         <Route path='schedule' element={<MainSchedule />} />
+    //         <Route path='gender' element={<MainGender />} />
+    //         <Route path='pool' element={< MainSwimmingPool />} />
+    //         <Route path='teachers' element={<TableTeacher />} >
+    //           <Route path='details' element={<SmallTable />} />
+    //           <Route path="oneTeacher" element={<FormsTeachers />} />
+    //           <Route path='sendToTeacherSchedule' element={<SendToFormSchedule />} />
+    //           <Route path='teacherSchedule' element={<FormSchedule />} />
+    //         </Route>
 
-    <BrowserRouter>
-      <Routes>
-        <Route path='/' element={<Headers arr={headers} />} >
-          <Route path='/patients' element={<Patients />}></Route>
-          {/* <Route path='/settingpatients'></Route> */}
-          {/* <Route path='/archives'></Route> */}
-          {/* <Route path='/noMedicalInformation'></Route> */}
-          <Route path='datamanager' element={<MainDataManager arr={arrdatamanager} />} >
-            <Route path='schedule' element={<MainSchedule />} />
-            <Route path='gender' element={<MainGender />} />
-            <Route path='pool' element={< MainSwimmingPool />} />
-            <Route path='teachers' element={<TableTeacher />} >
-              <Route path='details' element={<SmallTable />} />
-              <Route path="oneTeacher" element={<FormsTeachers />} />
-              <Route path='sendToTeacherSchedule' element={<SendToFormSchedule />} />
-              <Route path='teacherSchedule' element={<FormSchedule />} />
-            </Route>
+    //       </Route>
+    //       {/* <Route path='/reports'></Route> */}
+    //     </Route>
 
-          </Route>
-          {/* <Route path='/reports'></Route> */}
-        </Route>
+    //     <Route path='/clientDetails/:id' element={<ClientDetails />} />
 
-        <Route path='/clientDetails/:id' element={<ClientDetails />} />
-
-      </Routes>
-    </BrowserRouter >
-  </>
+    //   </Routes>
+    // </BrowserRouter >
+  
 }
 export default App;

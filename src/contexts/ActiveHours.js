@@ -9,8 +9,6 @@ export const activeHoursReducer = (state, item) => {
         case 'remove':
             state.splice(state.findIndex(i => i.day === item.day),1);
             state = [...state];
-            console.log("state");
-            console.log(state);
             break;
 
     }

@@ -1,7 +1,5 @@
 import { createContext } from "react";
 export const PoolTable = (state, item) => {
-    console.log(state, 'stateBEFOREEEEEEEEEEEEEEEEE');
-    console.log(item, 'itemBEFFFFFFFFFFFFFFOR');
     if(!state.gender&&item.gender){
         state.gender=item.gender
     }
@@ -15,8 +13,6 @@ export const PoolTable = (state, item) => {
         state.gender = item.gender
 
     }
-    console.log({ state },'stateAFTERRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR');
-    console.log({ item }, 'itemAFTERRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR');
     return state
 }
 

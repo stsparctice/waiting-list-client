@@ -21,21 +21,18 @@ const useStyles = createUseStyles({
 })
 
 const ShowHours = ({poolName, day, startHour, endHour }) => {
+    console.log("i am in ShowHours");
     const css = useStyles();
     const nav = useNavigate()
     // const { Hours, setHours } = useContext(HoursContext)
 
     async function deleteHours() {
         // setHours({ day: day.day, option: 'remove' })
-        const response = await postData('/schedule/deleteDay', { poolName: 'ashdod', day: day })
-        // console.log(Hours);
-        console.log(response);
+        const response = await postData('/schedule/deleteDay', { poolName: poolName, day: day })
     }
 
     function showDetails() {
         // const response = await getData(`/schedule/getAllHoursByDay?poolName=ashdod&day=${day}`)
-        // console.log(response);
-        console.log("Hello");
         // <MainHoursAccordingToDay/>
         // nav(`/schedule/mainAccordingToDay/${poolName}/${day}`)
     }

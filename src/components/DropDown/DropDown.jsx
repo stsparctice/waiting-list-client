@@ -2,7 +2,7 @@ import { useState } from "react"
 import { createUseStyles } from "react-jss"
 import AddClass from "./AddClass"
 import React, { useContext } from "react"
-import PoolTableContext from "../../context/PoolTable"
+import PoolTableContext from "../../contexts/PoolTable"
 const useStyle = createUseStyles({
     wrapper: {
         width: '150px',

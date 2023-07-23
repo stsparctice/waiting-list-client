@@ -1,6 +1,6 @@
 import { getValue } from "@testing-library/user-event/dist/utils";
 import React, { useContext, useEffect, useReducer, useState,useCallback } from "react";
-import PoolTableContext, { PoolTable } from "../../context/PoolTable";
+import PoolTableContext, { PoolTable } from "../../contexts/PoolTable";
 import { getData } from "../../services/axios";
 import MainHours from "../Hour/MainHours"
 
@@ -20,13 +20,13 @@ const PoolTableInformation = () => {
     useEffect(() => {
         try {
             data.pool.schedule.forEach(d => {
-                d.hours.forEach(h => {
+                d.hours.forEach((h,place) => {
                     if (h.gender == data.gender) { 
                         let isExist=false;
                         newdata.map(m => {
                             if (m.day == d.day) {
                                 isExist=true
-                                m.hours = [...m.hours, { startHour: h.startHour, endHour: h.endHour }]
+                                m.hours = [...m.hours, ...d.hours.slice(place,place+1)]
                             }
                         })
                         if(!isExist)
