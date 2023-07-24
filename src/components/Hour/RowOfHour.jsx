@@ -5,6 +5,7 @@ import BasicDetailsInRow from "./BasicDetailsInRow";
 // import DetailsContext from "../../context/DetailsContext";
 import Icon from "../Icon/Icon";
 import Details from "../Details/Details";
+import HoursDetailContext from '../../contexts/HoursDetails'
 
 const useStyles = createUseStyles({
     wrapper: {
@@ -28,14 +29,15 @@ const useStyles = createUseStyles({
     }
 })
 
-const RowOfHour = ({ day, stratHour, endHour, poolName, backgroundColor, funcDetails, funcDelete }) => {
+const RowOfHour = ({ day, stratHour, endHour, poolName, backgroundColor, funcDetails, funcDelete ,funcDeleHour,editDetails}) => {
+    const {details}= useContext(HoursDetailContext)
+
     console.log('in RowOfHour');
     const [flagExclamationMarkBool, setFlagExclamationMarkBool] = useState(false)
     const css = useStyles();
-    const [det, setDet] = useState([])
+    const [type, setType] = useState([])
     const divRef = useRef()
     useEffect(() => {
-
         const ifExclamationMarkBool = async () => {
             let d = await getActiveDetails()
             let j = 1
@@ -63,17 +65,20 @@ const RowOfHour = ({ day, stratHour, endHour, poolName, backgroundColor, funcDet
         ifExclamationMarkBool();
     }, [])
     return <>
-        <div className={css.wrapper} style={{ backgroundColor: backgroundColor }} onDoubleClick={async () => setDet(await funcDetails(day, divRef,'hour'))}>
+        <div className={css.wrapper} style={{ backgroundColor: backgroundColor }} onDoubleClick={async () => setType(await funcDetails(day, divRef,'hour'))}>
             <div className={css.basicDetailsInRow}>
-                <BasicDetailsInRow key={day} day={day} stratHour={stratHour} endHour={endHour} exclamationMarkBool={flagExclamationMarkBool} funcDelete={async () => await funcDelete(day)} funcDetails={async () => setDet(await funcDetails(day, divRef,'notInActiveHours'))}></BasicDetailsInRow>
+                {/* כללי */}
+                <BasicDetailsInRow key={day} day={day} stratHour={stratHour} endHour={endHour} exclamationMarkBool={flagExclamationMarkBool} funcDelete={async () => await funcDelete(day)} funcDetails={async () => setType(await funcDetails(day, divRef,'notInActiveHours'))}></BasicDetailsInRow>
             </div>
             <div>
-                <Icon imgName={"details"} funcDelete={async () => await funcDelete(day)} funcDetails={async () => setDet(await funcDetails(day, divRef,'hour'))}></Icon>
+                {/* פרטים */}
+                <Icon imgName={"details"} funcDelete={async () => await funcDelete(day)} funcDetails={async () => setType(await funcDetails(day, divRef,'hour'))}></Icon>
             </div>
             {/* <button onClick={() => funcDelete(day)}>gfh26gfffffffffffff</button> */}
         </div>
+
         <div ref={divRef} className={css.details}>
-            {det.length > 0 ? <Details day={day} details={det}></Details> : ''}
+            {type.length > 0 ? <Details day={day} type={type} funcDelete={funcDeleHour} funcDetails={editDetails}></Details> : ''}
         </div>
     </>
 }

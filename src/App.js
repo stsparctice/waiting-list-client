@@ -1,4 +1,4 @@
-import { useState,useReducer } from 'react';
+import { useState, useReducer } from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import './App.css';
 
@@ -20,10 +20,12 @@ import PoolData from './components/PoolData/PoolData';
 import GenderData from './components/GenderData/GenderData'
 import ClientDetails from './components/ClientDetails/ClientDetails';
 import PoolTableInformation from './components/PoolTableInformation/PoolTableInformation';
+import HoursDetailContext, { HoursDetailsReducer } from './contexts/HoursDetails'
 
 function App() {
   const [data, setData] = useReducer(PoolTable, {})
   const [activeHours, setActiveHours] = useReducer(HoursReducer, [])
+  const[details,setDetails]=useReducer(HoursDetailsReducer,[])
 
   const [arrdatamanager] = useState([
     { text: "שעות פעילות", link: "/datamanager/schedule", color: 'purple' },
@@ -44,43 +46,45 @@ function App() {
   return <>
 
 
-<HoursContext.Provider value={{ activeHours, setActiveHours }}>
-      <PoolTableContext.Provider value={{ data, setData }}>
+    <HoursContext.Provider value={{ activeHours, setActiveHours }}>
+      <HoursDetailContext.Provider value={{details,setDetails}}>
+        <PoolTableContext.Provider value={{ data, setData }}>
 
-        <PoolData />
-        <PoolTableInformation data={data} />
-        <GenderData />
+          <PoolData />
+          <PoolTableInformation data={data} />
+          <GenderData />
 
 
-      </PoolTableContext.Provider>
+        </PoolTableContext.Provider>
+      </HoursDetailContext.Provider>
     </HoursContext.Provider>
-</>
-    // <BrowserRouter>
-    //   <Routes>
-    //     <Route path='/' element={<Headers arr={headers} />} >
-    //       <Route path='/patients' element={<Patients />}></Route>
-    //       {/* <Route path='/settingpatients'></Route> */}
-    //       {/* <Route path='/archives'></Route> */}
-    //       {/* <Route path='/noMedicalInformation'></Route> */}
-    //       <Route path='datamanager' element={<MainDataManager arr={arrdatamanager} />} >
-    //         <Route path='schedule' element={<MainSchedule />} />
-    //         <Route path='gender' element={<MainGender />} />
-    //         <Route path='pool' element={< MainSwimmingPool />} />
-    //         <Route path='teachers' element={<TableTeacher />} >
-    //           <Route path='details' element={<SmallTable />} />
-    //           <Route path="oneTeacher" element={<FormsTeachers />} />
-    //           <Route path='sendToTeacherSchedule' element={<SendToFormSchedule />} />
-    //           <Route path='teacherSchedule' element={<FormSchedule />} />
-    //         </Route>
+  </>
+  // <BrowserRouter>
+  //   <Routes>
+  //     <Route path='/' element={<Headers arr={headers} />} >
+  //       <Route path='/patients' element={<Patients />}></Route>
+  //       {/* <Route path='/settingpatients'></Route> */}
+  //       {/* <Route path='/archives'></Route> */}
+  //       {/* <Route path='/noMedicalInformation'></Route> */}
+  //       <Route path='datamanager' element={<MainDataManager arr={arrdatamanager} />} >
+  //         <Route path='schedule' element={<MainSchedule />} />
+  //         <Route path='gender' element={<MainGender />} />
+  //         <Route path='pool' element={< MainSwimmingPool />} />
+  //         <Route path='teachers' element={<TableTeacher />} >
+  //           <Route path='details' element={<SmallTable />} />
+  //           <Route path="oneTeacher" element={<FormsTeachers />} />
+  //           <Route path='sendToTeacherSchedule' element={<SendToFormSchedule />} />
+  //           <Route path='teacherSchedule' element={<FormSchedule />} />
+  //         </Route>
 
-    //       </Route>
-    //       {/* <Route path='/reports'></Route> */}
-    //     </Route>
+  //       </Route>
+  //       {/* <Route path='/reports'></Route> */}
+  //     </Route>
 
-    //     <Route path='/clientDetails/:id' element={<ClientDetails />} />
+  //     <Route path='/clientDetails/:id' element={<ClientDetails />} />
 
-    //   </Routes>
-    // </BrowserRouter >
-  
+  //   </Routes>
+  // </BrowserRouter >
+
 }
 export default App;

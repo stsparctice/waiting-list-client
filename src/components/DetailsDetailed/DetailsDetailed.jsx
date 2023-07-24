@@ -15,16 +15,18 @@ const useStyles = createUseStyles({
     }
 })
 
-const DetailsDetailed = ({stratHour,endHour}) => {
+const DetailsDetailed = ({stratHour,endHour,flag,funcDelete,day,funcDetails}) => {
+    console.log("in DetailsDetailed");
     const css=useStyles()
     return <>
         <div className={css.wrapper}>
-            <Icon imgName={"deleteImg"}></Icon>
+           {!flag?<Icon imgName={"deleteImg"} funcDelete={async () => await funcDelete(day,stratHour,endHour)}></Icon>:<div className={css.space}></div>}
+           {!flag?<Icon imgName={"edit"} funcDetails={()=>funcDetails(day,stratHour,endHour)}></Icon>:<div className={css.space}></div>}
             <span>  משעה     {stratHour} </span>
             <span className={css.space}>      </span>
             <span>   עד שעה        {endHour} </span>
         </div>
     </>
 }
-
+// funcDelete={} funcDetails={}
 export default DetailsDetailed

@@ -38,9 +38,9 @@ const useStyles = createUseStyles({
     }
 })
 
-const Icon = ({ imgName, funcDelete, funcDetails, type = false }) => {
+const Icon = ({ imgName, funcDelete, funcDetails}) => {
+    console.log("in icon");
     const css = useStyles()
-    console.log(type, 'in Icon');
     return <>
         <div className={css.wrapper} >
             {
@@ -48,7 +48,6 @@ const Icon = ({ imgName, funcDelete, funcDetails, type = false }) => {
                     <img src={images[imgName]} alt={imgName} className={css.img} onClick={() => funcDelete()} /> :
                     <img src={images[imgName]} alt={imgName} className={css.img} onClick={() => funcDetails()} />
             }
-            {/* {type ? <span>הבריכה אינה פעילה בין השעות:</span> : <div className={css.space}></div>} */}
 
         </div>
     </>

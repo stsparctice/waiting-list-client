@@ -24,7 +24,7 @@ const BasicDetailsInRow = ({ day, stratHour, endHour, exclamationMarkBool ,funcD
             <span>יום {day}</span>
             <span>משעה {stratHour}</span>
             <span>עד שעה {endHour}</span>
-            {exclamationMarkBool ? <Icon imgName={"exclamationMark"}  funcDelete={funcDelete} funcDetails={funcDetails} type={true}></Icon> : <div className={css.space}></div>}
+            {exclamationMarkBool ? <Icon imgName={"exclamationMark"}  funcDelete={funcDelete} funcDetails={funcDetails} ></Icon> : <div className={css.space}></div>}
         </div>
     </>
 }

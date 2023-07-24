@@ -6,7 +6,8 @@ import HoursContext from "../../contexts/Hours";
 import ActiveHoursRef from "../../contexts/ActiveHoursRef"
 // import '../../../OpenModalStyle.css'
 import RowOfHour from './RowOfHour'
-
+import HoursDetailContext from '../../contexts/HoursDetails'
+import NewInput from "../Icon/NewInput"
 const useStyles = createUseStyles({
 
     table: {
@@ -45,7 +46,8 @@ const MainHours = ({ times, color, poolName, gender }) => {
     const [activeHoursRef, setActiveHoursRef] = useState({})
     const { activeHours, setActiveHours } = useContext(HoursContext)
     const [flagExclamationMarkBool, setFlagExclamationMarkBool] = useState(false)
-    const [details, setDetails] = useState([])
+    const {details,setDetails}= useContext(HoursDetailContext)
+
     let ans
 
     // const divRef = useRef()
@@ -80,7 +82,11 @@ const MainHours = ({ times, color, poolName, gender }) => {
        
     }, []);
 
+    const editDetails=(ref,start,end)  =>{
+        console.log("in editDetails");
+        return <NewInput text={start}/>
 
+    }  
 
     const openDetailsHours = useCallback(async (day, ref, type) => {
         if (ref.current.style.display === 'block') {
@@ -96,17 +102,20 @@ const MainHours = ({ times, color, poolName, gender }) => {
         setActiveHours({ day: day, option: 'remove' })
     }, [])
 
-
+    const funcDeleHour=useCallback(async(day,start,end)=>{
+        let dele=await postData('schedule/deleteHourByDay',{poolName: poolName, day: day, gender: gender,startHour:start,endHour:end})
+        setDetails({day:day,start:start,end:end,option:'remove'})
+    },[])
 
     const getDetails = useCallback(async (day, type ) => {
         let detail
-        let ndetail = [];
         switch (type) {
             case 'hour': {
                 detail = await postData(`/schedule/getAllHoursByDay?poolName=${poolName}&day=${day}`)
                 detail.forEach((h, place) => {
                     if (h.gender == gender) {
-                        ndetail.push(...detail.slice(place, place + 1))
+                        let d=detail.slice(place, place + 1)
+                        setDetails({start:d[0].startHour,end:d[0].endHour,gender:d[0].gender,day:day,option:'add',type:'hour'})
                     }
                 })
             }
@@ -118,7 +127,7 @@ const MainHours = ({ times, color, poolName, gender }) => {
                 for (let i in detail) {
                     for (j in detail) {
                         if (detail[i].endActiveHour < detail[j].startActiveHour) {
-                            ndetail.push({ 'StartNotInActiveHour': detail[i].endActiveHour, 'endNotInActiveHour': detail[j].startActiveHour })
+                            setDetails({start: detail[i].endActiveHour, end: detail[j].startActiveHour ,day:day, option:'add',type:'notInActiveHours'})
                         }
                     }
                 }
@@ -127,13 +136,13 @@ const MainHours = ({ times, color, poolName, gender }) => {
                 break;
             case 'activeHours': {
                 detail = await postData(`/schedule/getAllActiveHoursByDay?poolName=${poolName}&day=${day}`)
-                ndetail= detail.activeHours
+                setDetails({start:detail.activeHours.startActiveHour,end:detail.activeHours.endActiveHour,day:day,option:'add',type:'activeHours'})
             }
                 break;
             default: { }
                 break;
         }
-        return ndetail;
+         return type;
     }, [])
     
 
@@ -154,6 +163,8 @@ const MainHours = ({ times, color, poolName, gender }) => {
                         backgroundColor={r.color}
                         funcDetails={openDetailsHours}
                         funcDelete={funcDelete}
+                        funcDeleHour={funcDeleHour}
+                        editDetails={editDetails}
                     ></RowOfHour>
                 )
             }
