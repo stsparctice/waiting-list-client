@@ -95,11 +95,6 @@ const MainHours = ({ times, color, poolName, gender }) => {
         }
         setDetails({ day: day, start: stratHour, end: endHour, option: 'remove' })
         setDetails({ day: day, start: newStart, end: newEnd, type: 'hour', gender: gender, option: 'add' })
-
-        console.log("in editDetails");
-        console.log(details);
-
-
     }, [])
 
 
