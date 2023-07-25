@@ -16,6 +16,7 @@ export const HoursDetailsReducer = (state, item) => {
             break;
 
     }
+    console.log(state);
     return state
 
 }

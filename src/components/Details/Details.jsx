@@ -12,7 +12,7 @@ const useStyles = createUseStyles({
 })
 
 
-const Details = ({ day, type,funcDelete ,funcDetails}) => {
+const Details = ({ day, type,funcDelete ,editDetails}) => {
   const {details}= useContext(HoursDetailContext)
   const css = useStyles()
   let start, end,flag=false;
@@ -25,7 +25,7 @@ const Details = ({ day, type,funcDelete ,funcDetails}) => {
     {
       details.map((d, i) => (
         //startHour יהיה startActiveHour לבדוק איך לעשות שבמקום  
-       d.day===day&&d.type===type?<DetailsDetailed key={i} stratHour={d.start} endHour={d.end} flag={flag} funcDelete={funcDelete} funcDetails={funcDetails}day={d.day}></DetailsDetailed>:''
+       d.day===day&&d.type===type?<DetailsDetailed key={i} stratHour={d.start} endHour={d.end} flag={flag} funcDelete={funcDelete}day={d.day}editDetails={editDetails} ></DetailsDetailed>:''
       ))
     }
   </>

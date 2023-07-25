@@ -29,9 +29,8 @@ const useStyles = createUseStyles({
     }
 })
 
-const RowOfHour = ({ day, stratHour, endHour, poolName, backgroundColor, funcDetails, funcDelete ,funcDeleHour,editDetails}) => {
-    const {details}= useContext(HoursDetailContext)
-
+const RowOfHour = ({ day, stratHour, endHour, poolName, backgroundColor, funcDetails, funcDelete, funcDeleHour,editDetails }) => {
+    const { details } = useContext(HoursDetailContext)
     console.log('in RowOfHour');
     const [flagExclamationMarkBool, setFlagExclamationMarkBool] = useState(false)
     const css = useStyles();
@@ -42,18 +41,19 @@ const RowOfHour = ({ day, stratHour, endHour, poolName, backgroundColor, funcDet
             let d = await getActiveDetails()
             let j = 1
             let bool = false
-            if(d!==undefined){
-            if (d.length > 1) {
-                for (let i in d) {
-                    for (j in d) {
-                        if (d[i].endActiveHour < d[j].startActiveHour) {
-                            bool = true
+            if (d !== undefined) {
+                if (d.length > 1) {
+                    for (let i in d) {
+                        for (j in d) {
+                            if (d[i].endActiveHour < d[j].startActiveHour) {
+                                bool = true
+                            }
                         }
                     }
-                }
 
+                }
+                setFlagExclamationMarkBool(bool)
             }
-            setFlagExclamationMarkBool(bool)}
             return bool
         }
 
@@ -63,22 +63,24 @@ const RowOfHour = ({ day, stratHour, endHour, poolName, backgroundColor, funcDet
         }
 
         ifExclamationMarkBool();
+
     }, [])
+    
     return <>
-        <div className={css.wrapper} style={{ backgroundColor: backgroundColor }} onDoubleClick={async () => setType(await funcDetails(day, divRef,'hour'))}>
+        <div className={css.wrapper} style={{ backgroundColor: backgroundColor }} onDoubleClick={async () => setType(await funcDetails(day, divRef, 'hour'))}>
             <div className={css.basicDetailsInRow}>
                 {/* כללי */}
-                <BasicDetailsInRow key={day} day={day} stratHour={stratHour} endHour={endHour} exclamationMarkBool={flagExclamationMarkBool} funcDelete={async () => await funcDelete(day)} funcDetails={async () => setType(await funcDetails(day, divRef,'notInActiveHours'))}></BasicDetailsInRow>
+                <BasicDetailsInRow key={day} day={day} stratHour={stratHour} endHour={endHour} exclamationMarkBool={flagExclamationMarkBool} funcDelete={async () => await funcDelete(day)} funcDetails={async () => setType(await funcDetails(day, divRef, 'notInActiveHours'))}></BasicDetailsInRow>
             </div>
             <div>
                 {/* פרטים */}
-                <Icon imgName={"details"} funcDelete={async () => await funcDelete(day)} funcDetails={async () => setType(await funcDetails(day, divRef,'hour'))}></Icon>
+                <Icon imgName={"details"} funcDelete={async () => await funcDelete(day)} funcDetails={async () => setType(await funcDetails(day, divRef, 'hour'))}></Icon>
             </div>
             {/* <button onClick={() => funcDelete(day)}>gfh26gfffffffffffff</button> */}
         </div>
 
         <div ref={divRef} className={css.details}>
-            {type.length > 0 ? <Details day={day} type={type} funcDelete={funcDeleHour} funcDetails={editDetails}></Details> : ''}
+            {type.length > 0 ? <Details day={day} stratHour={stratHour} type={type} funcDelete={funcDeleHour} editDetails={editDetails}></Details> : ''}
         </div>
     </>
 }
