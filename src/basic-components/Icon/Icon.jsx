@@ -12,7 +12,7 @@ import stethoscope from "../../assets/stethoscope.png"
 import telephone from "../../assets/telephone.png"
 import user from "../../assets/user.png"
 import excel from "../../assets/excel.png"
-import close from "../../assets/close.png"
+import close from "../../assets/Close.png"
 
 const images = {
     add: add,
