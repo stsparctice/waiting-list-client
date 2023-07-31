@@ -37,9 +37,8 @@ const Icon = (obj) => {
         srcref.current.setAttribute('src', images[obj2.nameIcon])
     }, [])
 
-
     return <>
-        <div key={obj}>
+        <td key={obj}>
             <img ref={srcref} />
 
             {/* {
@@ -50,7 +49,7 @@ const Icon = (obj) => {
          <span>hhh</span>
  
     } */}
-        </div>
+        </td>
 
 
 
