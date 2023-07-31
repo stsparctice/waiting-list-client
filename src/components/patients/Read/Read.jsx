@@ -19,12 +19,13 @@ const Read = () => {
 
     const getAll = async () => {
         const response = await server.get(`/patient/getAllWaitingPatient/${len}/${indexWating}`)
+        setAns(response.data)
         setIndexWating(indexWating + len)
         if (response.data.length === 0) {
-            ansref.current.innerHTML = "לא נמצאו  נתונים קיימים במערכת"
+            ansref.current.innerHTML = "לא נמצאו  נתונים קיימים במערכת" 
         }
         else {
-            setAns([])
+            // setAns([])
             await prepareToTable(response.data)
             console.log(ans);
         }
@@ -117,14 +118,21 @@ const Read = () => {
         setAns([])
         if (arr.length > 0) {
             const a = arr.map(p => (
+                // Id    :    8  LastEvaluationDate    :    "2022-05-12T00:00:00.000Z"
+                // NoEvaluation    :    null NoEvaluationUser    :    null  Phone1    :   
+                // "085645987" Phone2    :    "0524784595" SendMedDocumentsDate    :   
+                // "2022-01-07T00:00:00.000Z" Sex : 1   UserName :  "bubble"
                 {
-                    "קבוצה": { type: 'gender', visible: true, value: p.selectedGenders },
-                    "שם": { type: 'readonly', visible: true, value: p.name },
-                    "תעודת זהות": { type: 'readonly', visible: true, value: p.id, fontWeight: "bold" },
+                    // "קבוצה": { type: 'gender', visible: true, value: p.selectedGenders },
+                    "שם פרטי": { type: 'readonly', visible: true, value: p.FirstName },
+                    "שם משפחה": { type: 'readonly', visible: true, value: p.LastName },
+                    "תעודת זהות": { type: 'readonly', visible: true, value: p.IdentityCard, fontWeight: "bold" },
+                    "גיל": { type: 'readonly', visible: true, value: new Date().getFullYear() - new Date(p.BirthDate).getFullYear() },
+                    "תאריך רישום": { type: 'readonly', visible: true, value: new Date(p.AddedDate).toLocaleDateString().replaceAll('.','/') },
                     "": { type: "icon", nameIcon: "exclamationMark", value: "", visible: true },
                     "רמת דחיפות": { type: 'readonly', visible: true, value: p.treatmentPreference },
                     "רמת טיפול": { type: 'readonly', visible: true, value: p.treatmentLevel },
-                    "אבחון": { type: 'icon', visible: true, value: p.evaluated, nameIcon: 'vi' },
+                    "אבחון": { type: 'icon', visible: true, value: p.Evaluated, nameIcon: 'vi' },
                     // "": { type: 'readonly', visible: true, value: p.treatmentPreference },
                     // "": { type: 'readonly', visible: true, value: p.treatmentPreference },
                 }
@@ -133,7 +141,7 @@ const Read = () => {
             setAns(a)
             let index = arr.findIndex(p => p.treatmentPreference !== "גבוהה")
             setUrgentLen(index < 0 ? arr.length : index)
-            console.log(ans,'anssss');
+            console.log(ans, 'anssss');
         }
     }
 
@@ -175,10 +183,10 @@ const Read = () => {
                     <input name="boys" id="בנים" value={'בנים'} type="checkbox" onClick={filterData} />
                     <label >בנים</label>
                 </div>
-                <div id="evaluated">
-                    <input name="evaluated" id="true" value={'אבחון'} type="checkbox" onClick={filterData} />
+                <div id="Evaluated">
+                    <input name="Evaluated" id="1" value={'אבחון'} type="checkbox" onClick={filterData} />
                     <label>אבחון</label>
-                    <input name="nonEvaluation" id="false" value={'ללא אבחון'} type="checkbox" onClick={filterData} />
+                    <input name="NoEvaluation" id="0" value={'ללא אבחון'} type="checkbox" onClick={filterData} />
                     <label >ללא אבחון</label>
                 </div>
                 <div id="treatmentPreference">

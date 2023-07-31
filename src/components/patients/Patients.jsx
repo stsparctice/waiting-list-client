@@ -24,7 +24,7 @@ const Patients = () => {
     return <>
         <div>
             <ButtonInput text={'הוספה'} imgName={'add'} func={addPatient}></ButtonInput>
-        <Read></Read>
+            <Read></Read>
         </div>
     </>
 }
