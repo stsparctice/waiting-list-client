@@ -1,21 +1,10 @@
-import React, { useState, useEffect, useReducer } from "react";
-import { createUseStyles } from "react-jss";
+import React, { useEffect, useReducer } from "react";
 import { server } from "../../services/axios";
 
 
 const SelectTeacher = ({ arrgander, arrPool } = []) => {
-const select =(teacher)=>{
-console.log(teacher);
-console.log("teacher");
-
-   }
-
 
     const setList = (list, ans) => {
-        // console.log(ans);
-        // console.log("ans");
-
-
         list = [...list, ans]
         return list
     }

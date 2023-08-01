@@ -10,7 +10,7 @@ const SendToFormSchedule = () => {
         if (ans.length !== 0)
             state = ans[0].schedule
         else
-            state = ["insert"]
+            state = "insert"
         return state
     }
     const [schedule, setSchedule] = useReducer(toschedule, [])
@@ -30,14 +30,11 @@ const SendToFormSchedule = () => {
     }, [])
 
     return <>
-        {console.log(schedule.length, "  --------------schedule")},
-        {console.log(teacher.genders, " ----------teacher")},
-
         {
-            (schedule.length !== 0 && schedule !== ["insert"] && teacher !== undefined)
+            (schedule.length !== 0 && schedule !== "insert" && teacher !== undefined)
                 ?
                 <FormSchedule obj={{ poolName: teacher.pools, gender: teacher.genders, name: teacher.name, update: schedule }}></FormSchedule> :
-                (schedule === ["insert"] && teacher !== undefined)
+                (schedule === "insert" && teacher !== undefined)
                     ?
                     <FormSchedule obj={{ poolName: teacher.pools, gender: teacher.genders, name: teacher.name }}></FormSchedule> : <></>
         }

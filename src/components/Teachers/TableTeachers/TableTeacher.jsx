@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { server } from "../../../services/axios";
 import Table from "../../../components2/Table/Table"
-import ButtonClick from "../../../small-components/ButtonClick/ButtonClick";
 import { Outlet } from "react-router-dom";
 
 const TableTeacher = () => {
@@ -29,14 +28,7 @@ const TableTeacher = () => {
                             }),
                             pool.data[0] ?
                                 pool.data[0].schedule[0].hours.map(async (g) => (
-                                    // console.log(g),
-                                    // console.log("hour",hour),
                                     g.startHour == hour.start ?
-                                        // dayInWeek.forEach(d => {
-                                        //     d == { "day": day.day, "group": g.gender, "pool": hour.swimmingPool } ?
-                                        //     false:
-                                        // }),
-                                        // console.log(day):
                                         dayInWeek.push({ "day": day.day, "group": g.gender, "pool": hour.swimmingPool }) :
                                         ""
                                 )) :

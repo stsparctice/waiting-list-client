@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useCallback } from "react"
-import { createUseStyles } from "react-jss"
 import { server } from "../../../services/axios"
 import Checkbox from "../../../small-components/Checkbox/Checkbox"
 import StandartInput from "../../../small-components/StandartInput/StandartInput"
