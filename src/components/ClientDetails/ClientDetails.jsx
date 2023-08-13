@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { createUseStyles } from "react-jss";
-import { postData } from "../../services/axios";
+import { getData, postData } from "../../services/axios";
 import Icon from '../../basic-components/Icon/Icon'
 import { useNavigate } from "react-router-dom";
 import SmallSquare from '../../basic-components/SmallSquare/SmallSquare'
@@ -60,7 +60,7 @@ const ClientDetails = () => {
     const [genderTypes, setGenderTypes] = useState([]);
     useEffect(() => {
         const findData = async () => {
-            const ans = await postData('/rapidMed/find', { id: id })
+            const ans = await getData('/rapidMed/find', { id: id })
             console.log('ans', ans);
             setGenderTypes(genderType(ans.Sex, parseInt(new Date().getFullYear()) - parseInt(new Date(ans.Birthdate).getFullYear())))
             setData(ans)
