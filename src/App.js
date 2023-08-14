@@ -1,13 +1,19 @@
-import { useState } from 'react';
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import './App.css';
+import Navigation from './components/Patients/Navigation/Navigation';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import Read from './components/Patients/Read/Read'
+import Delete from './components/Patients/Delete/Delete'
+import Update from './components/Patients/Update/Update';
+import Insert from './components/Patients/Insert/Insert';
+import AllButtons from './components2/AllButtons/AllButtons';
+import { useState } from 'react';
 
 import MainSwimmingPool from './components/SwimmingPool/MainSwimmingPool/MainSwimmingPool';
 import MainGender from './components/Gender/MainGender/MainGender'
 import MainSchedule from './components/Schedule/MainSchedule/MainSchedule';
 import MainDataManager from './links/mainDataManager/MainDataManager';
 import Headers from './links/headers/Headers';
-import Patients from './components/patients/Patients';
+import Patients from './components/Patients/Patients';
 
 import FormsTeachers from './components/Teachers/FormsTeacher/FormsTeachers';
 import TableTeacher from './components/Teachers/TableTeachers/TableTeacher';
@@ -35,6 +41,20 @@ function App() {
   ])
 
   return <>
+    {/* <UserContext.Provider> */}
+    {/* <BrowserRouter>
+      <Navigation />
+
+      
+      <Routes>
+        <Route path='/read' element={<Read />} />
+        <Route path='/delete' element={<Delete />} />
+        <Route path='/Update' element={<Update />} />
+        <Route path='/insert' element={<Insert />} />
+        <Route path='/allButtons' element={<AllButtons />} />
+      </Routes>
+    </BrowserRouter> */}
+    {/* </UserContext.Provider> */}
     <BrowserRouter>
       <Routes>
         <Route path='/' element={<Headers arr={headers} />} >
@@ -58,7 +78,7 @@ function App() {
         </Route>
 
         <Route path='/clientDetails/:id' element={<ClientDetails />} />
-
+        {/* <Route path='/insertPatient/:id' element={<Insert />} /> */}
       </Routes>
     </BrowserRouter >
   </>

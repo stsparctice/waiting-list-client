@@ -6,9 +6,10 @@ import Icon from '../../basic-components/Icon/Icon'
 import { useNavigate } from "react-router-dom";
 import SmallSquare from '../../basic-components/SmallSquare/SmallSquare'
 import genderType from "../../models/genderType";
+import Insert from "../Patients/Insert/Insert";
 
 const useStyles = createUseStyles({
-    wrapper:{
+    wrapper: {
         backgroundColor: "rgb(235, 235, 235)",
     },
     patientDetails: {
@@ -116,6 +117,7 @@ const ClientDetails = () => {
                     </div>
                 </div>
             </div>
+            <Insert id={id}></Insert>
         </div>
     </>
 }

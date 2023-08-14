@@ -2,6 +2,7 @@ import React, { useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { getData } from "../../services/axios";
 import ButtonInput from '../../basic-components/ButtonInput/ButtonInput'
+import Read from "./Read/Read";
 
 const Patients = () => {
     const nav = useNavigate()
@@ -12,11 +13,15 @@ const Patients = () => {
             if (ans.error) {
                 console.log('error');
             }
-            else
-                nav(`/clientDetails/${id}`)
+            if (ans) {
+                nav(`/clientDetails/${id}`);
+            }
         }, [],)
     return <>
-        <ButtonInput text={'הוספה'} imgName={'add'} func={addPatient}></ButtonInput>
+        <div>
+            <ButtonInput text={'הוספה'} imgName={'add'} func={addPatient}></ButtonInput>
+            <Read></Read>
+        </div>
     </>
 }
 
