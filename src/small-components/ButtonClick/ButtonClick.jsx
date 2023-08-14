@@ -2,7 +2,7 @@ import React from "react";
 import { createUseStyles } from "react-jss";
 import { Outlet } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
-import close from "../../assets/Close.png"
+import Close from "../../assets/Close.png"
 import SmallTable from "../SmallTable/SmallTable";
 
 const useStyles = createUseStyles({
@@ -62,7 +62,7 @@ const ButtonClick = ({obj}) => {
             {/* <FontAwesome name="map-marker" size="25" /> */}
         </button>
         <Outlet></Outlet>
-        <img src={close} onClick={back} onMouseOver={point} className={css.none}></img>
+        <img src={Close} alt="" onClick={back} onMouseOver={point} className={css.none}></img>
     </>
 }
 

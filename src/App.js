@@ -1,4 +1,5 @@
 import './App.css';
+import { useReducer } from 'react';
 import Navigation from './components/Patients/Navigation/Navigation';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import Read from './components/Patients/Read/Read'
@@ -13,17 +14,26 @@ import MainGender from './components/Gender/MainGender/MainGender'
 import MainSchedule from './components/Schedule/MainSchedule/MainSchedule';
 import MainDataManager from './links/mainDataManager/MainDataManager';
 import Headers from './links/headers/Headers';
-import Patients from './components/Patients/Patients';
+import Patients from './components/patients/Patients';
 
 import FormsTeachers from './components/Teachers/FormsTeacher/FormsTeachers';
 import TableTeacher from './components/Teachers/TableTeachers/TableTeacher';
 import SendToFormSchedule from "./components/Teachers/FormTeacherSchedule/SendToFormSchedule/SendToFormSchedule"
 import SmallTable from './small-components/SmallTable/SmallTable';
 import FormSchedule from './components/Teachers/FormTeacherSchedule/FormSchedule/FormSchedule';
-
+import PoolTableContext, { PoolTable } from './contexts/PoolTable';
+import HoursContext, { HoursReducer } from './contexts/Hours'
+import PoolData from './components/PoolData/PoolData';
+import GenderData from './components/GenderData/GenderData'
 import ClientDetails from './components/ClientDetails/ClientDetails';
+import PoolTableInformation from './components/PoolTableInformation/PoolTableInformation';
+import HoursDetailContext, { HoursDetailsReducer } from './contexts/HoursDetails'
 
 function App() {
+  const [data, setData] = useReducer(PoolTable, {})
+  const [activeHours, setActiveHours] = useReducer(HoursReducer, [])
+  const[details,setDetails]=useReducer(HoursDetailsReducer,[])
+
   const [arrdatamanager] = useState([
     { text: "שעות פעילות", link: "/datamanager/schedule", color: 'purple' },
     { text: "בריכות", link: "/datamanager/pool", color: 'green' },
@@ -41,19 +51,6 @@ function App() {
   ])
 
   return <>
-    {/* <UserContext.Provider> */}
-    {/* <BrowserRouter>
-      <Navigation />
-
-      
-      <Routes>
-        <Route path='/read' element={<Read />} />
-        <Route path='/delete' element={<Delete />} />
-        <Route path='/Update' element={<Update />} />
-        <Route path='/insert' element={<Insert />} />
-        <Route path='/allButtons' element={<AllButtons />} />
-      </Routes>
-    </BrowserRouter> */}
     {/* </UserContext.Provider> */}
     <BrowserRouter>
       <Routes>
@@ -72,15 +69,27 @@ function App() {
               <Route path='sendToTeacherSchedule' element={<SendToFormSchedule />} />
               <Route path='teacherSchedule' element={<FormSchedule />} />
             </Route>
+</Route>
 
-          </Route>
-          {/* <Route path='/reports'></Route> */}
-        </Route>
 
         <Route path='/clientDetails/:id' element={<ClientDetails />} />
+        </Route>
         {/* <Route path='/insertPatient/:id' element={<Insert />} /> */}
       </Routes>
     </BrowserRouter >
+    <HoursContext.Provider value={{ activeHours, setActiveHours }}>
+      <HoursDetailContext.Provider value={{details,setDetails}}>
+        <PoolTableContext.Provider value={{ data, setData }}>
+
+          <PoolData />
+          <PoolTableInformation data={data} />
+          <GenderData />
+
+
+        </PoolTableContext.Provider>
+      </HoursDetailContext.Provider>
+    </HoursContext.Provider>
   </>
+
 }
 export default App;
