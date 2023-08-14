@@ -1,6 +1,6 @@
 import React, { useCallback } from "react";
 import { useNavigate } from "react-router-dom";
-import { postData } from "../../services/axios";
+import { getData } from "../../services/axios";
 import ButtonInput from '../../basic-components/ButtonInput/ButtonInput'
 import Read from "./Read/Read";
 
@@ -8,13 +8,9 @@ const Patients = () => {
     const nav = useNavigate()
     const addPatient = useCallback(
         async (id) => {
-            console.log(id, 'id');
-            let ans
-            try {
-                ans = await postData('/rapidMed/find', { id: id })
-                console.log('ans', ans);
-            }
-            catch (error) {
+            const ans = await getData('/rapidMed/find', { id: id })
+            console.log('ans', ans);
+            if (ans.error) {
                 console.log('error');
             }
             if (ans) {
