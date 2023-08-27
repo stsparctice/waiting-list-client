@@ -5,14 +5,23 @@ import excel from "../../assets/excel.png";
 import find from "../../assets/find.png";
 import stethoscope from "../../assets/stethoscope.png";
 import telephone from "../../assets/telephone.png";
+import deleteImg from "../../assets/delete3.png"
+import edit from "../../assets/edit3.png"
 
 const useStyles = createUseStyles({
 
-    img: {
-        padding: 0,
-        margin: 0,
-        border: 0,
+    btn: {
+        display:'inline-block',
+        padding:0,
+        backgroundColor: 'transparent',
         cursor: "pointer",
+        background:'none',
+        border:'none',
+        width:'100%',
+        '&:hover':{
+            backgroundColor:'pink'
+        }
+      
     }
 
 })
@@ -22,22 +31,21 @@ const images = {
     'excel': excel,
     'find': find,
     'stethoscope': stethoscope,
-    'telephone': telephone
+    'telephone': telephone,
+    deleteImg:deleteImg, edit:edit
 }
 
 
 const ButtonIcon = ({ imgName, func }) => {
-    console.log('imgNAme',imgName);
+    const [imageSrc, setImageSrc] = useState()
     const css = useStyles()
-    const srcRef = useRef()
     useEffect(() => {
-        srcRef.current.setAttribute('src', images[imgName])
+        setImageSrc(images[imgName])
     }, [imgName])
 
     return <>
-        <button className={css.img} >
-            <img ref={srcRef} onClick={func} alt=""/>
-            {/* <img ref={srcRef} style={{ width: '36px', height: '36px' }} onClick={func} /> */}
+        <button className={css.btn} >
+            <img src={imageSrc } width={18} onClick={func} alt="" />
         </button>
 
     </>

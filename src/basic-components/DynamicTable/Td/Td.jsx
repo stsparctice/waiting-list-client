@@ -2,22 +2,17 @@ import React from "react";
 
 import { createUseStyles } from "react-jss";
 
-
-
 const useStyles = createUseStyles({
-    th: {
+    td: {
         border: '1px solid black'
-    },
-    th2:{
-        width:'5%'
     }
 })
 
-const Th = ({ th }) => {
+const Td = ({  value }) => {
     const css = useStyles()
     return <>
-        {th !== '' ? <th className={css.th}>{th}</th> : <th className={css.th2}>{th}</th>}
+        <td className={css.td}>{value}</td> 
     </>
 }
 
-export default Th;
+export default Td;

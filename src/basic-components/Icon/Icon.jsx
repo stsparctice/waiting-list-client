@@ -25,9 +25,9 @@ const images = {
     empty: empty,
     stethoscope: stethoscope,
     telephone: telephone,
-    user:user,
+    user: user,
     excel: excel,
-    close:Close
+    close: Close
 }
 
 const useStyles = createUseStyles({
@@ -37,16 +37,13 @@ const useStyles = createUseStyles({
 
 })
 
-const Icon = ({ imgName, updateFunc, deleteFunc ,func}) => {
+const IconButton = ({ imgName, func }) => {
     const css = useStyles()
     return <>
         <div className={css.wrapper}>
-            {imgName === 'deleteImg' ? <img src={images[imgName]} alt={imgName} className={css.img} onClick={() => deleteFunc()} /> : ''}
-            {imgName === 'update' ? <img src={images[imgName]} alt={imgName} className={css.img} onClick={() => updateFunc()} /> : ''}
-            {imgName === 'close' ? <img src={images[imgName]} alt={imgName} className={css.img} onClick={() => func()} /> : ''}
-            {imgName !== 'deleteImg' && imgName !== 'update' && imgName !== 'close'? <img src={images[imgName]} alt={imgName} className={css.img} /> : ''}
+            <img src={images[imgName]} alt={imgName} className={css.img} onClick={func} />
         </div>
     </>
 }
 
-export default memo(Icon)
+export default IconButton

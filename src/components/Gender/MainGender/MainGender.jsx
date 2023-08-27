@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState, useReducer, useCallback } from "rea
 import { createUseStyles } from "react-jss";
 import { getData, postData } from "../../../services/axios";
 import InsertForm from "../InsertForm/InsertForm";
-import Table from "../../../basic-components/Table/Table";
+import Table from "../../../basic-components/DynamicTable/Table/Table";
 import '../../OpenModalStyle.css'
 
 const useStyles = createUseStyles({
