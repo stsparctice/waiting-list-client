@@ -7,7 +7,7 @@ const useStyles = createUseStyles({
     link: {
         color: 'black',
         cursor: 'pointer',
-        backgroundColor: 'lightblue',
+        backgroundColor: '#64ABFF',
         height: 60,
         display: 'flex',
         justifyContent: 'center',

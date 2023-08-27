@@ -22,12 +22,12 @@ const Gender = ({ text }) => {
 
 
     useEffect(() => {
-        const getColorByName = async () => {
+        // const getColorByName = async () => {
 
-            const res = await server.post('/gender/find', { name: text, project: { _id: 0, genderColor: 1 } })
-            setColor(res.data[0].genderColor)
-        }
-        getColorByName()
+        //     const res = await server.post('/gender/find', { name: text, project: { _id: 0, genderColor: 1 } })
+        //     setColor(res.data[0].genderColor)
+        // }
+        // getColorByName()
 
     }, [])
 

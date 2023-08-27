@@ -9,9 +9,9 @@ const PoolData =  () => {
 
   useEffect(() => {
       async function GetPoolsData() {
-      const res = await getData('/pool/getAll')
-      setDetails(res);
-      return res
+      // const res = await getData('/pool/getAll')
+      // setDetails(res);
+      // return res
     }
     GetPoolsData()
   }, [])

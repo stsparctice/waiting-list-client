@@ -1,11 +1,11 @@
 import './App.css';
 import { useReducer } from 'react';
-import Navigation from './components/Patients/Navigation/Navigation';
+import Navigation from './components/patients/Navigation/Navigation';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import Read from './components/Patients/Read/Read'
-import Delete from './components/Patients/Delete/Delete'
-import Update from './components/Patients/Update/Update';
-import Insert from './components/Patients/Insert/Insert';
+import Read from './components/patients/Read/Read'
+import Delete from './components/patients/Delete/Delete'
+import Update from './components/patients/Update/Update';
+import Insert from './components/patients/Insert/Insert';
 import AllButtons from './components2/AllButtons/AllButtons';
 import { useState } from 'react';
 
@@ -32,13 +32,13 @@ import HoursDetailContext, { HoursDetailsReducer } from './contexts/HoursDetails
 function App() {
   const [data, setData] = useReducer(PoolTable, {})
   const [activeHours, setActiveHours] = useReducer(HoursReducer, [])
-  const[details,setDetails]=useReducer(HoursDetailsReducer,[])
+  const [details, setDetails] = useReducer(HoursDetailsReducer, [])
 
   const [arrdatamanager] = useState([
-    { text: "שעות פעילות", link: "/datamanager/schedule", color: 'purple' },
-    { text: "בריכות", link: "/datamanager/pool", color: 'green' },
-    { text: "קבוצות", link: "/datamanager/gender", color: 'blue' },
-    { text: "מטפלים", link: "/datamanager/teachers", color: 'red' }
+    { text: "שעות פעילות", link: "/datamanager/schedule", color: '#B63B3B' },
+    { text: "בריכות", link: "/datamanager/pool", color: '#9FDF8A' },
+    { text: "קבוצות", link: "/datamanager/gender", color: '#AB99BF' },
+    { text: "מטפלים", link: "/datamanager/teachers", color: '#F4981F' }
   ])
 
   const [headers] = useState([
@@ -69,16 +69,16 @@ function App() {
               <Route path='sendToTeacherSchedule' element={<SendToFormSchedule />} />
               <Route path='teacherSchedule' element={<FormSchedule />} />
             </Route>
-</Route>
+          </Route>
 
 
-        <Route path='/clientDetails/:id' element={<ClientDetails />} />
+          <Route path='/clientDetails/:id' element={<ClientDetails />} />
         </Route>
         {/* <Route path='/insertPatient/:id' element={<Insert />} /> */}
       </Routes>
     </BrowserRouter >
-    <HoursContext.Provider value={{ activeHours, setActiveHours }}>
-      <HoursDetailContext.Provider value={{details,setDetails}}>
+    {/* <HoursContext.Provider value={{ activeHours, setActiveHours }}>
+      <HoursDetailContext.Provider value={{ details, setDetails }}>
         <PoolTableContext.Provider value={{ data, setData }}>
 
           <PoolData />
@@ -88,7 +88,7 @@ function App() {
 
         </PoolTableContext.Provider>
       </HoursDetailContext.Provider>
-    </HoursContext.Provider>
+    </HoursContext.Provider> */}
   </>
 
 }

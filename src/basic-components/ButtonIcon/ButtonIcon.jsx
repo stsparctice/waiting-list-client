@@ -32,11 +32,11 @@ const ButtonIcon = ({ imgName, func }) => {
     const srcRef = useRef()
     useEffect(() => {
         srcRef.current.setAttribute('src', images[imgName])
-    }, [])
+    }, [imgName])
 
     return <>
         <button className={css.img} >
-            <img ref={srcRef} onClick={func} />
+            <img ref={srcRef} onClick={func} alt=""/>
             {/* <img ref={srcRef} style={{ width: '36px', height: '36px' }} onClick={func} /> */}
         </button>
 

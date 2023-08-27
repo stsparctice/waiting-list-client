@@ -14,17 +14,17 @@ const PoolTableInformation = () => {
 
     const check = useCallback(() => {
         setFlag(!flag)    
-    })
+    },[])
 
 
     useEffect(() => {
         try {
             data.pool.schedule.forEach(d => {
                 d.hours.forEach((h,place) => {
-                    if (h.gender == data.gender) { 
+                    if (h.gender === data.gender) { 
                         let isExist=false;
                         newdata.map(m => {
-                            if (m.day == d.day) {
+                            if (m.day === d.day) {
                                 isExist=true
                                 m.hours = [...m.hours, ...d.hours.slice(place,place+1)]
                             }

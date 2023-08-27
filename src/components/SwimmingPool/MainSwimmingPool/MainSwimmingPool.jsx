@@ -14,23 +14,23 @@ const MainSwimmingPool = () => {
 
     useEffect(() => {
         async function fetchData() {
-            const response = await getData('/pool/getAll')
-            console.log('response', response);
-            let styles = []
-            let th = { poolName: 'שם בריכה', poolAddress: 'כתובת הבריכה' }
-            let ans = new Array(...response)
-            ans.forEach((e) => {
-                styles.push(e['poolColor'])
-                for (let key in e) {
-                    if (Object.keys(th).indexOf(key) === -1) {
-                        delete e[key]
-                    }
-                }
-            });
-            setTbody(ans)
-            setStyle(styles)
-            setPool(response)
-            insertPoolRef.current.style.display = 'none'
+            // const response = await getData('/pool/getAll')
+            // console.log('response', response);
+            // let styles = []
+            // let th = { poolName: 'שם בריכה', poolAddress: 'כתובת הבריכה' }
+            // let ans = new Array(...response)
+            // ans.forEach((e) => {
+            //     styles.push(e['poolColor'])
+            //     for (let key in e) {
+            //         if (Object.keys(th).indexOf(key) === -1) {
+            //             delete e[key]
+            //         }
+            //     }
+            // });
+            // setTbody(ans)
+            // setStyle(styles)
+            // setPool(response)
+            // insertPoolRef.current.style.display = 'none'
         }
         fetchData();
     }, []);

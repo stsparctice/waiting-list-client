@@ -6,7 +6,7 @@ import Icon from '../../basic-components/Icon/Icon'
 import { useNavigate } from "react-router-dom";
 import SmallSquare from '../../basic-components/SmallSquare/SmallSquare'
 import genderType from "../../models/genderType";
-import Insert from "../Patients/Insert/Insert";
+import Insert from "../patients/Insert/Insert";
 
 const useStyles = createUseStyles({
     wrapper: {
@@ -63,7 +63,7 @@ const ClientDetails = () => {
         const findData = async () => {
             const ans = await getData('/rapidMed/find', { id: id })
             console.log('ans', ans);
-            setGenderTypes(genderType(ans.Sex, parseInt(new Date().getFullYear()) - parseInt(new Date(ans.Birthdate).getFullYear())))
+            setGenderTypes(genderType(ans.sex, parseInt(new Date().getFullYear()) - parseInt(new Date(ans.birthdate).getFullYear())))
             setData(ans)
         }
         findData()
@@ -77,7 +77,7 @@ const ClientDetails = () => {
         <div className={css.wrapper}>
             <div className={css.headerDetails}>
                 <div className={css.square}>
-                    {genderTypes.map(g => <SmallSquare key={g} backgroundColor={'blue'} gender={g}></SmallSquare>)}
+                    {genderTypes.map((g, i) => <SmallSquare key={i} backgroundColor={'blue'} gender={g}></SmallSquare>)}
                 </div>
                 <h2 className={css.header}>כרטיס ממתין - <span>{data.Name} {data['Family Name']}</span></h2>
                 <div className={css.mainGender}></div>

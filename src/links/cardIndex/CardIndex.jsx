@@ -12,11 +12,15 @@ const useStyles = createUseStyles({
         justifyContent: 'center',
         alignItems: 'center',
         fontWeight: 'bold',
+        fontSize:'1.3rem',
         textAlign: 'center',
         marginRight: 15,
         borderTopLeftRadius: 8,
         borderTopRightRadius: 8,
         textDecoration: 'none',
+        '&.active':{
+            height:'50px'
+        }
     }
 })
 

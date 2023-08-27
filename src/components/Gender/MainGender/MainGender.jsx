@@ -70,14 +70,14 @@ const MainGender = () => {
 
     useEffect(() => {
         async function refresh() {
-            const response = await getData('/gender/getAll')
-            console.log('response', response);
-            let style = response.map(r => {
-                console.log('r',r);
+            // const response = await getData('/gender/getAll')
+            // console.log('response', response);
+            // let style = response.map(r => {
+            //     console.log('r',r);
                 
-            })
-            console.log('style', style);
-            insertGenderRef.current.style.display = 'none'
+            // })
+            // console.log('style', style);
+            // insertGenderRef.current.style.display = 'none'
         }
         refresh();
     }, []);

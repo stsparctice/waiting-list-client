@@ -1,7 +1,7 @@
 import React, { useEffect, useContext, useState } from "react";
 import "./../../../../styles/Timetable.css";
 import { createUseStyles } from "react-jss";
-import ScheduleTeacherContext from "./../../../../contexts/ScheduleTeacherContext"
+// import ScheduleTeacherContext from "./../../../../contexts/ScheduleTeacherContext"
 
 const useStyle = createUseStyles({
     timeTable: {
@@ -21,7 +21,7 @@ const useStyle = createUseStyles({
 
 const Timetable = ({ obj }) => {
     let time = {};
-    const { data, setData } = useContext(ScheduleTeacherContext)
+    // const { data, setData } = useContext(ScheduleTeacherContext)
     const [checked, setChecked] = useState(false)
 
     useEffect(() => {
@@ -63,18 +63,18 @@ const Timetable = ({ obj }) => {
             endOption.innerHTML = (time.hour) + ":" + (time.minutes);
             if (value.type && value.select === (time.hour) + ":" + (time.minutes))
                 endOption.setAttribute('selected', true)
-            setData({
-                value: (time.hour) + ":" + (time.minutes),
-                day: obj.timeTable.day,
-                type: "end",
-                state: {
-                    startHour: "",
-                    endHour: (time.hour) + ":" + (time.minutes),
-                    poolName: obj.timeTable.poolName,
-                    gender: obj.timeTable.gender,
-                    index: obj.index
-                }
-            })
+            // setData({
+            //     value: (time.hour) + ":" + (time.minutes),
+            //     day: obj.timeTable.day,
+            //     type: "end",
+            //     state: {
+            //         startHour: "",
+            //         endHour: (time.hour) + ":" + (time.minutes),
+            //         poolName: obj.timeTable.poolName,
+            //         gender: obj.timeTable.gender,
+            //         index: obj.index
+            //     }
+            // })
             document.getElementById(`endHour${obj.index}`).appendChild(endOption)
         }
 
@@ -92,18 +92,18 @@ const Timetable = ({ obj }) => {
                 startOption = document.createElement('option');
                 startOption.innerHTML = (time.hour) + ":" + (time.minutes);
                 if (obj.update && (time.hour) + ":" + (time.minutes) === (obj.update.startHour)) {
-                    setData({
-                        value: (time.hour) + ":" + (time.minutes),
-                        day: obj.timeTable.day,
-                        type: "start",
-                        state: {
-                            startHour: (time.hour) + ":" + (time.minutes),
-                            endHour: "",
-                            poolName: obj.timeTable.poolName,
-                            gender: obj.timeTable.gender,
-                            index: obj.index
-                        }
-                    })
+                    // setData({
+                    //     value: (time.hour) + ":" + (time.minutes),
+                    //     day: obj.timeTable.day,
+                    //     type: "start",
+                    //     state: {
+                    //         startHour: (time.hour) + ":" + (time.minutes),
+                    //         endHour: "",
+                    //         poolName: obj.timeTable.poolName,
+                    //         gender: obj.timeTable.gender,
+                    //         index: obj.index
+                    //     }
+                    // })
                     startOption.setAttribute('selected', true)
                     document.getElementById(`checkbox${obj.index}`).setAttribute('checked', true)
                 }
@@ -123,7 +123,7 @@ const Timetable = ({ obj }) => {
             <h5>יום {obj.timeTable.day} :   </h5>
 
             <h5 htmlFor="start">מ: </h5>
-            <select className={css.select} id={`startHour${obj.index}`} onChange={(ev) => setData({
+            {/* <select className={css.select} id={`startHour${obj.index}`} onChange={(ev) => setData({
                 value: ev.target.value,
                 day: obj.timeTable.day,
                 type: "start",
@@ -134,11 +134,11 @@ const Timetable = ({ obj }) => {
                     gender: obj.timeTable.gender,
                     index: obj.index
                 }
-            }, setEndOptions(ev.target.value, time))}>
-            </select>
+            }, setEndOptions(ev.target.value, time))}> */}
+            {/* </select> */}
             <br />
             <h5 htmlFor="end">:עד</h5>
-            <select className={css.select} id={`endHour${obj.index}`} onChange={(ev) => setData({
+            {/* <select className={css.select} id={`endHour${obj.index}`} onChange={(ev) => setData({
                 value: ev.target.value,
                 day: obj.timeTable.day,
                 type: "end",
@@ -149,9 +149,9 @@ const Timetable = ({ obj }) => {
                     gender: obj.timeTable.gender,
                     index: obj.index
                 }
-            })}>
+            })}> */}
 
-            </select>
+            {/* </select> */}
         </div>
 
         <hr color="green" />

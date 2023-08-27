@@ -21,9 +21,9 @@ const GenderData = () => {
 
   useEffect(() => {
     async function GetGenderData() {
-      const res = await getData('/gender/getAll', { project: { _id: 0, genderColor: 1, name: 1 } })
-      let detail = res.map(r => ({ text: r.name, color: r.genderColor, checked: false }))
-      SetOrganizationDetails(detail);
+      // const res = await getData('/gender/getAll', { project: { _id: 0, genderColor: 1, name: 1 } })
+      // let detail = res.map(r => ({ text: r.name, color: r.genderColor, checked: false }))
+      // SetOrganizationDetails(detail);
     }
     GetGenderData()
   }, [])

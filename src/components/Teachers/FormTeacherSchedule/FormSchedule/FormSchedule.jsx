@@ -2,7 +2,7 @@ import React, { useReducer, useEffect, useCallback } from "react"
 import { server } from "./../../../../services/axios"
 import { useNavigate } from "react-router-dom"
 import TimetableForDay from './TimetableForDay'
-import ScheduleTeacherContext, { setstate } from "../../../../contexts/ScheduleTeacherContext"
+// import ScheduleTeacherContext, { setstate } from "../../../../contexts/ScheduleTeacherContext"
 import Text from "../../../../small-components/ButtonText/ButtonText"
 
 const addDay = (state, day) => {
@@ -13,7 +13,7 @@ const addDay = (state, day) => {
 
 const FormSchedule = ({ obj }) => {
     const nav = useNavigate()
-    const [data, setData] = useReducer(setstate, [])
+    // const [data, setData] = useReducer(setstate, [])
     const [allSchedule, setAllSchedule] = useReducer(addDay, []);
     useEffect(() => {
         const findInMongo = async () => {
@@ -45,34 +45,34 @@ const FormSchedule = ({ obj }) => {
 
     }
 
-    const closeSchedule = useCallback(async () => {
-        nav('/datamanager/teachers/oneTeacher', { state: { name: obj.name } })
-    }, [data])
+    // const closeSchedule = useCallback(async () => {
+    //     nav('/datamanager/teachers/oneTeacher', { state: { name: obj.name } })
+    // }, [data])
 
 
 
-    const saveSchedule = useCallback(async () => {
-        data.map(day => {
-            day.hours.map((hour, index) => {
-                day.hours[index] = { startHour: hour.startHour, endHour: hour.endHour, poolName: hour.poolName, gender: hour.gender }
-            })
-        })
-        let ans;
-        if (obj.update !== undefined) {
-            ans = await server.post('/teacher_schedule/updateTeacherSchedule', { name: obj.name, update: { schedule: data } })
-            return;
-        }
-        else {
-            ans = await server.post('/teacher_schedule/insertTeacherSchedule', { name: obj.name, schedule: data })
-        }
+    // const saveSchedule = useCallback(async () => {
+    //     // data.map(day => {
+    //     //     day.hours.map((hour, index) => {
+    //     //         day.hours[index] = { startHour: hour.startHour, endHour: hour.endHour, poolName: hour.poolName, gender: hour.gender }
+    //     //     })
+    //     // })
+    //     let ans;
+    //     if (obj.update !== undefined) {
+    //         ans = await server.post('/teacher_schedule/updateTeacherSchedule', { name: obj.name, update: { schedule: data } })
+    //         return;
+    //     }
+    //     else {
+    //         ans = await server.post('/teacher_schedule/insertTeacherSchedule', { name: obj.name, schedule: data })
+    //     }
 
-    }, [data])
+    // }, [data])
 
 
 
     if (allSchedule.length > 0) {
         return <>
-            <ScheduleTeacherContext.Provider value={{ data, setData }}>
+            {/* <ScheduleTeacherContext.Provider value={{ data, setData }}> */}
                 {
                     allSchedule.map((day, index) => {
                         if (obj.update) {
@@ -83,10 +83,10 @@ const FormSchedule = ({ obj }) => {
                         return <TimetableForDay obj={{ day: day, index: index, gender: obj.gender }} key={index}></TimetableForDay>;
                     })
                 }
-                <Text text="שמירה" styles={[{ height: 30, width: 120 }]} click={saveSchedule}></Text>
-                <Text text="סגור" styles={[{ height: 30, width: 120 }]} click={closeSchedule}></Text>
+                {/* <Text text="שמירה" styles={[{ height: 30, width: 120 }]} click={saveSchedule}></Text> */}
+                {/* <Text text="סגור" styles={[{ height: 30, width: 120 }]} click={closeSchedule}></Text> */}
 
-            </ScheduleTeacherContext.Provider >
+            {/* </ScheduleTeacherContext.Provider > */}
         </>
     }
 

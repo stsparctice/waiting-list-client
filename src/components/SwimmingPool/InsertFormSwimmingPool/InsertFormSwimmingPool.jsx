@@ -1,6 +1,9 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { createUseStyles } from "react-jss";
 import '../../OpenModalStyle.css'
+import '../../../styles/Form.css'
+
+import FormButton from '../../../basic-components/FormButton/FormButton'
 
 const useStyles = createUseStyles({
     wrapper: {
@@ -8,29 +11,22 @@ const useStyles = createUseStyles({
         textAlign: 'center',
         paddingBottom: '30px'
     },
-    form: {
-        width: '50%',
-        height: '30%',
-        marginRight: '25%',
-        border: '3px solid black',
-        borderRadius: '20px',
-        backgroundColor: 'silver',
-
-    }, confirmButton: {
-        cursor: 'default',
-        width: '20%',
-        height: '20px',
-        marginRight: '40%',
-        border: '2px solid black',
-        backgroundColor: 'red'
+   
+    inputrow: {
+        width: '45%',
+        display: 'flex',
+        justifyContent: "space-between"
     },
+   
     hide: {
         display: 'none'
-    }
+    },
+  
 });
 
 const InsertFormSwimmingPool = ({ name, color, address, confirm, cancel }) => {
     const css = useStyles();
+
     const [oldName, setOldName] = useState(name)
     const [poolName, setPoolName] = useState();
     const [poolColor, setPoolColor] = useState();
@@ -40,7 +36,9 @@ const InsertFormSwimmingPool = ({ name, color, address, confirm, cancel }) => {
     const colorRef = useRef()
     const addressRef = useRef()
 
-
+    const confirmForm = useCallback(() => {
+        confirm(oldName, poolName, poolColor, poolAddress)
+    }, [confirm, oldName,poolName, poolColor, poolAddress])
     useEffect(() => {
         function middle() {
             nameRef.current.setAttribute('value', name)
@@ -50,33 +48,32 @@ const InsertFormSwimmingPool = ({ name, color, address, confirm, cancel }) => {
         middle()
     })
     useEffect(() => {
-        function start() {
-            setOldName(name)
-            setPoolColor(color)
-            setPoolAddress(address)
-        }
-        start()
+        setOldName(name)
+        setPoolColor(color)
+        setPoolAddress(address)
     }, [])
 
 
     return <>
-        <div className={css.wrapper}>
-            <h1>hello insert-form-swimming pool</h1>
-            <div className={css.form}>
-                <p>
-                    <label>שם בריכה: </label>
+        <div className="form-wrapper">
+            <h2>בריכה חדשה</h2>
+            <div className="form">
+                <p className="input-row">
+                    <label className={css.label}>שם בריכה: </label>
                     <input type="text" ref={nameRef} onInput={(e) => setPoolName(e.target.value)}></input>
                 </p>
-                <p>
-                    <label>כתובת הבריכה: </label>
-                    <input type="text" ref={addressRef} onInput={(e) =>setPoolAddress(e.target.value)}></input>
+                <p className="input-row">
+                    <label className={css.label}>כתובת הבריכה: </label>
+                    <input type="text" ref={addressRef} onInput={(e) => setPoolAddress(e.target.value)}></input>
                 </p>
-                <p>
-                    <label>צבע הבריכה: </label>
+                <p className="input-row">
+                    <label className={css.label}>צבע הבריכה: </label>
                     <input type="color" ref={colorRef} onInput={(e) => setPoolColor(e.target.value)}></input>
                 </p>
-                <div className={css.confirmButton} onClick={() => confirm(oldName, poolName, poolColor, poolAddress)}>אישור</div>
-                <div className={css.confirmButton} onClick={cancel}>ביטול-חזרה</div>
+                <div className="button-row">
+                    <FormButton text="אישור" func={confirmForm}></FormButton>
+                    <FormButton text="ביטול"></FormButton>
+                </div>
             </div>
         </div>
     </>

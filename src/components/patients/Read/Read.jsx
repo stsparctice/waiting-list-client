@@ -18,17 +18,17 @@ const useStyles = createUseStyles({
 const Read = () => {
 
     const getAll = async () => {
-        const response = await server.get(`/patient/getAllWaitingPatient/${len}/${indexWating}`)
-        setAns(response.data)
-        setIndexWating(indexWating + len)
-        if (response.data.length === 0) {
-            ansref.current.innerHTML = "לא נמצאו  נתונים קיימים במערכת" 
-        }
-        else {
-            // setAns([])
-            await prepareToTable(response.data)
-            console.log(ans);
-        }
+        // const response = await server.get(`/patient/getAllWaitingPatient/${len}/${indexWating}`)
+        // setAns(response.data)
+        // setIndexWating(indexWating + len)
+        // if (response.data.length === 0) {
+        //     ansref.current.innerHTML = "לא נמצאו  נתונים קיימים במערכת" 
+        // }
+        // else {
+        //     // setAns([])
+        //     await prepareToTable(response.data)
+        //     console.log(ans);
+        // }
     }
 
     useEffect(() => {
@@ -124,8 +124,8 @@ const Read = () => {
                 // "2022-01-07T00:00:00.000Z" Sex : 1   UserName :  "bubble"
                 {
                     // "קבוצה": { type: 'gender', visible: true, value: p.selectedGenders },
-                    "שם פרטי": { type: 'readonly', visible: true, value: p.FirstName },
-                    "שם משפחה": { type: 'readonly', visible: true, value: p.LastName },
+                    "שם פרטי": { type: 'readonly', visible: true, value: p.firstName },
+                    "שם משפחה": { type: 'readonly', visible: true, value: p.lastName },
                     "תעודת זהות": { type: 'readonly', visible: true, value: p.IdentityCard, fontWeight: "bold" },
                     "גיל": { type: 'readonly', visible: true, value: new Date().getFullYear() - new Date(p.BirthDate).getFullYear() },
                     "תאריך רישום": { type: 'readonly', visible: true, value: new Date(p.AddedDate).toLocaleDateString().replaceAll('.','/') },

@@ -68,15 +68,15 @@ const Insert = (idPatient) => {
     }
 
     useEffect(() => {
-        const getDataFromSerevr = async () => {
-            await Promise.all([findGenders, findPools, findTeachers].map(func => func()))
-        }
-        const findGenders = async () => {
-            const res = await server.post('/gender/find', { project: { _id: 0, name: 1, genderColor: 1 } })
-            let genders = res.data.map(m => ({ color: m.genderColor, checked: false, text: m.name }))
+        // const getDataFromSerevr = async () => {
+        //     await Promise.all([findGenders, findPools, findTeachers].map(func => func()))
+        // }
+        // const findGenders = async () => {
+        //     const res = await server.post('/gender/find', { project: { _id: 0, name: 1, genderColor: 1 } })
+        //     let genders = res.data.map(m => ({ color: m.genderColor, checked: false, text: m.name }))
 
-            setGenders([...genders])
-        }
+        //     setGenders([...genders])
+        // }
         const findPools = async () => {
             const ans = await server.post('/pool/find', {filter:{} ,project: { _id: 0, poolName: 1, poolColor: 1 } })
             console.log('ans ',ans);
@@ -89,7 +89,7 @@ const Insert = (idPatient) => {
             const teachers = ans.data.map(m => ({ checked: false, text: m.name }))
             setTeachers([...teachers])
         }
-        getDataFromSerevr()
+        // getDataFromSerevr()
     }, [])
 
     const insert = async () => {

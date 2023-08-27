@@ -13,6 +13,8 @@ const activeHoursReducer = (state, item) => {
             console.log("state");
             console.log(state);
             break;
+        default:
+            break
     }
     return state
 }
