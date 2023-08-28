@@ -46,7 +46,7 @@ const MainSwimmingPool = () => {
     const insertPoolRef = useRef()
     const [pool, setPool] = useReducer(updatePool, [])
     const [tableData, setTableData] = useState([])
-    const [insert, setInsert] = useState(true)
+    const [insert, setInsert] = useState(false)
     const [trDetails, setTrDetails] = useState()
 
     useEffect(() => {

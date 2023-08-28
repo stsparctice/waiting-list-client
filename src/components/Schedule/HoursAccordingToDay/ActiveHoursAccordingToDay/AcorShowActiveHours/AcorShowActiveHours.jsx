@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import { createUseStyles } from "react-jss";
 import edit from '../../../../../assets/edit.png';
-import deleteImg from '../../../../../assets/delete.png';
+import deleteImg from '../../../../../assets/delete-red.png';
 import { postData } from "../../../../../services/axios";
 import HoursAccordingToDayContext from "../../HoursAccordingToDayContext";
 

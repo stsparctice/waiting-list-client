@@ -24,6 +24,7 @@ const useStyles = createUseStyles({
 const FormButton = ({ text, func }) => {
     const css = useStyles()
     return <>
+   
         <input type="button" className={css.btn} value={text} onClick={func} />
     </>
 }

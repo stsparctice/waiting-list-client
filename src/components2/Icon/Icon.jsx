@@ -1,7 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import { createUseStyles } from "react-jss";
 import vi from "../../assets/vi.png";
-import deleteimg from "../../assets/delete.png";
 import details from "../../assets/details.png";
 import edit from "../../assets/edit.png";
 import exclamationMark from "../../assets/exclamationMark.png"
@@ -18,7 +17,6 @@ const useStyles = createUseStyles({
 
 const images = {
     'vi': vi,
-    'deleteimg': deleteimg,
     'details': details,
     'edit': edit,
     'exclamationMark': exclamationMark

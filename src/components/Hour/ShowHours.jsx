@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import deleteImg from '../../assets/delete.png'
+import deleteImg from '../../assets/delete-red.png'
 import details from '../../assets/edit.png'
 import { postData } from "../../services/axios"
 

@@ -5,24 +5,44 @@ import excel from "../../assets/excel.png";
 import find from "../../assets/find.png";
 import stethoscope from "../../assets/stethoscope.png";
 import telephone from "../../assets/telephone.png";
-import deleteImg from "../../assets/delete3.png"
-import edit from "../../assets/edit3.png"
+import deleteImg from "../../assets/delete-white.png"
+import edit from "../../assets/edit-white.png"
 
 const useStyles = createUseStyles({
 
-    btn: {
-        display:'inline-block',
-        padding:0,
-        backgroundColor: 'transparent',
+    btn: (props) => ({
         cursor: "pointer",
-        background:'none',
-        border:'none',
-        width:'100%',
-        '&:hover':{
-            backgroundColor:'pink'
+        padding: [7, 15],
+
+        background: 'none',
+        height: props.height,
+        width: props.width,
+        borderRadius: 7,
+        border: 'none',
+        backgroundColor: props.backgroundColor,
+        transitionDuration: '0.3s',
+        transitionProperty: 'all',
+        transitionTimingFunction: 'linear',
+        '&:hover': {
+            borderRadius: 20
+        },
+
+        '& figure': {
+            padding: 0,
+            margin: 0,
+            height:'100%',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center'
+        },
+        '& img': {
+            objectFit:'contain',
+            height:props.imageSize.height,
+            width:props.imageSize.width
         }
-      
-    }
+
+    })
+
 
 })
 
@@ -32,20 +52,23 @@ const images = {
     'find': find,
     'stethoscope': stethoscope,
     'telephone': telephone,
-    deleteImg:deleteImg, edit:edit
+    deleteImg: deleteImg, edit: edit
 }
 
 
-const ButtonIcon = ({ imgName, func }) => {
+const ButtonIcon = ({ imgName, title, func, ...props }) => {
+    console.log({ props })
     const [imageSrc, setImageSrc] = useState()
-    const css = useStyles()
+    const css = useStyles(props)
     useEffect(() => {
         setImageSrc(images[imgName])
     }, [imgName])
 
     return <>
-        <button className={css.btn} >
-            <img src={imageSrc } width={18} onClick={func} alt="" />
+        <button className={css.btn} title={title} >
+            <figure>
+                <img src={imageSrc} onClick={func} alt="" />
+            </figure>
         </button>
 
     </>

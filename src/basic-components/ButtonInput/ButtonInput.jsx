@@ -24,7 +24,7 @@ const Input = ({ text, imgName, func }) => {
     const css = useStyles()
     return <>
         <p className={css.p}>
-            <ButtonIcon imgName={imgName} func={() => func(data)}></ButtonIcon>
+            <ButtonIcon imgName={imgName}  func={() => func(data)} imageSize={{width:"15px", height:"15px"}} height="35px" width="70px"></ButtonIcon>
             <input type="text" className={css.input} onInput={(e) => setData(e.target.value)} />
             <label className={css.label}>:{text}</label>
         </p>

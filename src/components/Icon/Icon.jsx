@@ -1,7 +1,7 @@
 import React from "react"
 import { createUseStyles } from "react-jss"
 import add from '../../assets/add.png'
-import deleteImg from '../../assets/delete.png'
+import deleteImg from '../../assets/delete-red.png'
 import details from '../../assets/details.png'
 import edit from '../../assets/edit.png'
 import exclamationMark from '../../assets/exclamationMark.png'

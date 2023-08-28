@@ -1,7 +1,6 @@
 import React, { memo } from "react"
 import { createUseStyles } from "react-jss"
 import add from '../../assets/add.png'
-import deleteImg from '../../assets/delete3.png'
 import details from '../../assets/details3.png'
 import edit from '../../assets/edit3.png'
 import exclamationMark from '../../assets/exclamationMark.png'
@@ -16,7 +15,6 @@ import Close from "../../assets/Close.png"
 
 const images = {
     add: add,
-    deleteImg: deleteImg,
     details: details,
     edit: edit,
     exclamationMark: exclamationMark,

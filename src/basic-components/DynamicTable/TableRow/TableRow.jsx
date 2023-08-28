@@ -25,11 +25,12 @@ const TableRow = ({ data, config, updateFunc, deleteFunc }) => {
             {
                 row.map((val, i) => (<Td key={i} value={val}></Td>))
             }
+
             <td>
-                <ButtonIcon imgName={'deleteImg'} deleteFunc={() => deleteFunc()}></ButtonIcon>
+                <ButtonIcon imgName={'edit'} func={() => updateFunc()} imageSize={{width:"20px", height:"20px"}} height="35px" width="70px" title={'עדכן'} backgroundColor="green"></ButtonIcon>
             </td>
             <td>
-                <ButtonIcon imgName={'edit'} updateFunc={() => updateFunc()}></ButtonIcon>
+                <ButtonIcon imgName={'deleteImg'} func={() => deleteFunc()} imageSize={{width:"20px", height:"20px"}} height="35px"  width="70px" title={'מחק'} backgroundColor="red"></ButtonIcon>
             </td>
         </tr>
     </>
