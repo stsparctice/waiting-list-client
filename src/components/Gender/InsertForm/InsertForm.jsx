@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { createUseStyles } from "react-jss";
-import '../../OpenModalStyle.css'
+// import '../../OpenModalStyle.css'
 
 const useStyles = createUseStyles({
     wrapper: {

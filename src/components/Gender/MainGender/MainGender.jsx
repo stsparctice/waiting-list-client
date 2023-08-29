@@ -3,7 +3,7 @@ import { createUseStyles } from "react-jss";
 import { getData, postData } from "../../../services/axios";
 import InsertForm from "../InsertForm/InsertForm";
 import Table from "../../../basic-components/DynamicTable/Table/Table";
-import '../../OpenModalStyle.css'
+// import '../../OpenModalStyle.css'
 
 const useStyles = createUseStyles({
     mainGender: {

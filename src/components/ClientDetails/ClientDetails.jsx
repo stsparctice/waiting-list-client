@@ -4,9 +4,9 @@ import { createUseStyles } from "react-jss";
 import { getData, postData } from "../../services/axios";
 import Icon from '../../basic-components/Icon/Icon'
 import { useNavigate } from "react-router-dom";
-import SmallSquare from '../../basic-components/SmallSquare/SmallSquare'
 import genderType from "../../models/genderType";
 import Insert from "../patients/Insert/Insert";
+import ColorLabel from "../../basic-components/ColorLabel/ColorLabel";
 
 const useStyles = createUseStyles({
     wrapper: {
@@ -77,7 +77,7 @@ const ClientDetails = () => {
         <div className={css.wrapper}>
             <div className={css.headerDetails}>
                 <div className={css.square}>
-                    {genderTypes.map((g, i) => <SmallSquare key={i} backgroundColor={'blue'} gender={g}></SmallSquare>)}
+                    {genderTypes.map((g, i) => <ColorLabel key={i} backgroundColor={'blue'} gender={g}></ColorLabel>)}
                 </div>
                 <h2 className={css.header}>כרטיס ממתין - <span>{data.Name} {data['Family Name']}</span></h2>
                 <div className={css.mainGender}></div>

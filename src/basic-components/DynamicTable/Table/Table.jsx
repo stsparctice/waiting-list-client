@@ -7,14 +7,12 @@ import TableHeader from "../TableHeader/TableHeader";
 
 const useStyles = createUseStyles({
     table: {
-        marginLeft: '15%',
+       margin:'auto',
         width: '70%',
         textAlign: 'center',
         direction: 'rtl',
         borderCollapse:'collapse', 
-        '& td':{
-            border:'1px solid black', 
-        }
+       
     }
 })
 
@@ -31,7 +29,9 @@ const Table = ({ config,data, updateFunc, deleteFunc }) => {
             <tbody>
                 {data ?
                     data.map((item, index) => (
-                        <TableRow key={index} data={item}  config={config} updateFunc={updateFunc} deleteFunc={deleteFunc}></TableRow>
+                        <TableRow key={index} data={item}  config={config} updateFunc={updateFunc} deleteFunc={deleteFunc}>
+                            
+                        </TableRow>
                     )) : ''}
             </tbody>
         </table>

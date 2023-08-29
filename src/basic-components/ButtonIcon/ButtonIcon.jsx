@@ -57,7 +57,6 @@ const images = {
 
 
 const ButtonIcon = ({ imgName, title, func, ...props }) => {
-    console.log({ props })
     const [imageSrc, setImageSrc] = useState()
     const css = useStyles(props)
     useEffect(() => {
