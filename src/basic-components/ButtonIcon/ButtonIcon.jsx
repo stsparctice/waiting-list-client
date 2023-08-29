@@ -66,9 +66,9 @@ const ButtonIcon = ({ imgName, title, func, ...props }) => {
     }, [imgName])
 
     return <>
-        <button className={css.btn} title={title} >
+        <button className={css.btn} title={title} onClick={func} >
             <figure>
-                <img src={imageSrc} onClick={func} alt="" />
+                <img src={imageSrc} alt="" />
             </figure>
         </button>
 
