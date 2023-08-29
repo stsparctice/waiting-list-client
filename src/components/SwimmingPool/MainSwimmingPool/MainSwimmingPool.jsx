@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState, useRef, useReducer } from "react";
+import React, { useCallback, useEffect, useState,  useReducer } from "react";
 import { getData, postData } from "../../../services/axios";
 import Table from "../../../basic-components/DynamicTable/Table/Table";
 import SwimmingPoolForm from "../SwimmingPoolForm/SwimmingPoolForm";
@@ -70,20 +70,15 @@ const MainSwimmingPool = () => {
             let ans = JSON.stringify(response)
             if (ans) {
                 setPools({ action: poolActions.REMOVE, value: body })
-                console.log(pools);
             }
         }, [])
 
     const confirm = useCallback(async (data) => {
-        console.log({ data });
-        console.log('insert', insert);
         if (insert) {
-            console.log({ data })
             //  בדיקות ולידציה ???
             // let body = { poolName: poolName, poolColor: poolColor, poolAddress: poolAddress, status: 'add' }
             if (pools.find(p => p.poolName === data.name) === undefined) {
                 const response = await postData('/pool/add', data)
-                console.log('after added', response);
                 if (response)
                     setPools({action:poolActions.ADD, value:data})
             }
@@ -102,11 +97,10 @@ const MainSwimmingPool = () => {
                 if (response) {
                     setPools({action:poolActions.UPDATE, value:data})
                 }
-                console.log('after update ', pools);
             }
         }
         closeModal()
-    }, [insert],)
+    },[insert])
 
     const openModal = () => {
         console.log('modal')
