@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 
 import { createUseStyles } from "react-jss";
 import Td from "../Td/Td";
-import ButtonIcon from "../../ButtonIcon/ButtonIcon";
+import ButtonIcon,{icons} from "../../ButtonIcon/ButtonIcon";
 
 const useStyles = createUseStyles({
     tr: {
@@ -33,11 +33,11 @@ const TableRow = ({ data, config, updateFunc, deleteFunc }) => {
                 row.map((val, i) => (<Td key={i} datacell={val}></Td>))
             }
 
-            <td>
-                <ButtonIcon imgName={'edit'} func={() => updateFunc()} imageSize={{ width: "20px", height: "20px" }} height="35px" width="70px" title={'עדכן'} backgroundColor="green"></ButtonIcon>
+            <td style={{width:50}}>
+                <ButtonIcon imgName={icons.EDIT} func={() => updateFunc(data)} imageSize={{ width: "17px", height: "17px" }} height="35px" width="35px" title={'עדכן'} backgroundColor="green"></ButtonIcon>
             </td>
-            <td>
-                <ButtonIcon imgName={'deleteImg'} func={() => deleteFunc()} imageSize={{ width: "20px", height: "20px" }} height="35px" width="70px" title={'מחק'} backgroundColor="red"></ButtonIcon>
+            <td style={{width:50}}>
+                <ButtonIcon imgName={icons.DELETE} func={() => deleteFunc(data)} imageSize={{ width: "17px", height: "17px" }} height="35px" width="35px" title={'מחק'} backgroundColor="red"></ButtonIcon>
             </td>
         </tr>
     </>

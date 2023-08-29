@@ -1,14 +1,14 @@
 import React, { useCallback, useEffect, useState, useRef, useReducer } from "react";
 import { getData, postData } from "../../../services/axios";
 import Table from "../../../basic-components/DynamicTable/Table/Table";
-import InsertFormSwimmingPool from "../InsertFormSwimmingPool/InsertFormSwimmingPool";
+import SwimmingPoolForm from "../SwimmingPoolForm/SwimmingPoolForm";
 import { cellElementOptions } from "../../../basic-components/DynamicTable/Td/Td";
 // import '../../OpenModalStyle.css'
 
 const poolActions = {
-    ADD:'add',
-    UPDATE:'update',
-    REMOVE:'remove'
+    ADD: 'add',
+    UPDATE: 'update',
+    REMOVE: 'remove'
 
 }
 
@@ -41,12 +41,12 @@ const tableConfig = {
 }
 
 const MainSwimmingPool = () => {
-    const insertPoolRef = useRef()
-    const [pool, setPool] = useReducer(updatePool, [])
+
+    const [pools, setPools] = useReducer(updatePool, [])
+    const [onePool, setOnePool] = useState({})
     const [tableData, setTableData] = useState([])
     const [insert, setInsert] = useState(false)
     const [showModal, setShowModal] = useState(false)
-    const [trDetails, setTrDetails] = useState()
 
     useEffect(() => {
         async function fetchData() {
@@ -56,24 +56,12 @@ const MainSwimmingPool = () => {
         }
         fetchData();
     }, []);
-    // function updateTBody(arr) {
-    //     let style = []
-    //     let th = { poolName: 'שם בריכה', poolAddress: 'כתובת הבריכה' }
-    //     arr.forEach((e, index) => {
-    //         // setStyle(...style,e['poolColor'])
-    //         style.push(e['poolColor'])
-    //         for (let key in e) {
-    //             if (Object.keys(th).indexOf(key) === -1) {
-    //                 delete e[key]
-    //             }
-    //         }
-    //     });
-    //     setTbody(arr)
-    //     setStyle(style)
-    // }
-    const updateFunc = useCallback((tr, color) => {
-        setTrDetails({ name: tr[0], color: color, address: tr[1] })
+
+    const updateFunc = useCallback((data) => {
+        console.log({ data })
+        setShowModal(true)
         setInsert(false)
+        setOnePool(data)
     }, [])
     const deleteFunc = useCallback(
         async (tr) => {
@@ -81,75 +69,63 @@ const MainSwimmingPool = () => {
             const response = await postData('/pool/delete', { poolName: tr[0] })
             let ans = JSON.stringify(response)
             if (ans) {
-                setPool({action:poolActions.REMOVE, value:body})
-                console.log(pool);
+                setPools({ action: poolActions.REMOVE, value: body })
+                console.log(pools);
             }
         }, [])
-    const confirm = useCallback(async (oldName, poolName, poolColor, poolAddress) => {
-        console.log(oldName, poolName, poolColor, poolAddress);
+
+    const confirm = useCallback(async (data) => {
+        console.log({ data });
         console.log('insert', insert);
         if (insert) {
+            console.log({ data })
             //  בדיקות ולידציה ???
-            let body = { poolName: poolName, poolColor: poolColor, poolAddress: poolAddress, status: 'add' }
-            if (pool.find(p => p.poolName === body.poolName) === undefined) {
-                const response = await postData('/pool/add', body)
+            // let body = { poolName: poolName, poolColor: poolColor, poolAddress: poolAddress, status: 'add' }
+            if (pools.find(p => p.poolName === data.name) === undefined) {
+                const response = await postData('/pool/add', data)
                 console.log('after added', response);
                 if (response)
-                    setPool({action:poolActions.ADD, value:body})
+                    setPools({action:poolActions.ADD, value:data})
             }
             else
                 sameName()
         }
         else {
-            if (pool.find(p => p.poolName === poolName) !== undefined) {
+
+            console.log({ data })
+            if (pools.find(p => p.name === data.name) !== undefined) {
                 sameName()
             }
             else {
-                !poolName ? poolName = oldName : poolName = poolName
-                let body = { oldPoolName: oldName, poolName: poolName, poolColor: poolColor, poolAddress: poolAddress }
-                const response = await postData('/pool/update', body)
+                const response = await postData('/pool/update', data)
                 console.log('response in confirm, update  ', response);
                 if (response) {
-                    setPool({action:poolActions.REMOVE, value:body})
+                    setPools({action:poolActions.UPDATE, value:data})
                 }
-                console.log('after update ', pool);
+                console.log('after update ', pools);
             }
         }
-    }, [],)
-    const cancel = useCallback(() => {
-        insertPoolRef.current.style.display = 'none'
-    }, [],)
+        closeModal()
+    }, [insert],)
 
-    const openModal = ()=>{
+    const openModal = () => {
         console.log('modal')
+        setInsert(true)
         setShowModal(true)
     }
 
-    const closeModal = ()=>{
+    const closeModal = () => {
         setShowModal(false)
     }
 
-    function openInsert() {
-        setInsert(true)
-    }
     function sameName() {
         console.log('there is a pool with a same name');
     }
     return <>
         <h1>בריכות</h1>
-          <button onClick={openModal}>הוספת בריכה חדשה</button>
-          {console.log({showModal})}
-        {showModal?
-        <InsertFormSwimmingPool  cancel={closeModal}></InsertFormSwimmingPool>:<></>}
-        {/* <button onClick={openModal}>הוספת בריכה חדשה</button>
-        {showModal?
-        (<div >
-
-            {!trDetails ?
-                <InsertFormSwimmingPool name={''} color={''} address={''} confirm={confirm} cancel={closeModal}></InsertFormSwimmingPool>
-                : <InsertFormSwimmingPool name={trDetails.name} color={trDetails.color} address={trDetails.address} confirm={confirm} cancel={cancel}></InsertFormSwimmingPool>
-            }
-        </div>):<div></div>} */}
+        <button onClick={openModal}>הוספת בריכה חדשה</button>
+        {showModal ?
+            <SwimmingPoolForm data={onePool} insert={insert} confirm={confirm} cancel={closeModal}></SwimmingPoolForm> : <></>}
         <Table config={tableConfig} data={tableData} updateFunc={updateFunc} deleteFunc={deleteFunc}></Table>
 
     </>
