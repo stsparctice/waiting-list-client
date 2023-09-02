@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState , memo} from "react";
 
 import { createUseStyles } from "react-jss";
 import Td from "../Td/Td";
@@ -11,7 +11,6 @@ const useStyles = createUseStyles({
 })
 
 const TableRow = ({ data, config, updateFunc, deleteFunc }) => {
-    const css = useStyles()
     const [row, setRow] = useState([])
     useEffect(() => {
         const filteredEntries = Object.entries(data).filter(ent => config.hideKeys.includes(ent[0]) === false)
@@ -28,7 +27,7 @@ const TableRow = ({ data, config, updateFunc, deleteFunc }) => {
     }, [data, config])
 
     return <>
-        <tr className={css.tr} >
+        <tr >
             {
                 row.map((val, i) => (<Td key={i} datacell={val}></Td>))
             }
@@ -43,4 +42,4 @@ const TableRow = ({ data, config, updateFunc, deleteFunc }) => {
     </>
 }
 
-export default TableRow;
+export default memo(TableRow);

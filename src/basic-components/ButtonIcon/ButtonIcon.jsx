@@ -1,4 +1,4 @@
-import React, {  useEffect,  useState } from "react";
+import React, {  useEffect,  useState , memo} from "react";
 import { createUseStyles } from "react-jss";
 import add from "../../assets/add.png";
 import excel from "../../assets/excel.png";
@@ -74,4 +74,4 @@ const ButtonIcon = ({ imgName, title, func, ...props }) => {
 
     </>
 }
-export default ButtonIcon;
+export default memo(ButtonIcon);

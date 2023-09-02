@@ -1,4 +1,6 @@
-import React, {  useEffect,  useState } from "react";
+import React, { memo, useEffect, useState } from "react";
+import { useSelector, useDispatch } from 'react-redux'
+import { addSwimmingPool, selectById, updateSwimmingPool } from '../../../store/swimmingPools'
 import { createUseStyles } from "react-jss";
 import '../../../styles/Form.css'
 import '../../../styles/Modal.css'
@@ -13,28 +15,56 @@ const useStyles = createUseStyles({
 
 });
 
-const SwimmingPoolForm = ({ insert,data, confirm, cancel }) => {
+const SwimmingPoolForm = ({ insert, id, confirm, cancel }) => {
+    const dispatch = useDispatch()
     const css = useStyles();
-
+    const onePool = useSelector(state => state.SwimmingPools.onePool)
     // const [oldName, setOldName] = useState(name)
     const [poolName, setPoolName] = useState('');
-    const [poolColor, setPoolColor] = useState('#FFFFFF');
+    const [poolColor, setPoolColor] = useState('#5214f4');
     const [poolAddress, setPoolAddress] = useState('');
 
     const confirmForm = () => {
+
         console.log({ poolName, poolAddress, poolColor })
-        data.name = poolName
-        data.address = poolAddress
-        data.color = poolColor
-        confirm(data)
+        if (insert) {
+            const data = {
+                name: poolName,
+                address: poolAddress,
+                color: poolColor
+            }
+            dispatch(addSwimmingPool(data))
+        }
+        else {
+            const data = {
+                ...onePool,
+                name: poolName,
+                address: poolAddress,
+                color: poolColor
+            }
+            dispatch(updateSwimmingPool(data))
+        }
+        confirm()
     }
 
     useEffect(() => {
-        console.log({insert,data})
-       setPoolName(insert?'':data.name)
-       setPoolColor(insert?'#000000':data.color)
-       setPoolAddress(insert?'':data.address)
-    }, [ insert, data])
+        console.log({ id })
+        dispatch(selectById(id))
+    }, [id])
+
+    useEffect(() => {
+        console.log({ onePool })
+        if (id !== 0) {
+            setPoolName(onePool.name)
+            setPoolColor(onePool.color)
+            setPoolAddress(onePool.address)
+        }
+        else {
+            setPoolName('')
+            setPoolColor('#000000')
+            setPoolAddress('')
+        }
+    }, [id, onePool])
 
 
 
@@ -72,4 +102,4 @@ const SwimmingPoolForm = ({ insert,data, confirm, cancel }) => {
     </>
 }
 
-export default SwimmingPoolForm
+export default memo(SwimmingPoolForm)

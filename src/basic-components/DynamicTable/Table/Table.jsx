@@ -7,16 +7,21 @@ import TableHeader from "../TableHeader/TableHeader";
 
 const useStyles = createUseStyles({
     table: {
-       margin:'auto',
+        margin: 'auto',
         width: '70%',
         textAlign: 'center',
         direction: 'rtl',
-        borderCollapse:'collapse', 
-       
+        borderCollapse: 'collapse',
+        '& tr:nth-child(even)': {
+            backgroundColor: 'rgba(0,0,4,0.1)'
+        },
+        '& tr:hover':{
+            backgroundColor:'rgba(0,130,202,0.1)',
+        }
     }
 })
 
-const Table = ({ config,data, updateFunc, deleteFunc }) => {
+const Table = ({ config, data, updateFunc, deleteFunc }) => {
     const css = useStyles()
     return <>
         { }
@@ -29,8 +34,8 @@ const Table = ({ config,data, updateFunc, deleteFunc }) => {
             <tbody>
                 {data ?
                     data.map((item, index) => (
-                        <TableRow key={index} data={item}  config={config} updateFunc={updateFunc} deleteFunc={deleteFunc}>
-                            
+                        <TableRow key={index} data={item} config={config} updateFunc={updateFunc} deleteFunc={deleteFunc}>
+
                         </TableRow>
                     )) : ''}
             </tbody>

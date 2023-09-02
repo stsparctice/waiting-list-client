@@ -25,10 +25,8 @@ export const getData = async (url, query) => {
 
 export const postData = async (url, options) => {
     const response = await client.post(url, options)
-    if (response.status >= 400) {
-        return false
-    }
-    return response.data
+    
+    return response
 }
 
 const buildConditionFromQuery = (query) => {

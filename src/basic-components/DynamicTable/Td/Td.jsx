@@ -8,11 +8,11 @@ export const cellElementOptions = {
     colorLabel: 'colorLabel'
 }
 
-const useStyles = createUseStyles({
-    td: {
-        border: '1px solid black'
-    }
-})
+// const useStyles = createUseStyles({
+//     td: {
+//         border: '1px solid black'
+//     }
+// })
 
 const cellElements = {
     colorLabel: (color, text) => 
@@ -22,7 +22,7 @@ const cellElements = {
 }
 
 const Td = ({ datacell }) => {
-    const css = useStyles()
+    // const css = useStyles()
 
     const getCellElement = (keyElement) => {
         const func = cellElements[keyElement]
@@ -30,7 +30,7 @@ const Td = ({ datacell }) => {
     }
 
     return <>
-        <td className={css.td}>
+        <td>
             {
 
                 datacell.element ? getCellElement(datacell.element) : datacell.value

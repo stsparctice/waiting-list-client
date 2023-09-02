@@ -6,10 +6,10 @@ export const PoolTable = (state, item) => {
     if(!state.pool&&item.pool){
         state.pool=item.pool
     }
-    if (!item.gender && item.pool != undefined) {
+    if (!item.gender && item.pool !== undefined) {
         state.pool = item.pool
     }
-    if (!item.pool && item.gender != undefined) {
+    if (!item.pool && item.gender !== undefined) {
         state.gender = item.gender
 
     }
