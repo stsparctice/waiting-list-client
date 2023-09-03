@@ -19,7 +19,6 @@ const SwimmingPoolForm = ({ insert, id, confirm, cancel }) => {
     const dispatch = useDispatch()
     const css = useStyles();
     const onePool = useSelector(state => state.SwimmingPools.onePool)
-    // const [oldName, setOldName] = useState(name)
     const [poolName, setPoolName] = useState('');
     const [poolColor, setPoolColor] = useState('#5214f4');
     const [poolAddress, setPoolAddress] = useState('');

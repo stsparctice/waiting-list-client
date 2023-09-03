@@ -29,6 +29,16 @@ export const updateSwimmingPool = createAsyncThunk('sp/update', async (swimmingP
         return 'error'
 })
 
+export const deleteSwimmingPool = createAsyncThunk('sp/delete', async (swimmingPool) => {
+
+    const response = await postData('/pool/delete', swimmingPool)
+    console.log({ response })
+    if (response.status === 200)
+        return swimmingPool
+    else
+        return 'error'
+})
+
 
 const initialState = { pools: [], status: stateStatus.EMPTY, onePool: {}, error:'' }
 
@@ -75,6 +85,12 @@ export const swimmingPoolsSlice = createSlice({
             let poolindex = state.pools.findIndex(p => p.id === action.payload.id)
             console.log({ poolindex })
             state.pools[poolindex] = action.payload
+        })
+        builder.addCase(deleteSwimmingPool.fulfilled, (state, action) => {
+            console.log({ state, action })
+            let poolindex = state.pools.findIndex(p => p.id === action.payload.id)
+            console.log({ poolindex })
+            state.pools.splice(poolindex,1)
         })
 
     }
