@@ -8,9 +8,6 @@ import exclamationMark from '../../assets/exclamationMark.png'
 import find from '../../assets/find.png'
 import vi from '../../assets/vi.png'
 import empty from '../../assets/empty.png'
-import { getData, postData } from "../../services/axios"
-import Details from "../Details/Details"
-import { type } from "@testing-library/user-event/dist/type"
 
 const images = {
     add: add,

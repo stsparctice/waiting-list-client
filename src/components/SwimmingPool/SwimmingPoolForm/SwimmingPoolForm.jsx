@@ -47,9 +47,8 @@ const SwimmingPoolForm = ({ insert, id, confirm, cancel }) => {
     }
 
     useEffect(() => {
-        console.log({ id })
         dispatch(selectById(id))
-    }, [id])
+    }, [dispatch, id])
 
     useEffect(() => {
         console.log({ onePool })

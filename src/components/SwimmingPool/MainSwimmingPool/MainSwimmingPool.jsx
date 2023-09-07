@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { useSelector, useDispatch } from 'react-redux'
-import { getAllPools, deleteSwimmingPool, selectById } from '../../../store/swimmingPools'
+import { getAllPools, deleteSwimmingPool } from '../../../store/swimmingPools'
 import Table from "../../../basic-components/DynamicTable/Table/Table";
 import SwimmingPoolForm from "../SwimmingPoolForm/SwimmingPoolForm";
 import DeleteForm from "../../DeleteForm/DeleteForm";
@@ -32,10 +32,10 @@ const MainSwimmingPool = () => {
     }, [dispatch]);
 
     const updateFunc = useCallback((data) => {
-        console.log({ data })
-        setShowModal(true)
-        setInsert(false)
-        setSelectedPool(data.id)
+            console.log({ data })
+            setShowModal(true)
+            setInsert(false)
+            setSelectedPool(data.id)
     }, [])
 
     const deleteFunc = useCallback((data) => {
