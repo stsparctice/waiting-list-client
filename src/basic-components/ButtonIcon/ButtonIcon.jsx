@@ -11,13 +11,12 @@ import closeIcon from "../../assets/close-red.png"
 
 const useStyles = createUseStyles({
 
-    btn: (props) => ({
+    btn: {
         cursor: "pointer",
         padding: [3],
 
         background: 'none',
-        height: props.height,
-        width: props.width,
+        
         borderRadius: '50%',
         border: 'none',
         backgroundColor: 'transparent',
@@ -38,11 +37,18 @@ const useStyles = createUseStyles({
         },
         '& img': {
             objectFit: 'contain',
-            height: props.imageSize.height,
-            width: props.imageSize.width
         }
 
-    })
+    },
+    tableBtn:{
+        height: 35,
+        width: 35,
+        '& img': {
+            height: 17,
+            width: 17
+        }
+    }
+
 
 
 })
@@ -58,15 +64,15 @@ export const icons = {
 }
 
 
-const ButtonIcon = ({ imgName, title, func, ...props }) => {
+const ButtonIcon = ({ imgName, title, func }) => {
     const [imageSrc, setImageSrc] = useState()
-    const css = useStyles(props)
+    const css = useStyles()
     useEffect(() => {
         setImageSrc(imgName)
     }, [imgName])
 
     return <>
-        <button className={css.btn} title={title} onClick={func} >
+        <button className={`${css.btn} ${css.tableBtn}` } title={title} onClick={func} >
             <figure>
                 <img src={imageSrc} alt="" />
             </figure>

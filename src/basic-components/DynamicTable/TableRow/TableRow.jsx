@@ -1,27 +1,35 @@
-import React, { useEffect, useState , memo} from "react";
+import React, { useEffect, useState, memo } from "react";
 
-import { createUseStyles } from "react-jss";
 import Td from "../Td/Td";
-import ButtonIcon,{icons} from "../../ButtonIcon/ButtonIcon";
+import ButtonIcon, { icons } from "../../ButtonIcon/ButtonIcon";
 
-const useStyles = createUseStyles({
-    tr: {
-
-    }
-})
 
 const TableRow = ({ data, config, updateFunc, deleteFunc }) => {
     const [row, setRow] = useState([])
     useEffect(() => {
-        const filteredEntries = Object.entries(data).filter(ent => config.hideKeys.includes(ent[0]) === false)
-        const showObject = filteredEntries.map(e => {
+        const filteredEntries = Object.entries(data).filter(ent =>
+            config.hideKeys.indexOf(ent[0]) === -1)
+        const sortedHeaders = config.headers.map((h, i) => ({ index: i, ...h }))
+        const sortedEntries = filteredEntries.reduce((arr, ent) => {
+            let header = sortedHeaders.find(h => h.key === ent[0])
+            if (header) {
+                arr[header.index] = ent
+            }
+            return arr
+        }, [])
+        const showObject = sortedEntries.map(e => {
             const dataCell = { value: e[1] }
             if (config.keyElements.some(k => k.key === e[0])) {
                 dataCell.element = config.keyElements.find(k => k.key === e[0]).element
             }
+            if (config.convertKeys.some(k => k.key === e[0])) {
+                const convert = config.convertKeys.find(({ key }) => key === e[0])
+                if (convert.value === e[1]) {
+                    dataCell.value = convert.display
+                }
+            }
             return dataCell
         })
-        // const showData = filteredEntries.reduce((values, entry) => values = [...values, entry[1]], [])
 
         setRow(showObject)
     }, [data, config])
@@ -32,11 +40,11 @@ const TableRow = ({ data, config, updateFunc, deleteFunc }) => {
                 row.map((val, i) => (<Td key={i} datacell={val}></Td>))
             }
 
-            <td style={{width:50}}>
-                <ButtonIcon imgName={icons.EDIT} func={() => updateFunc(data)} imageSize={{ width: "17px", height: "17px" }} height="35px" width="35px" title={'עדכן'} backgroundColor="green"></ButtonIcon>
+            <td style={{ width: 50 }}>
+                <ButtonIcon imgName={icons.EDIT} func={() => updateFunc(data)} btnStyle={{ imgwidth: "17px", imgheight: "17px", height: "35px", width: "35px" }} title={'עדכן'} backgroundColor="green"></ButtonIcon>
             </td>
-            <td style={{width:50}}>
-                <ButtonIcon imgName={icons.DELETE} func={() => deleteFunc(data)} imageSize={{ width: "17px", height: "17px" }} height="35px" width="35px" title={'מחק'} backgroundColor="red"></ButtonIcon>
+            <td style={{ width: 50 }}>
+                <ButtonIcon imgName={icons.DELETE} func={() => deleteFunc(data)} btnStyle={{ imgwidth: "17px", imgheight: "17px", height: "35px", width: "35px" }} title={'מחק'} backgroundColor="red"></ButtonIcon>
             </td>
         </tr>
     </>

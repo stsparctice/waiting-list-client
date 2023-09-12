@@ -9,38 +9,42 @@ export const getAllPools = createAsyncThunk('sp/getAll', async (url) => {
     return response
 })
 
-export const addSwimmingPool = createAsyncThunk('sp/add', async (swimmingPool) => {
-    try{
-    const response = await postData('/pool/add', swimmingPool)
-    console.log({ response })
-    return response.data
+export const addSwimmingPool = createAsyncThunk('sp/add', async (swimmingPool, api) => {
+    try {
+        const response = await postData('/pool/add', swimmingPool)
+        console.log({ response })
+        return response.data
     }
-    catch (error){
-        throw error
+    catch (error) {
+        return api.rejectWithValue(error.message)
     }
 })
 
-export const updateSwimmingPool = createAsyncThunk('sp/update', async (swimmingPool) => {
-    const response = await postData('/pool/update', swimmingPool)
-    console.log({ response })
-    if (response.status === 204)
+export const updateSwimmingPool = createAsyncThunk('sp/update', async (swimmingPool, api) => {
+    try {
+        const response = await postData('/pool/update', swimmingPool)
+        console.log({ response })
+
         return swimmingPool
-    else
-        return 'error'
+    }
+    catch (error) {
+        return api.rejectWithValue(error.message)
+    }
 })
 
-export const deleteSwimmingPool = createAsyncThunk('sp/delete', async (swimmingPool) => {
-
+export const deleteSwimmingPool = createAsyncThunk('sp/delete', async (swimmingPool, api) => {
+    try {
     const response = await postData('/pool/delete', swimmingPool)
     console.log({ response })
-    if (response.status === 200)
         return swimmingPool
-    else
-        return 'error'
+    }
+    catch (error) {
+        return api.rejectWithValue(error.message)
+    }
 })
 
 
-const initialState = { pools: [], status: stateStatus.EMPTY, onePool: {}, error:'' }
+const initialState = { pools: [], status: stateStatus.EMPTY, onePool: {}, error: '' }
 
 
 export const swimmingPoolsSlice = createSlice({
@@ -78,7 +82,7 @@ export const swimmingPoolsSlice = createSlice({
         })
         builder.addCase(addSwimmingPool.rejected, (state, action) => {
             console.log({ state, action })
-            state.error= action.error.message
+            state.error = action.error.message
         })
         builder.addCase(updateSwimmingPool.fulfilled, (state, action) => {
             console.log({ state, action })
@@ -90,7 +94,7 @@ export const swimmingPoolsSlice = createSlice({
             console.log({ state, action })
             let poolindex = state.pools.findIndex(p => p.id === action.payload.id)
             console.log({ poolindex })
-            state.pools.splice(poolindex,1)
+            state.pools.splice(poolindex, 1)
         })
 
     }

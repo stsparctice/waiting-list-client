@@ -9,38 +9,42 @@ export const getAllGenders = createAsyncThunk('gr/getAll', async (condition) => 
     return response
 })
 
-export const addGender = createAsyncThunk('gr/add', async (gender) => {
-    try{
-    const response = await postData('/gender/add', gender)
-    console.log({ response })
-    return response.data
+export const addGender = createAsyncThunk('gr/add', async (gender, api) => {
+    try {
+        const response = await postData('/gender/add', gender)
+        console.log({ response })
+        return response.data
     }
-    catch (error){
-        throw error
+    catch (error) {
+        return api.rejectWithValue(error.message)
     }
 })
 
-export const updateGender = createAsyncThunk('gr/update', async (gender) => {
-    const response = await postData('/gender/update', gender)
-    console.log({ response })
-    if (response.status === 204)
+export const updateGender = createAsyncThunk('gr/update', async (gender, api) => {
+    try {
+        const response = await postData('/gender/update', gender)
+        console.log({ response })
         return gender
-    else
-        return 'error'
+    }
+    catch (error) {
+        return api.rejectWithValue(error.message)
+    }
 })
 
-export const deleteGender = createAsyncThunk('gr/delete', async (gender) => {
-
+export const deleteGender = createAsyncThunk('gr/delete', async (gender, api) => {
+    try {
     const response = await postData('/gender/delete', gender)
     console.log({ response })
-    if (response.status === 200)
+   
         return gender
-    else
-        return 'error'
+    }
+        catch (error) {
+            return api.rejectWithValue(error.message)
+        }
 })
 
 
-const initialState = { genders: [], status: stateStatus.EMPTY, onePool: {}, error:'' }
+const initialState = { genders: [], status: stateStatus.EMPTY, gender: {}, error: '' }
 
 
 export const gendersSlice = createSlice({
@@ -50,13 +54,13 @@ export const gendersSlice = createSlice({
         selectById: {
             reducer(state, action) {
                 console.log(action)
-                let find = state.pools.find(p => p.id === action.payload)
+                let find = state.genders.find(p => p.id === action.payload)
                 if (find) {
-                    state.onePool = find
-                    console.log(current(state.onePool))
+                    state.gender = find
+                    console.log(current(state.gender))
                 }
                 else {
-                    state.onePool = {}
+                    state.gender = {}
                 }
             }
         }
@@ -64,7 +68,7 @@ export const gendersSlice = createSlice({
     extraReducers(builder) {
         builder.addCase(getAllGenders.fulfilled, (state, action) => {
             console.log({ state, action })
-            state.pools = action.payload
+            state.genders = action.payload
             state.status = stateStatus.SUCCEEDED
             console.log(current(state))
         })
@@ -74,23 +78,23 @@ export const gendersSlice = createSlice({
         })
         builder.addCase(addGender.fulfilled, (state, action) => {
             console.log({ state, action })
-            state.pools.push(action.payload)
+            state.genders.push(action.payload)
         })
         builder.addCase(addGender.rejected, (state, action) => {
             console.log({ state, action })
-            state.error= action.error.message
+            state.error = action.error.message
         })
         builder.addCase(updateGender.fulfilled, (state, action) => {
             console.log({ state, action })
-            let poolindex = state.pools.findIndex(p => p.id === action.payload.id)
-            console.log({ poolindex })
-            state.pools[poolindex] = action.payload
+            let genderIndex = state.genders.findIndex(g => g.id === action.payload.id)
+            console.log({ genderIndex })
+            state.genders[genderIndex] = action.payload
         })
         builder.addCase(deleteGender.fulfilled, (state, action) => {
             console.log({ state, action })
-            let poolindex = state.pools.findIndex(p => p.id === action.payload.id)
-            console.log({ poolindex })
-            state.pools.splice(poolindex,1)
+            let genderIndex = state.genders.findIndex(g => g.id === action.payload.id)
+            console.log({ genderIndex })
+            state.pools.splice(genderIndex, 1)
         })
 
     }

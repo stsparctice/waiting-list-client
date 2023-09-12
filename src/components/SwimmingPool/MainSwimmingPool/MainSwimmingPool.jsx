@@ -5,6 +5,7 @@ import Table from "../../../basic-components/DynamicTable/Table/Table";
 import SwimmingPoolForm from "../SwimmingPoolForm/SwimmingPoolForm";
 import DeleteForm from "../../DeleteForm/DeleteForm";
 import { cellElementOptions } from "../../../basic-components/DynamicTable/Td/Td";
+import { stateStatus } from "../../../store/storeStatus";
 
 
 
@@ -21,6 +22,7 @@ const tableConfig = {
 const MainSwimmingPool = () => {
     const dispatch = useDispatch()
     const pools = useSelector(state => state.SwimmingPools.pools)
+    const poolsStatus = useSelector(state => state.SwimmingPools.status)
     const [selectedPool, setSelectedPool] = useState({})
     const [deletePool, setDeletePool] = useState(undefined)
     const [insert, setInsert] = useState(false)
@@ -28,21 +30,22 @@ const MainSwimmingPool = () => {
     const [showDeleteModal, setShowDeleteModal] = useState(false)
 
     useEffect(() => {
-        dispatch(getAllPools('/pool/getAll'))
-    }, [dispatch]);
+        if (poolsStatus === stateStatus.EMPTY)
+            dispatch(getAllPools('/pool/getAll'))
+    }, [dispatch, poolsStatus]);
 
     const updateFunc = useCallback((data) => {
-            console.log({ data })
-            setShowModal(true)
-            setInsert(false)
-            setSelectedPool(data.id)
+        console.log({ data })
+        setShowModal(true)
+        setInsert(false)
+        setSelectedPool(data.id)
     }, [])
 
     const deleteFunc = useCallback((data) => {
         console.log({ data })
         setShowDeleteModal(true)
         setInsert(false)
-        setDeletePool({data, name:data.name,title:'בריכה', deleteFunc : deleteSwimmingPool })
+        setDeletePool({ data, name: data.name, title: 'בריכה', deleteFunc: deleteSwimmingPool })
     }, [])
 
     const confirm = useCallback(() => {
