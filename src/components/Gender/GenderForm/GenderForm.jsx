@@ -1,8 +1,8 @@
-import React, { useRef, useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { createUseStyles } from "react-jss";
 
 import { useDispatch, useSelector } from 'react-redux'
-import { addGender, selectById } from '../../../store/genders'
+import { addGender, selectById, updateGender } from '../../../store/genders'
 import '../../../styles/Form.css'
 import '../../../styles/Modal.css'
 
@@ -29,9 +29,6 @@ const GenderForm = ({ insert, id, confirm, cancel }) => {
     const [fmaxAge, setfmaxAge] = useState('');
     const [genderColor, setGenderColor] = useState('#000000');
 
-    const disMaxAgeMale = useRef();
-    const disMaxAgeFemale = useRef();
-
     useEffect(() => {
         dispatch(selectById(id))
     }, [dispatch, id])
@@ -45,19 +42,6 @@ const GenderForm = ({ insert, id, confirm, cancel }) => {
             setGenderColor(selectedGender.color)
             setSex1(selectedGender.sex1)
             setSex2(selectedGender.sex2)
-            // if(selectedGender.sex1){
-            //     male()
-            // }
-            // else{
-            //     noMale()
-            // }
-            // if(selectedGender.sex2){
-            //     female()
-            // }
-            // else{
-            //     noFemale()
-            // }
-
         }
 
     }, [id, selectedGender])
@@ -72,26 +56,32 @@ const GenderForm = ({ insert, id, confirm, cancel }) => {
             }
             dispatch(addGender(data))
         }
+        else {
+            const data = {
+                ...selectedGender,
+                name, sex1, sex2,
+                maxAge1: mmaxAge,
+                maxAge2: fmaxAge,
+                color: genderColor
+            }
+            dispatch(updateGender(data))
+        }
         confirm()
     }
 
-    const female = () => {
+    function female() {
         setSex2(2)
-        disMaxAgeFemale.current.classList.remove(css.hide)
     }
     const noFemale = () => {
         setSex2(0)
         setfmaxAge('')
-        disMaxAgeFemale.current.classList.add(css.hide)
     }
     function male() {
         setSex1(1)
-        disMaxAgeMale.current.classList.remove(css.hide);
     }
     function noMale() {
         setSex1(0)
         setmmaxAge('')
-        disMaxAgeMale.current.classList.add(css.hide);
     }
     return <>
         <div className="modal">
@@ -115,24 +105,31 @@ const GenderForm = ({ insert, id, confirm, cancel }) => {
                         <p style={{ textAlign: 'right' }}>מין: </p>
                         <p className="input-row">
                             <span>
-                                <input type="checkbox" name="gender" id="cbxmale" checked={sex1===1?true:false} value="1" onChange={(e) => {
-                                    (e.target.checked) ? male() : noMale()
-                                }}></input>
+                                <input type="checkbox" name="gender" id="cbxmale" checked={sex1 === 1 ? true : false} value="1"
+                                    onChange={(e) => {
+                                        if (e.target.checked)
+                                            male()
+                                        else
+                                            noMale()
+                                    }}></input>
                                 <label htmlFor="cbxmale">זכר</label>
                             </span>
-                            <span className={css.hide} ref={disMaxAgeMale}>
+                            <span className={sex1 === 0 ? css.hide : ''} >
                                 <label>גיל מקסימלי בנים: </label>
                                 <input type="number" min={0} max={120} value={mmaxAge} onInput={(e) => setmmaxAge(e.target.value)}></input>
                             </span>
                         </p>
                         <p className="input-row">
                             <span>
-                                <input type="checkbox" name="gender" id="cbxfemale" checked={sex2===2?true:false} value="2" onChange={(e) => {
-                                    (e.target.checked) ? female() : noFemale()
+                                <input type="checkbox" name="gender" id="cbxfemale" checked={sex2 === 2 ? true : false} value="2" onChange={(e) => {
+                                    if (e.target.checked)
+                                        female()
+                                    else
+                                        noFemale()
                                 }}></input>
                                 <label htmlFor="cbxfemale">נקבה</label>
                             </span>
-                            <span className={css.hide} ref={disMaxAgeFemale}>
+                            <span className={sex2 === 0 ? css.hide : ''} >
                                 <label>גיל מקסימלי בנות: </label>
                                 <input type="number" min={0} max={120} value={fmaxAge} onInput={(e) => setfmaxAge(e.target.value)}></input>
                             </span>

@@ -85,15 +85,13 @@ const MainGender = () => {
         setSelectedGender(0)
     }
 
-    const closeModal = () => {
-        setShowModal(false)
-        setShowDeleteModal(false)
-    }
     const cancel = useCallback(() => {
         setShowModal(false)
+        setShowDeleteModal(false)
     }, [],)
     const confirm = useCallback(() => {
         setShowModal(false)
+        setShowDeleteModal(false)
     }, [])
     return <>
         <div className={css.mainGender}>
@@ -104,7 +102,7 @@ const MainGender = () => {
             showModal ? <GenderForm id={selectedGender} insert={insert} confirm={confirm} cancel={cancel}></GenderForm> : <></>
         }
         {showDeleteModal ?
-            <DeleteForm obj={deleteGenderGroup} confirm={confirm} cancel={closeModal}></DeleteForm> : <></>
+            <DeleteForm obj={deleteGenderGroup} confirm={confirm} cancel={cancel}></DeleteForm> : <></>
         }
         <Table config={tableConfig} data={genders} updateFunc={updateFunc} deleteFunc={deleteFunc}></Table>
     </>

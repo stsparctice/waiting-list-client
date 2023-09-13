@@ -94,7 +94,7 @@ export const gendersSlice = createSlice({
             console.log({ state, action })
             let genderIndex = state.genders.findIndex(g => g.id === action.payload.id)
             console.log({ genderIndex })
-            state.pools.splice(genderIndex, 1)
+            state.genders.splice(genderIndex, 1)
         })
 
     }
