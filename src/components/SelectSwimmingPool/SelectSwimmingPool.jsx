@@ -18,7 +18,7 @@ const SelectSwimmingPool = ({onSelect}) => {
   const selectPool = useCallback((val) => {
     console.log({ val })
     onSelect(val)
-  }, [])
+  }, [onSelect])
   return <>
     <AutoCompleteFrame list={pools.map(p => ({ value: p.name, id: p.id }))} func={selectPool} />
   </>
