@@ -6,7 +6,8 @@ import '../../../styles/Form.css'
 import '../../../styles/Modal.css'
 
 import FormButton from '../../../basic-components/FormButton/FormButton'
-import ButtonIcon, { icons } from "../../../basic-components/ButtonIcon/ButtonIcon";
+import ButtonIcon from "../../../basic-components/ButtonIcon/ButtonIcon";
+import icons from "../../../services/iconService";
 
 const useStyles = createUseStyles({
     lefticon: {

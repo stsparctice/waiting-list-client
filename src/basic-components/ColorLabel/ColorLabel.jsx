@@ -16,7 +16,7 @@ const ColorLabel = ({text, ...props}) => {
     const css = useStyles(props)
     return <>
     
-       <label className={css.label}>{text}</label>
+       <span className={css.label}>{text}</span>
     </>
 }
 

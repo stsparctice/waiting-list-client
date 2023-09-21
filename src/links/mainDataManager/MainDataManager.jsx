@@ -29,12 +29,10 @@ const MainDataManager = ({ arr } = []) => {
         setCurrentLink(obj)
     }, [],)
 
-    useEffect(() => {
-        function start() {
-            nav(`${arr[0].link}`)
-        }
-        start()
-    }, [])
+    // useEffect(() => {
+
+    //         nav(`${arr[0].link}`)
+    // }, [nav, arr])
 
     return <>
         <div className={css.out} >

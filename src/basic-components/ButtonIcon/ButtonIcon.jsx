@@ -1,14 +1,6 @@
 import React, {  useEffect,  useState , memo} from "react";
 import { createUseStyles } from "react-jss";
-import add from "../../assets/add.png";
-import excel from "../../assets/excel.png";
-import find from "../../assets/find.png";
-import stethoscope from "../../assets/stethoscope.png";
-import telephone from "../../assets/telephone.png";
-import deleteImg from "../../assets/delete-grey.png"
-import edit from "../../assets/edit-grey.png"
-import closeIcon from "../../assets/close-red.png"
-
+import icons from "../../services/iconService";
 const useStyles = createUseStyles({
 
     btn: {
@@ -53,15 +45,6 @@ const useStyles = createUseStyles({
 
 })
 
-export const icons = {
-    ADD: add,
-    EXCEL: excel,
-    FIND: find,
-    STETHOSCOPE: stethoscope,
-    TELEPHONE: telephone,
-    CLOSE: closeIcon,
-    DELETE: deleteImg, EDIT: edit
-}
 
 
 const ButtonIcon = ({ imgName, title, func }) => {

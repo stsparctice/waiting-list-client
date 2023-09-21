@@ -1,7 +1,8 @@
 import React, { useEffect, useState, memo } from "react";
 
 import Td from "../Td/Td";
-import ButtonIcon, { icons } from "../../ButtonIcon/ButtonIcon";
+import ButtonIcon from "../../ButtonIcon/ButtonIcon";
+import icons from "../../../services/iconService";
 
 
 const TableRow = ({ data, config, updateFunc, deleteFunc }) => {

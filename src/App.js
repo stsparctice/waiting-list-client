@@ -77,18 +77,6 @@ function App() {
         {/* <Route path='/insertPatient/:id' element={<Insert />} /> */}
       </Routes>
     </BrowserRouter >
-    {/* <HoursContext.Provider value={{ activeHours, setActiveHours }}>
-      <HoursDetailContext.Provider value={{ details, setDetails }}>
-        <PoolTableContext.Provider value={{ data, setData }}>
-
-          <PoolData />
-          <PoolTableInformation data={data} />
-          <GenderData />
-
-
-        </PoolTableContext.Provider>
-      </HoursDetailContext.Provider>
-    </HoursContext.Provider> */}
   </>
 
 }

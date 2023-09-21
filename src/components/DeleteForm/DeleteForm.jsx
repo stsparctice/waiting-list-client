@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import { useDispatch } from 'react-redux';
 import FormButton from "../../basic-components/FormButton/FormButton";
-import ButtonIcon, { icons } from "../../basic-components/ButtonIcon/ButtonIcon";
+import ButtonIcon from "../../basic-components/ButtonIcon/ButtonIcon";
+import icons from "../../services/iconService";
 
 import '../../styles/Form.css'
 import '../../styles/Modal.css'

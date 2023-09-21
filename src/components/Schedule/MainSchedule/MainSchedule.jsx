@@ -1,5 +1,6 @@
 import React, { useEffect, useReducer, useState } from "react";
 import { getData } from "../../../services/axios";
+import PoolData from "../../PoolData/PoolData";
 
 const activeHoursReducer = (state, item) => {
     switch (item.option) {
@@ -22,12 +23,12 @@ const activeHoursReducer = (state, item) => {
 const MainSchedule = () => {
     const [activeHours, setActiveHours] = useReducer(activeHoursReducer, [])
     useEffect(() => {
-        async function start() {
-            let poolName = 'ashdod'
-            let response = await getData(`/schedule/getAllActiveHours/${poolName}`)
-            sortSchedule(response[0].schedule)
-        }
-        start()
+        // async function start() {
+        //     let poolName = 'ashdod'
+        //     let response = await getData(`/schedule/getAllActiveHours/${poolName}`)
+        //     sortSchedule(response[0].schedule)
+        // }
+        // start()
     }, [])
 
     const sortSchedule = (data) => {
@@ -50,8 +51,11 @@ const MainSchedule = () => {
     }
 
     return <>
-        <p>hello to schedule</p>
-        {/* <Table th={['יום', 'שעת התחלה', 'שעת סיום']} tbody={tbody} style={style} updateFunc={updateFunc} deleteFunc={deleteFunc}></Table> */}
+    <h1>שעות פעילות</h1>
+    <div>
+        <label>בחרי בריכה:</label>
+        <PoolData />
+    </div>
     </>
 }
 
