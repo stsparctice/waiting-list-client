@@ -1,8 +1,8 @@
-import { useState, useRef, useReducer, useEffect } from "react"
+import { useRef, useContext, useEffect } from "react"
 import { createUseStyles } from "react-jss"
 import React from "react"
 import AutoCompleteOptions from "./Option";
-import AutoContext, { reduceAutoComplete, AutoCompleteActions } from "./AutoCompleteContext";
+import { AutoContext, AutoCompleteActions } from "./AutoCompleteContext";
 import './AutoComplete.css'
 import icons from "../../services/iconService"
 const useStyle = createUseStyles({
@@ -54,13 +54,10 @@ const useStyle = createUseStyles({
 
 
 
-const AutoComplete = ({ list }) => {
+const AutoComplete = ({ list, func }) => {
     const word = useRef()
-    console.log({ list })
-    const [autocomplete, setAutoComplete] = useReducer(reduceAutoComplete, { word: { value: '', id: -1 }, list, showList: [] });
-
+    const { autocomplete, setAutoComplete } = useContext(AutoContext)
     const getSelectedItem = (value) => {
-        console.log({ value })
         let index = autocomplete.list.findIndex(it => it.value.trim() === value.value.trim())
         if (index !== -1) {
             setAutoComplete({ action: AutoCompleteActions.SELECTVALUE, value })
@@ -70,23 +67,9 @@ const AutoComplete = ({ list }) => {
         }
     }
 
-    const getOptions = async (value) => {
-
-    }
-
-
-
-
-    // useEffect(() => {
-    //     console.log({selectedvalue})
-    //     if (selectedvalue) {
-    //         if (selectedvalue.id !== -1) {
-    //             setAutoComplete({ action: AutoCompleteActions.SELECTVALUE, value: selectedvalue })
-    //         }
-    //     }
-
-    // }, [selectedvalue, func])
-
+    useEffect(() => {
+        setAutoComplete({ action: AutoCompleteActions.CHANGELIST, value: { word: { value: '', id: -1 }, list: list, showList: [] } })
+    }, [list, setAutoComplete])
 
     useEffect(() => {
         // autocompleteRef.current.innerText= autocomplete.word.value
@@ -95,32 +78,27 @@ const AutoComplete = ({ list }) => {
         }
         if (autocomplete.word.id !== -1) {
             word.current.innerText = autocomplete.word.value
-            console.log('y')
-            // console.log(func.toString())
-            // func(autocomplete.word)
+            func(autocomplete.word)
         }
-    }, [autocomplete])
+    }, [autocomplete, func])
 
 
     return <>
 
-        <AutoContext.Provider value={{ autocomplete, setAutoComplete }}>
-
-            <div className="autocomplete">
-                <div className="header">
-                    <div className="input" ref={word} contentEditable="true" tabIndex="0"
-                        onInput={(e) => {
-                            console.log(e.key)
-                            getSelectedItem({ value: e.target.innerText, id: -1 });
-                        }}>
-                    </div>
-                </div>
-                <div className="dropdown-content">
-                    <AutoCompleteOptions></AutoCompleteOptions>
+        <div className="autocomplete">
+            <div className="header">
+                <div className="input" ref={word} contentEditable="true" tabIndex="0"
+                    onKeyUp={(e) => {
+                        console.log(e.key)
+                        console.log(e.target.innerText)
+                        getSelectedItem({ value: e.target.innerText, id: -1 });
+                    }}>
                 </div>
             </div>
-        </AutoContext.Provider>
-
+            <div className="dropdown-content">
+                <AutoCompleteOptions></AutoCompleteOptions>
+            </div>
+        </div>
     </>
 }
 

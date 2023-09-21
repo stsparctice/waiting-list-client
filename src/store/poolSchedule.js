@@ -44,7 +44,7 @@ export const deletePoolSchedule = createAsyncThunk('ps/delete', async (poolSched
 })
 
 
-const initialState = { poolSchedules: [], status: stateStatus.EMPTY, poolSchedule: {}, error: '' }
+const initialState = { selectedPool : {} ,poolSchedules: [], status: stateStatus.EMPTY, poolSchedule: {}, error: '' }
 
 
 export const poolSchedulesSlice = createSlice({

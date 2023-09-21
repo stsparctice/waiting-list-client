@@ -14,9 +14,9 @@ const icons = {
     FIND: find,
     STETHOSCOPE: stethoscope,
     PHONE: phone,
-    DELETEIMG: deleteImg,
+    DELETE: deleteImg,
     EDIT: edit,
-    CLOSEICON: closeIcon,
+    CLOSE: closeIcon,
     ARROWDOWN:arrowdown
 }
 

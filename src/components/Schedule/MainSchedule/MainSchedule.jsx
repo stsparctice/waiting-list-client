@@ -1,6 +1,9 @@
-import React, { useEffect, useReducer, useState } from "react";
-import { getData } from "../../../services/axios";
-import PoolData from "../../PoolData/PoolData";
+import React, { useCallback, useEffect, useReducer } from "react";
+import '../../../styles/Form.css';
+import SelectSwimmingPool from "../../SelectSwimmingPool/SelectSwimmingPool";
+
+
+
 
 const activeHoursReducer = (state, item) => {
     switch (item.option) {
@@ -31,6 +34,10 @@ const MainSchedule = () => {
         // start()
     }, [])
 
+    const selectPool=(value)=>{
+        console.log({value})
+    }
+
     const sortSchedule = (data) => {
         data.forEach(day => {
             console.log('day', day);
@@ -52,9 +59,9 @@ const MainSchedule = () => {
 
     return <>
     <h1>שעות פעילות</h1>
-    <div>
-        <label>בחרי בריכה:</label>
-        <PoolData />
+    <div className="input-group" >
+        <label>בריכה</label>
+        <SelectSwimmingPool onSelect = {selectPool}/>
     </div>
     </>
 }

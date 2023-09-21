@@ -25,3 +25,10 @@
     display: flex;
     justify-content: center;
 }
+
+.input-group{
+    width: 210px;
+    display: flex;
+    flex-direction: column;
+    padding: 2px;
+}

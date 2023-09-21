@@ -2,7 +2,7 @@ import { createUseStyles } from "react-jss"
 import ColorLabel from "../ColorLabel/ColorLabel"
 import React, { useContext } from "react";
 import './AutoComplete.css'
-import AutoContext, { AutoCompleteActions } from "./AutoCompleteContext";
+import  { AutoCompleteActions ,AutoContext} from "./AutoCompleteContext";
 
 
 // const useStyle = createUseStyles({
@@ -14,31 +14,13 @@ import AutoContext, { AutoCompleteActions } from "./AutoCompleteContext";
 // })
 
 
-
-// const Option = ({ name, color }) => {
-   
-//     // const css = useStyle({color})
-//     return <>
-//         <option value={name} >
-//             <ColorLabel text={name} backgroundColor={color}></ColorLabel>
-//             {/* // <span  className={css.color}>{name}</span> */}
-//         </option>
-//     </>
-// }
-// export default Option
-
-
 const AutoCompleteOptions = () => {
 
     const { autocomplete, setAutoComplete } = useContext(AutoContext)
 
     const selectOption = (option) => {
-        console.log('click')
         setAutoComplete({ action: AutoCompleteActions.SELECTVALUE, value: option })
     }
-
-    // useEffect(() => {
-    // }, [autocomplete])
 
     return <>
         {

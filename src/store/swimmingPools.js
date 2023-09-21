@@ -13,6 +13,7 @@ export const addSwimmingPool = createAsyncThunk('sp/add', async (swimmingPool, a
     try {
         const response = await postData('/pool/add', swimmingPool)
         console.log({ response })
+        console.log()
         return response.data
     }
     catch (error) {

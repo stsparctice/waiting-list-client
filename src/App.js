@@ -23,7 +23,6 @@ import SmallTable from './small-components/SmallTable/SmallTable';
 import FormSchedule from './components/Teachers/FormTeacherSchedule/FormSchedule/FormSchedule';
 import PoolTableContext, { PoolTable } from './contexts/PoolTable';
 import HoursContext, { HoursReducer } from './contexts/Hours'
-import PoolData from './components/PoolData/PoolData';
 import GenderData from './components/GenderData/GenderData'
 import ClientDetails from './components/ClientDetails/ClientDetails';
 import PoolTableInformation from './components/PoolTableInformation/PoolTableInformation';
