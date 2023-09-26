@@ -1,0 +1,28 @@
+.day-header {
+    height: 30px;
+    border-bottom: 2px solid;
+}
+
+
+.day-title {
+    display: flex;
+    align-items: center;
+    font-weight: bold;
+justify-content: center;
+
+    padding-bottom: 3px
+}
+
+.table-block {
+    height: 19px;
+    border: 0.5px solid black;
+}
+
+.hour-block {
+    font-size: 0.7em;
+    width: 70px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+}
