@@ -15,9 +15,6 @@ export const reduceAutoComplete = (state, item) => {
                 word = { value: list[index].value, id: list[index].id }
             }
             else {
-                console.log({word})
-                console.log(list[1].value)
-                console.log(list[1].value.indexOf(word.value))
                 showList = list.filter(({ value }) => value.indexOf(word.value) !== -1)
             }
         }
@@ -26,7 +23,8 @@ export const reduceAutoComplete = (state, item) => {
         list = item.value.list;
     }
     if (item.action === AutoCompleteActions.SELECTVALUE) {
-        word = item.value;
+        let index = list.findIndex(it => it.value.trim() === item.value.value.trim())
+        word = { value: list[index].value, id: list[index].id }
         showList = []
     }
     return { word, list, showList };
