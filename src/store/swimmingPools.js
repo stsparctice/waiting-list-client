@@ -3,10 +3,15 @@ import { getData, postData } from '../services/axios'
 import { stateStatus } from './storeStatus'
 
 
-export const getAllPools = createAsyncThunk('sp/getAll', async (url) => {
-    const response = await getData(url)
-    console.log({ response })
-    return response
+export const getAllPools = createAsyncThunk('sp/getAll', async (url, api) => {
+    try {
+        const response = await getData(url)
+        console.log({ response })
+        return response
+    }
+    catch (error) {
+        return api.rejectWithValue(error.message)
+    }
 })
 
 export const addSwimmingPool = createAsyncThunk('sp/add', async (swimmingPool, api) => {
@@ -35,8 +40,8 @@ export const updateSwimmingPool = createAsyncThunk('sp/update', async (swimmingP
 
 export const deleteSwimmingPool = createAsyncThunk('sp/delete', async (swimmingPool, api) => {
     try {
-    const response = await postData('/pool/delete', swimmingPool)
-    console.log({ response })
+        const response = await postData('/pool/delete', swimmingPool)
+        console.log({ response })
         return swimmingPool
     }
     catch (error) {

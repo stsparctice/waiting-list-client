@@ -1,12 +1,12 @@
 import { configureStore } from '@reduxjs/toolkit'
 import SwimmingPools from './swimmingPools'
 import Genders from './genders'
-import PoolSchedule from './poolSchedule'
+import Schedule from './schedule'
 
 export default configureStore({
   reducer: {
     SwimmingPools,
     Genders, 
-    PoolSchedule
+    Schedule
   },
 })
