@@ -5,8 +5,7 @@ import { stateStatus } from './storeStatus'
 
 export const getAllPools = createAsyncThunk('sp/getAll', async (url, api) => {
     try {
-        const response = await getData(url)
-        console.log({ response })
+        const response = await getData('pool/getAll')
         return response
     }
     catch (error) {
@@ -17,8 +16,6 @@ export const getAllPools = createAsyncThunk('sp/getAll', async (url, api) => {
 export const addSwimmingPool = createAsyncThunk('sp/add', async (swimmingPool, api) => {
     try {
         const response = await postData('/pool/add', swimmingPool)
-        console.log({ response })
-        console.log()
         return response.data
     }
     catch (error) {
@@ -73,7 +70,6 @@ export const swimmingPoolsSlice = createSlice({
     },
     extraReducers(builder) {
         builder.addCase(getAllPools.fulfilled, (state, action) => {
-            console.log({ state, action })
             state.pools = action.payload
             state.status = stateStatus.SUCCEEDED
             console.log(current(state))

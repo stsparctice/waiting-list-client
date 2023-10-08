@@ -1,11 +1,22 @@
-import { useContext } from 'react'
+import { useEffect, useState } from 'react'
 import './ScheduleTable.css'
-import { ScheduleTableContext } from './ScheduleTableContext'
 
-const HourBlock = () => {
-    
+const HourBlock = ({ data }) => {
+    const [backgroundColor, setBackgroundColor] = useState(undefined)
+    const [title, setTitle] = useState('')
+    useEffect(() => {
+        setBackgroundColor(data.schedule ? data.schedule.backgroundColor : undefined)
+        setTitle(data.schedule ? data.schedule.genderId.name : '')
+    }, [data])
+
+    const showData= ()=>{
+        if(data.schedule){
+
+            console.log(data.schedule)
+        }
+    }
     return <>
-        <div className="table-block">
+        <div className="table-block" style={{cursor:data.schedule?'pointer':'default', backgroundColor}} title={title}  onClick={showData}>
 
         </div>
     </>

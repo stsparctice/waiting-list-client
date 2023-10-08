@@ -2,10 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { createUseStyles } from "react-jss";
 import { Link, Outlet, useParams } from "react-router-dom";
 import ShowHours from "../ShowHours/ShowHours";
-<<<<<<< HEAD
-=======
 import { hoursAccordingToGender } from '../../../../../services/db'
->>>>>>> sure
 import { getData } from "../../../../../services/axios";
 import InsertHour from "../InsertHour/InsertHour";
 

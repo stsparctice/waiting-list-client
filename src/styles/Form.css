@@ -4,7 +4,7 @@
     border-radius: 4px;
     box-shadow: 0 0 5px   gray;
     width: 70%;
-    text-align: center;
+    /* text-align: center; */
     margin:auto
 }
 
@@ -27,7 +27,7 @@
 }
 
 .input-group{
-    width: 210px;
+    width:  170px;
     display: flex;
     flex-direction: column;
     padding: 2px;

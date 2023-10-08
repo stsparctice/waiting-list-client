@@ -1,0 +1,19 @@
+.menu{
+    position:absolute;
+    background-color: white;
+    width: 100px;
+    box-shadow: 0px 0px 2px black;
+    border-radius: 2px;
+}
+
+.menu-item{
+    padding-right: 15px;
+    padding: 5px;
+    border-bottom: 0.2px solid gray;
+
+}
+
+.menu-item:hover{
+    background-color: rgb(211, 234, 241);
+    cursor: pointer;
+}

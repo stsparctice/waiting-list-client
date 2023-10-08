@@ -5,7 +5,7 @@ import { createUseStyles } from "react-jss";
 import '../../../styles/Form.css'
 import '../../../styles/Modal.css'
 
-import FormButton from '../../../basic-components/FormButton/FormButton'
+import TextButton from '../../../basic-components/TextButton/TextButton'
 import ButtonIcon from "../../../basic-components/ButtonIcon/ButtonIcon";
 import icons from "../../../services/iconService";
 
@@ -71,7 +71,7 @@ const SwimmingPoolForm = ({ insert, id, confirm, cancel }) => {
         <div className="modal" >
             <div className="form-wrapper container">
                 <div className={css.lefticon}>
-                    <ButtonIcon title="סגור" func={() => cancel()} imgName={icons.CLOSE} height="40px" width="40px" imageSize={{ height: "20px", width: "20px" }}></ButtonIcon>
+                    <ButtonIcon title="סגור" func={() => cancel()} imgName={icons.CLOSE}  btnStyle={{ imgwidth: "20px", imgheight: "20px", height: "40px", width: "40px" }}></ButtonIcon>
                 </div>
                 <h2>
                     {insert ? <span>בריכה חדשה</span> : <span>עדכון בריכה</span>}
@@ -92,8 +92,8 @@ const SwimmingPoolForm = ({ insert, id, confirm, cancel }) => {
                         <input type="color" value={poolColor} onInput={(e) => setPoolColor(e.target.value)}></input>
                     </p>
                     <div className="button-row">
-                        <FormButton text="אישור" func={confirmForm}></FormButton>
-                        <FormButton text="ביטול" func={cancel}></FormButton>
+                        <TextButton text="אישור" func={confirmForm}></TextButton>
+                        <TextButton text="ביטול" func={cancel}></TextButton>
                     </div>
                 </div>
             </div>

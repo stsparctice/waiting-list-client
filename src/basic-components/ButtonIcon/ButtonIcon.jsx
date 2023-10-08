@@ -31,33 +31,28 @@ const useStyles = createUseStyles({
             objectFit: 'contain',
         }
 
-    },
-    tableBtn:{
-        height: 35,
-        width: 35,
-        '& img': {
-            height: 17,
-            width: 17
-        }
     }
+   
 
 
 
 })
 
 
+const ButtonIcon = ({ imgName, title, func, btnStyle}) => {
 
-const ButtonIcon = ({ imgName, title, func }) => {
     const [imageSrc, setImageSrc] = useState()
     const css = useStyles()
+
+    const {width, height, imgheight, imgwidth} = btnStyle
     useEffect(() => {
         setImageSrc(imgName)
     }, [imgName])
 
     return <>
-        <button className={`${css.btn} ${css.tableBtn}` } title={title} onClick={func} >
+        <button className={css.btn} style={{height, width}} title={title} onClick={func} >
             <figure>
-                <img src={imageSrc} alt="" />
+                <img src={imageSrc} alt="" style={{height:imgheight, width:imgwidth}} />
             </figure>
         </button>
 

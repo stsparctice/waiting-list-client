@@ -9,9 +9,6 @@ import { stateStatus } from "../../../store/storeStatus";
 
 
 
-
-
-
 const tableConfig = {
     headers: [{ key: 'name', header: 'שם הבריכה' }, { key: 'address', header: 'כתובת' }, { key: 'color', header: 'צבע' }],
     hideKeys: ['id', 'addedDate', 'userName', 'disabled', 'disabledDate', 'disableUser', 'disableReason'],
@@ -31,7 +28,7 @@ const MainSwimmingPool = () => {
 
     useEffect(() => {
         if (poolsStatus === stateStatus.EMPTY)
-            dispatch(getAllPools('/pool/getAll'))
+            dispatch(getAllPools())
     }, [dispatch, poolsStatus]);
 
     const updateFunc = useCallback((data) => {
@@ -54,7 +51,6 @@ const MainSwimmingPool = () => {
 
 
     const openModal = () => {
-        console.log('modal')
         setInsert(true)
         setShowModal(true)
         setSelectedPool(0)

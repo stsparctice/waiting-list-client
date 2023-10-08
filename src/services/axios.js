@@ -10,12 +10,10 @@ export const client = axios.create({
 })
 
 export const getData = async (url, query) => {
-    console.log({ url })
     if (query) {
         url += `?${buildConditionFromQuery(query)}`
     }
     const response = await client.get(url)
-    console.log({ response })
     if (response.status === 200)
         return response.data
     else{

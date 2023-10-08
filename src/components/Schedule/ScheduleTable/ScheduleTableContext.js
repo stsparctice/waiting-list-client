@@ -1,13 +1,16 @@
-import { createContext,  useState } from 'react';
+import { createContext, useState, useReducer } from 'react';
+
 
 
 export const ScheduleTableContext = createContext();
 
 const ScheduleTableProvider = ({ children }) => {
     const [scheduleHours, setScheduleHours] = useState([]);
-   
+
     return <>
-        <ScheduleTableContext.Provider value={{ scheduleHours, setScheduleHours }}>
+        <ScheduleTableContext.Provider value={{
+            scheduleHours, setScheduleHours,
+        }}>
             {children}
         </ScheduleTableContext.Provider>
     </>

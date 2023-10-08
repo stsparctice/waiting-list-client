@@ -1,7 +1,5 @@
-import { getValue } from "@testing-library/user-event/dist/utils";
-import React, { useContext, useEffect, useReducer, useState,useCallback } from "react";
-import PoolTableContext, { PoolTable } from "../../contexts/PoolTable";
-import { getData } from "../../services/axios";
+import React, { useContext, useEffect, useState,useCallback } from "react";
+import PoolTableContext from "../../contexts/PoolTable";
 import MainHours from "../Hour/MainHours"
 
 const PoolTableInformation = () => {
@@ -23,7 +21,7 @@ const PoolTableInformation = () => {
                 d.hours.forEach((h,place) => {
                     if (h.gender === data.gender) { 
                         let isExist=false;
-                        newdata.map(m => {
+                        newdata.forEach(m => {
                             if (m.day === d.day) {
                                 isExist=true
                                 m.hours = [...m.hours, ...d.hours.slice(place,place+1)]

@@ -1,21 +1,29 @@
 .day-header {
     height: 30px;
-    border-bottom: 2px solid;
+    /* border: 2px solid; */
 }
 
 
 .day-title {
+
     display: flex;
     align-items: center;
-    font-weight: bold;
-justify-content: center;
-
-    padding-bottom: 3px
+    /* font-weight: bold; */
+    align-items: center;
+    justify-content: space-between;
+    padding: 3px 10px;
+    background-color: black;
+    color: white;
+/* border-right: 2px solid black; */
 }
 
 .table-block {
     height: 19px;
     border: 0.5px solid black;
+}
+
+.pointer{
+cursor: pointer;
 }
 
 .hour-block {

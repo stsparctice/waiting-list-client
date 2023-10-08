@@ -12,6 +12,7 @@ import { useState } from 'react';
 import MainSwimmingPool from './components/SwimmingPool/MainSwimmingPool/MainSwimmingPool';
 import MainGender from './components/Gender/MainGender/MainGender'
 import MainSchedule from './components/Schedule/MainSchedule/MainSchedule';
+import MainActiveHours from './components/Schedule/HoursAccordingToDay/ActiveHoursAccordingToDay/MainActiveHours/MainActiveHours';
 import MainDataManager from './links/mainDataManager/MainDataManager';
 import Headers from './links/headers/Headers';
 import Patients from './components/patients/Patients';
@@ -35,9 +36,9 @@ function App() {
 
   const [arrdatamanager] = useState([
     { text: "שעות פעילות", link: "/datamanager/schedule", color: '#B63B3B' },
+    { text: "מטפלים", link: "/datamanager/teachers", color: '#F4981F' },
     { text: "בריכות", link: "/datamanager/pool", color: '#9FDF8A' },
     { text: "קבוצות", link: "/datamanager/gender", color: '#AB99BF' },
-    { text: "מטפלים", link: "/datamanager/teachers", color: '#F4981F' }
   ])
 
   const [headers] = useState([
@@ -59,7 +60,9 @@ function App() {
           {/* <Route path='/archives'></Route> */}
           {/* <Route path='/noMedicalInformation'></Route> */}
           <Route path='datamanager' element={<MainDataManager arr={arrdatamanager} />} >
-            <Route path='schedule' element={<MainSchedule />} />
+            <Route path='schedule' element={<MainSchedule />}>
+              <Route path='dayschedule/:poolId' element={<MainActiveHours />}/>
+            </Route>
             <Route path='gender' element={<MainGender />} />
             <Route path='pool' element={< MainSwimmingPool />} />
             <Route path='teachers' element={<TableTeacher />} >

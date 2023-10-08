@@ -6,7 +6,7 @@ import { Outlet, useNavigate } from "react-router-dom";
 const useStyles = createUseStyles({
     border: {
         width: '100%',
-        height:'85vh',
+        minHeight:'85vh',
         borderStyle: 'solid',
         borderWidth: 5,
         position: "absolute",
