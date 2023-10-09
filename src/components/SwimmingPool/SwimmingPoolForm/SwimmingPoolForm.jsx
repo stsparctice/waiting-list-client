@@ -8,6 +8,7 @@ import '../../../styles/Modal.css'
 import TextButton from '../../../basic-components/TextButton/TextButton'
 import ButtonIcon from "../../../basic-components/ButtonIcon/ButtonIcon";
 import icons from "../../../services/iconService";
+import StandartInput from "../../../basic-components/StandartInput/StandartInput";
 
 const useStyles = createUseStyles({
     lefticon: {
@@ -71,7 +72,7 @@ const SwimmingPoolForm = ({ insert, id, confirm, cancel }) => {
         <div className="modal" >
             <div className="form-wrapper container">
                 <div className={css.lefticon}>
-                    <ButtonIcon title="סגור" func={() => cancel()} imgName={icons.CLOSE}  btnStyle={{ imgwidth: "20px", imgheight: "20px", height: "40px", width: "40px" }}></ButtonIcon>
+                    <ButtonIcon title="סגור" func={() => cancel()} imgName={icons.CLOSE} btnStyle={{ imgwidth: "20px", imgheight: "20px", height: "40px", width: "40px" }}></ButtonIcon>
                 </div>
                 <h2>
                     {insert ? <span>בריכה חדשה</span> : <span>עדכון בריכה</span>}
@@ -79,18 +80,10 @@ const SwimmingPoolForm = ({ insert, id, confirm, cancel }) => {
 
 
                 <div className="form">
-                    <p className="input-row">
-                        <label className={css.label}>שם בריכה: </label>
-                        <input type="text" value={poolName} onInput={(e) => setPoolName(e.target.value)}></input>
-                    </p>
-                    <p className="input-row">
-                        <label className={css.label}>כתובת הבריכה: </label>
-                        <input type="text" value={poolAddress} onInput={(e) => setPoolAddress(e.target.value)}></input>
-                    </p>
-                    <p className="input-row">
-                        <label className={css.label}>צבע הבריכה: </label>
-                        <input type="color" value={poolColor} onInput={(e) => setPoolColor(e.target.value)}></input>
-                    </p>
+                    <StandartInput type="text" text="שם הבריכה" value={poolName} set={(e) => setPoolName(e.target.value)}></StandartInput>
+                    <StandartInput type="text" text="כתובת הבריכה" value={poolAddress} set={(e) => setPoolAddress(e.target.value)}></StandartInput>
+                    <StandartInput type="color" text="צבע הבריכה" value={poolColor} set={(e) => setPoolColor(e.target.value)}></StandartInput>
+
                     <div className="button-row">
                         <TextButton text="אישור" func={confirmForm}></TextButton>
                         <TextButton text="ביטול" func={cancel}></TextButton>

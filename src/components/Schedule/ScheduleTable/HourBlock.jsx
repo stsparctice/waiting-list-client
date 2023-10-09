@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import './ScheduleTable.css'
 
-const HourBlock = ({ data }) => {
+const HourBlock = ({ data, selectSchedule }) => {
     const [backgroundColor, setBackgroundColor] = useState(undefined)
     const [title, setTitle] = useState('')
     useEffect(() => {
@@ -13,6 +13,8 @@ const HourBlock = ({ data }) => {
         if(data.schedule){
 
             console.log(data.schedule)
+            console.log(selectSchedule)
+            selectSchedule(data.schedule)
         }
     }
     return <>

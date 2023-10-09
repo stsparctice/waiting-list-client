@@ -70,21 +70,28 @@ const poolGenderHour = (state, item) => {
 }
 
 
-const PoolGenderHourForm = ({ insert, confirm, cancel, day }) => {
+const PoolGenderHourForm = ({ insert, confirm, cancel, day, selectedSchedule }) => {
     const css = useStyles();
     const dispatch = useDispatch()
     const pool = useSelector(state => state.Schedule.selectedPool)
     const [object, setObject] = useReducer(poolGenderHour, { day, data: { startHour: undefined, endHour: undefined, gender: undefined }, error: 'undefined' })
     const [startHours, setStartHours] = useState([]);
     const [endHours, setEndHours] = useState([]);
-
+console.log({day})
+console.log({selectedSchedule})
     useEffect(() => {
-        const hours = getTimesList()
-        setStartHours(hours.map((h, i) => ({ label: `${h.getHours().toString().padStart(2, '0')}:${h.getMinutes().toString().padStart(2, '0')}`, value: h })))
-    }, [])
+        const starthours = getTimesList()
+        setStartHours(starthours.map((h, i) => ({ label: `${h.getHours().toString().padStart(2, '0')}:${h.getMinutes().toString().padStart(2, '0')}`, value: h })))
+        if(!insert){
+            console.log('update')
+            setObject({ action: poolGenderHourActions.STARTHOUR,value: selectedSchedule.startHour })
+           // const endhours = getTimesList(day,object.startHour.value )
+            // setEndHours(endhours.map(h => ({ label: `${h.getHours().toString().padStart(2, '0')}:${h.getMinutes().toString().padStart(2, '0')}`, value: h })))
+        }
+    }, [insert, selectedSchedule])
 
     const selectStart = (value) => {
-
+console.log({value})
         setObject({ action: poolGenderHourActions.STARTHOUR, value })
         const hours = getTimesList(day, value.value)
         setEndHours(hours.map(h => ({ label: `${h.getHours().toString().padStart(2, '0')}:${h.getMinutes().toString().padStart(2, '0')}`, value: h })))
@@ -138,7 +145,7 @@ const PoolGenderHourForm = ({ insert, confirm, cancel, day }) => {
                     <div className="input-row">
                         <label className={css.label}>משעה:</label>
                         <div className="input-group" >
-                            <Select placeholder="בחר..." options={startHours} onChange={selectStart}></Select>
+                            <Select placeholder="בחר..."   options={startHours} onChange={selectStart}></Select>
                         </div>
                     </div>
                     <div className="input-row">

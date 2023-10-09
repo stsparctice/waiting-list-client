@@ -1,10 +1,10 @@
 import React, { useState, useEffect, useCallback } from "react"
 import { server } from "../../../services/axios"
 import Checkbox from "../../../small-components/Checkbox/Checkbox"
-import StandartInput from "../../../small-components/StandartInput/StandartInput"
+import StandartInput from "../../../basic-components/StandartInput/StandartInput"
 import Text from "../../../small-components/ButtonText/ButtonText"
 import { useNavigate } from "react-router-dom"
-
+import { levels } from "../../../services/data"
 const FormTeacher = ({ obj, type }) => {
     const nav = useNavigate()
     const [sqlVal, setSqlVal] = useState([])
@@ -12,86 +12,84 @@ const FormTeacher = ({ obj, type }) => {
     const [val, setVal] = useState({ name: "", email: "", phone: "", annotation: "", city: "", street: "", zip: "" })
     const [poolArr, SetPoolArr] = useState([])
     const [genderArr, SetGenderArr] = useState([])
-    const [levelArr, setLevelArr] = useState([{ text: "גבוהה", color: "rgb(255, 0, 0)" }
-        , { text: "בינונית", color: "rgb(255, 165, 0)" }
-        , { text: "נמוכה", color: "rgb(103, 165, 11)" }])
+   
 
-    useEffect(() => {
-        const level = async (arr) => {
-            if (arr) {
-                arr.forEach(e => {
-                    let level = levelArr.find(f => (f.text == e))
-                    if (level)
-                        level.checked = true
-                    setLevelArr([...levelArr])
-                });
-            }
-        }
-        const gender = async (arr) => {
-            if (arr) {
-                arr.forEach(e => {
-                    let genders = genderArr.find(f => (f.text == e))
-                    if (genders)
-                        genders.checked = true
-                });
-            }
-            SetGenderArr([...genderArr])
-        }
-        const pool = async (arr) => {
-            if (arr) {
-                arr.forEach(e => {
-                    let pool = poolArr.find(f => (f.text == e))
-                    if (pool)
-                        pool.checked = true
+    // useEffect(() => {
+    //     const level = async (arr) => {
+    //         if (arr) {
+    //             arr.forEach(e => {
+    //                 let level = level.find(f => (f.text == e))
+    //                 if (level)
+    //                     level.checked = true
+    //                 setLevelArr([...levelArr])
+    //             });
+    //         }
+    //     }
+    //     const gender = async (arr) => {
+    //         if (arr) {
+    //             arr.forEach(e => {
+    //                 let genders = genderArr.find(f => (f.text == e))
+    //                 if (genders)
+    //                     genders.checked = true
+    //             });
+    //         }
+    //         SetGenderArr([...genderArr])
+    //     }
+    //     const pool = async (arr) => {
+    //         if (arr) {
+    //             arr.forEach(e => {
+    //                 let pool = poolArr.find(f => (f.text == e))
+    //                 if (pool)
+    //                     pool.checked = true
 
-                });
-            }
-            SetPoolArr([...poolArr])
-        }
-        const setValue = async (obj) => {
+    //             });
+    //         }
+    //         SetPoolArr([...poolArr])
+    //     }
+    //     const setValue = async (obj) => {
 
-            setVal({ name: obj.name, email: obj.email, phone: obj.phone, annotation: obj.annotation, city: obj.address.city, street: obj.address.street, zip: obj.address.zip })
+    //         setVal({ name: obj.name, email: obj.email, phone: obj.phone, annotation: obj.annotation, city: obj.address.city, street: obj.address.street, zip: obj.address.zip })
 
 
-        }
+    //     }
 
-        const getDataFromSerevr = async () => {
-            await Promise.all([findGender, findPool].map(func => func()))
-        }
+    //     const getDataFromSerevr = async () => {
+    //         await Promise.all([findGender, findPool].map(func => func()))
+    //     }
 
-        const findGender = async () => {
-            const res = await server.post('/gender/find', { project: { _id: 0, name: 1, genderColor: 1 } })
-            let genders = res.data.map(m => ({ color: m.genderColor, checked: false, text: m.name, isradio: false }))
-            let g = genders.find(f => (f.text == "גברים"))
-            if (g)
-                g.isradio = true
-            SetGenderArr([...genders])
-            if (type == "update") {
-                if (obj.name) {
-                    gender(obj.genders)
-                }
-            }
-        }
-        const findPool = async () => {
-            const ans = await server.post('/pool/find', { project: { _id: 0, poolName: 1, poolColor: 1 } })
-            const pools = ans.data.map(m => ({ color: m.poolColor, checked: false, text: m.poolName }))
-            SetPoolArr([...pools])
-            if (type == "update") {
-                if (obj.name) {
-                    pool(obj.pools)
-                }
-            }
-        }
+    //     const findGender = async () => {
+    //         const res = await server.post('/gender/find', { project: { _id: 0, name: 1, genderColor: 1 } })
+    //         let genders = res.data.map(m => ({ color: m.genderColor, checked: false, text: m.name, isradio: false }))
+    //         let g = genders.find(f => (f.text == "גברים"))
+    //         if (g)
+    //             g.isradio = true
+    //         SetGenderArr([...genders])
+    //         if (type == "update") {
+    //             if (obj.name) {
+    //                 gender(obj.genders)
+    //             }
+    //         }
+    //     }
+    //     const findPool = async () => {
+    //         const ans = await server.post('/pool/find', { project: { _id: 0, poolName: 1, poolColor: 1 } })
+    //         const pools = ans.data.map(m => ({ color: m.poolColor, checked: false, text: m.poolName }))
+    //         SetPoolArr([...pools])
+    //         if (type == "update") {
+    //             if (obj.name) {
+    //                 pool(obj.pools)
+    //             }
+    //         }
+    //     }
 
-        getDataFromSerevr()
-        if (type == "update") {
-            if (obj.name) {
-                level(obj.levels)
-                setValue(obj)
-            }
+    //     getDataFromSerevr()
+    //     if (type == "update") {
+    //         if (obj.name) {
+    //             level(obj.levels)
+    //             setValue(obj)
+    //         }
 
-        }
-    }, [obj])
+    //     }
+    // }, [obj])
 
 
     const send = useCallback(async () => {
@@ -138,20 +136,20 @@ const FormTeacher = ({ obj, type }) => {
     }, [val]);
 
 
-    const setValue = useCallback(async (event) => {
+    const setValue = (event) => {
         let temp = {}
         temp[event.target.id] = event.target.value
         setVal({ ...val, ...temp })
 
-    }, [val]);
+    };
 
-    const sendVal = (async () => {
-        return { levels: levelArr.filter(f => (f.checked == true)).map(m => (m = m.text)), pools: poolArr.filter(f => (f.checked == true)).map(m => (m = m.text)), genders: genderArr.filter(f => (f.checked == true)).map(m => (m = m.text)), name: val.name, address: { city: val.city, street: val.street, zip: val.zip }, email: val.email, annotation: val.annotation, phone: val.phone }
-    });
+    const sendVal =  () => {
+        return { levels: levels.filter(f => (f.checked === true)).map(m => (m = m.text)), pools: poolArr.filter(f => (f.checked == true)).map(m => (m = m.text)), genders: genderArr.filter(f => (f.checked == true)).map(m => (m = m.text)), name: val.name, address: { city: val.city, street: val.street, zip: val.zip }, email: val.email, annotation: val.annotation, phone: val.phone }
+    };
 
 
     return <>
-        {
+        {/* {
             type == "update" && obj.name && genderArr && poolArr || type == "insert" && genderArr.length > 0 && poolArr.length > 0 ?
                 <>
 
@@ -163,7 +161,7 @@ const FormTeacher = ({ obj, type }) => {
 
                 </>
                 : ""
-        }
+        } */}
 
         <StandartInput text="שם המטפל " styles={style} type="name" value={val.name} set={setValue}></StandartInput>
 
