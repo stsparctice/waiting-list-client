@@ -1,7 +1,6 @@
 import React, { memo, useEffect, useState } from "react";
 import { useSelector, useDispatch } from 'react-redux'
 import { addSwimmingPool, selectById, updateSwimmingPool } from '../../../store/swimmingPools'
-import { createUseStyles } from "react-jss";
 import '../../../styles/Form.css'
 import '../../../styles/Modal.css'
 
@@ -10,16 +9,9 @@ import ButtonIcon from "../../../basic-components/ButtonIcon/ButtonIcon";
 import icons from "../../../services/iconService";
 import StandartInput from "../../../basic-components/StandartInput/StandartInput";
 
-const useStyles = createUseStyles({
-    lefticon: {
-        float: "left"
-    }
-
-});
 
 const SwimmingPoolForm = ({ insert, id, confirm, cancel }) => {
     const dispatch = useDispatch()
-    const css = useStyles();
     const onePool = useSelector(state => state.SwimmingPools.onePool)
     const [poolName, setPoolName] = useState('');
     const [poolColor, setPoolColor] = useState('#5214f4');
@@ -71,7 +63,7 @@ const SwimmingPoolForm = ({ insert, id, confirm, cancel }) => {
     return <>
         <div className="modal" >
             <div className="form-wrapper container">
-                <div className={css.lefticon}>
+                <div className="lefticon">
                     <ButtonIcon title="סגור" func={() => cancel()} imgName={icons.CLOSE} btnStyle={{ imgwidth: "20px", imgheight: "20px", height: "40px", width: "40px" }}></ButtonIcon>
                 </div>
                 <h2>

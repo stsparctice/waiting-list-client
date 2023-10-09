@@ -21,7 +21,7 @@ const useStyles = createUseStyles({
     }
 })
 
-const Table = ({ config, data, updateFunc, deleteFunc }) => {
+const Table = ({ config, data, update, remove }) => {
     const css = useStyles()
     return <>
         { }
@@ -34,7 +34,7 @@ const Table = ({ config, data, updateFunc, deleteFunc }) => {
             <tbody>
                 {data ?
                     data.map((item, index) => (
-                        <TableRow key={index} data={item} config={config} updateFunc={updateFunc} deleteFunc={deleteFunc}>
+                        <TableRow key={index} data={item} config={config} update={update} remove={remove}>
 
                         </TableRow>
                     )) : ''}

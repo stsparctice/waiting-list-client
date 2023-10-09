@@ -62,14 +62,13 @@ const MainSwimmingPool = () => {
     }
 
     return <>
-        <h1>בריכות</h1>
         <button onClick={openModal}>הוספת בריכה חדשה</button>
         {showModal ?
             <SwimmingPoolForm id={selectedPool} insert={insert} confirm={confirm} cancel={closeModal}></SwimmingPoolForm> : <></>}
         {showDeleteModal ?
             <DeleteForm obj={deletePool} confirm={confirm} cancel={closeModal}></DeleteForm> : <></>
         }
-        <Table config={tableConfig} data={pools} updateFunc={updateFunc} deleteFunc={deleteFunc}></Table>
+        <Table config={tableConfig} data={pools} update={updateFunc} remove={deleteFunc}></Table>
 
     </>
 }

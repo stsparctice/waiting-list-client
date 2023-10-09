@@ -1,9 +1,12 @@
 import React, { useEffect, useState } from "react";
+import { useSelector, useDispatch } from 'react-redux'
+import { stateStatus } from "../../../store/storeStatus";
+import { getAllTeachers } from "../../../store/teachers";
 import { useNavigate } from "react-router-dom";
-import Table from "../../../components2/Table/Table"
-import { Outlet } from "react-router-dom";
+import Table from "../../../basic-components/DynamicTable/Table/Table"
 import { cellElementOptions } from "../../../basic-components/DynamicTable/Td/Td";
-
+import DeleteForm from "../../DeleteForm/DeleteForm";
+import FormTeacher from "../FormTeacher/FormTeacher";
 const tableConfig = {
     headers: [{ key: 'name', header: 'שם המורה' }, { key: 'address', header: 'כתובת' }, { key: 'color', header: 'צבע' }],
     hideKeys: ['id', 'addedDate', 'userName', 'disabled', 'disabledDate', 'disableUser', 'disableReason'],
@@ -12,10 +15,21 @@ const tableConfig = {
 }
 
 const MainTeacher = () => {
-    console.log("in tableTeacher");
-    const [table, setTable] = useState([])
-    const navigate = useNavigate()
+    const dispatch = useDispatch()
+    const teachers = useSelector(state => state.Teachers.teachers)
+    const teacherStatus = useSelector(state => state.Teachers.status)
+    const [selectedPool, setSelectedPool] = useState({})
+    const [deletePool, setDeletePool] = useState(undefined)
+    const [insert, setInsert] = useState(false)
+    const [showModal, setShowModal] = useState(false)
+    const [showDeleteModal, setShowDeleteModal] = useState(false)
 
+
+    useEffect(() => {
+        if (teacherStatus === stateStatus.EMPTY)
+            dispatch(getAllTeachers())
+    }, [dispatch, teacherStatus]);
+    
     useEffect(() => {
         let days
         let pool
@@ -59,21 +73,44 @@ const MainTeacher = () => {
         // findInMongo()
     }, [])
 
+    const update = ()=>{
+        console.log('update')
+    }
+
+    const remove = ()=>{
+        console.log('insert')
+    }
+
     const addTeacher = () => {
         console.log("מטפל חדש!!!!!");
-        navigate('/datamanager/teachers/oneTeacher', {})
+        // navigate('/datamanager/teachers/oneTeacher', {})
+    }
+
+    const confirm = () => {
+        closeModal()
+    }
+
+
+    const openModal = () => {
+        setInsert(true)
+        setShowModal(true)
+        setSelectedPool(0)
+    }
+
+    const closeModal = () => {
+        setShowModal(false)
+        setShowDeleteModal(false)
     }
 
 
     return <>
-        {
-            table.length > 0 ?
-                <Table Allobj={table}></Table>
-                : ""
+       {showModal ?
+            <FormTeacher id={selectedPool} insert={insert} confirm={confirm} cancel={closeModal}></FormTeacher> : <></>}
+        {showDeleteModal ?
+            <DeleteForm obj={deletePool} confirm={confirm} cancel={closeModal}></DeleteForm> : <></>
         }
-        <Outlet></Outlet>
-
-        <button onClick={addTeacher}>:מטפל חדש</button>
+        <Table config={tableConfig} data={teachers} updateFunc={update} deleteFunc={remove}></Table>
+        <button onClick={openModal}>:מטפל חדש</button>
     </>
 
 }

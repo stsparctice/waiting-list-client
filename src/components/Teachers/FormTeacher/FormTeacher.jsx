@@ -1,18 +1,41 @@
 import React, { useState, useEffect, useCallback } from "react"
-import { server } from "../../../services/axios"
+import { useSelector, useDispatch } from 'react-redux'
+import { addTeacher, selectById, updateTeacher } from '../../../store/teachers'
 import Checkbox from "../../../small-components/Checkbox/Checkbox"
 import StandartInput from "../../../basic-components/StandartInput/StandartInput"
-import Text from "../../../small-components/ButtonText/ButtonText"
+import TextButton from "../../../basic-components/TextButton/TextButton"
+import ButtonIcon from "../../../basic-components/ButtonIcon/ButtonIcon"
 import { useNavigate } from "react-router-dom"
 import { levels } from "../../../services/data"
-const FormTeacher = ({ obj, type }) => {
+import '../../../styles/Form.css'
+import '../../../styles/Modal.css'
+import icons from "../../../services/iconService"
+
+
+const FormTeacher = ({ id, confirm, insert, cancel }) => {
     const nav = useNavigate()
-    const [sqlVal, setSqlVal] = useState([])
-    const [style, setStyle] = useState([{ height: 18, width: 120 }])
+    const dispatch = useDispatch()
+    const teacher = useSelector(state => state.Teachers.teacher)
     const [val, setVal] = useState({ name: "", email: "", phone: "", annotation: "", city: "", street: "", zip: "" })
-    const [poolArr, SetPoolArr] = useState([])
-    const [genderArr, SetGenderArr] = useState([])
-   
+
+    const confirmForm = () => {
+
+        console.log({ val })
+        if (insert) {
+            const data = {
+               val
+            }
+            dispatch(addTeacher(data))
+        }
+        else {
+            const data = {
+                ...teacher,
+               ...val
+            }
+            dispatch(updateTeacher(data))
+        }
+        confirm()
+    }
 
     // useEffect(() => {
     //     const level = async (arr) => {
@@ -92,98 +115,71 @@ const FormTeacher = ({ obj, type }) => {
     // }, [obj])
 
 
-    const send = useCallback(async () => {
-        //valid 
-        if (type == "insert") {
-            const res = await server.post('/teachers/insertTeacher', await sendVal())
-            console.log(res.data);
-            if (res.data) {
-                console.log("נכנס בהצלחה");
-            }
-        }
-        else {
+   
+    // const toDdelete = useCallback(async () => {
+    //     if (type == "update") {
+    //         const ans = await server.post('/datamanager/teachers/deleteTeacher', { name: obj.name })
+    //         console.log(ans.data);
+    //     }
+    // }, [val]);
 
-            let values = await sendVal()
-            obj.genders.forEach(e => {
-                console.log(e, "revghjkl");
-                let temp = values.genders.filter(f => (f == e))
-                console.log(temp, "temp");
-                if (temp.length == 0)
-                    setSqlVal([...sqlVal, e])
-            });
-            const res = await server.post('/datamanager/teachers/updateTeacher', { name: obj.name, update: values })
-            if (res.data) {
-                console.log("update!!");
-            }
+    // const schedule = useCallback(async () => {
 
-        }
-    }, [val]);
-
-    const toDdelete = useCallback(async () => {
-        if (type == "update") {
-            const ans = await server.post('/datamanager/teachers/deleteTeacher', { name: obj.name })
-            console.log(ans.data);
-        }
-    }, [val]);
-
-    const schedule = useCallback(async () => {
-
-        nav('/datamanager/teachers/sendToTeacherSchedule', { state: { name: obj.name } })
+    //     nav('/datamanager/teachers/sendToTeacherSchedule', { state: { name: obj.name } })
 
 
 
 
-    }, [val]);
+    // }, [val]);
 
 
-    const setValue = (event) => {
+
+    const setValue = (event, arg) => {
+        console.log(event.target.value)
         let temp = {}
-        temp[event.target.id] = event.target.value
-        setVal({ ...val, ...temp })
+        temp[arg] = event.target.value
+        console.log({temp})
+        setVal(prev => ({ ...prev, ...temp }))
 
     };
 
-    const sendVal =  () => {
-        return { levels: levels.filter(f => (f.checked === true)).map(m => (m = m.text)), pools: poolArr.filter(f => (f.checked == true)).map(m => (m = m.text)), genders: genderArr.filter(f => (f.checked == true)).map(m => (m = m.text)), name: val.name, address: { city: val.city, street: val.street, zip: val.zip }, email: val.email, annotation: val.annotation, phone: val.phone }
-    };
+    // const sendVal = () => {
+    //     return { levels: levels.filter(f => (f.checked === true)).map(m => (m = m.text)), pools: poolArr.filter(f => (f.checked == true)).map(m => (m = m.text)), genders: genderArr.filter(f => (f.checked == true)).map(m => (m = m.text)), name: val.name, address: { city: val.city, street: val.street, zip: val.zip }, email: val.email, annotation: val.annotation, phone: val.phone }
+    // };
 
 
     return <>
-        {/* {
-            type == "update" && obj.name && genderArr && poolArr || type == "insert" && genderArr.length > 0 && poolArr.length > 0 ?
-                <>
+        <div className="modal" >
+            <div className="form-wrapper container">
+                <div className="lefticon">
+                    <ButtonIcon title="סגור" func={() => cancel()} imgName={icons.CLOSE} btnStyle={{ imgwidth: "20px", imgheight: "20px", height: "40px", width: "40px" }}></ButtonIcon>
+                </div>
+                <h2>
+                    {insert ? <span>מטפל חדש</span> : <span>עדכון מטפל</span>}
+                </h2>
 
-                    <Checkbox title="רמת טיפול" type="checkbox" arr={levelArr} ></Checkbox>
 
-                    <Checkbox title="ברכות" type="checkbox" arr={poolArr}></Checkbox>
+                <div className="form">
+                    <StandartInput text="שם המטפל"   type="text" value={val.name} set={(event)=>setValue(event, 'name')}></StandartInput>
+                    <StandartInput text="טלפון"  type="text" value={val.phone} set={(event)=>setValue(event, 'phone')}></StandartInput>
+                    <StandartInput text="אימייל"  type="email" value={val.email} set={(event)=>setValue(event, 'email')}></StandartInput>
+                    <StandartInput text="כתובת"  type="text" value={val.street} set={(event)=>setValue(event, 'street')}></StandartInput>
+                    <StandartInput text="עיר"  type="text" value={val.city} set={(event)=>setValue(event, 'city')}></StandartInput>
+                    <StandartInput text="מיקוד"  type="text" value={val.zip} set={(event)=>setValue(event, 'zip')}></StandartInput>
+                    <StandartInput text="הערה"  type="text" value={val.annotation} set={(event)=>setValue(event, 'annotation')}></StandartInput>
 
-                    <Checkbox title="קבוצות טיפול" type="radioBox" arr={genderArr}></Checkbox>
+                    <div className="button-row">
+                        <TextButton text="אישור"   bgColor="purple" click={confirmForm}></TextButton>
 
-                </>
-                : ""
-        } */}
+                        <TextButton text="ביטול"   bgColor="purple" click={cancel}></TextButton>
 
-        <StandartInput text="שם המטפל " styles={style} type="name" value={val.name} set={setValue}></StandartInput>
-
-        <StandartInput text="אימייל" styles={style} type="email" value={val.email} set={setValue}></StandartInput>
-
-        <StandartInput text="הערה" styles={style} type="annotation" value={val.annotation} set={setValue}></StandartInput>
-
-        <StandartInput text="טלפון" styles={style} type="phone" value={val.phone} set={setValue}></StandartInput>
-
-        <StandartInput text="עיר" styles={style} type="city" value={val.city} set={setValue}></StandartInput>
-
-        <StandartInput text="רחוב" styles={style} type="street" value={val.street} set={setValue}></StandartInput>
-
-        <StandartInput text="מיקוד" styles={style} type="zip" value={val.zip} set={setValue}></StandartInput>
-
-        <Text text="שמירה" styles={[{ height: 30, width: 120 }]} click={send}></Text>
-
-        <Text text="מחיקה" styles={[{ height: 30, width: 120 }]} click={toDdelete}></Text>
-
-        <Text text="שעות עבודה" styles={[{ height: 30, width: 120 }]} click={schedule}></Text>
-        <hr />
+                        {/* <TextButton text="שעות עבודה" styles={[{ height: 30, width: 120 }]} bgColor="purple"  ></TextButton> */}
+                    </div>
+                </div>
+            </div>
+        </div>
     </>
+
 
 }
 
