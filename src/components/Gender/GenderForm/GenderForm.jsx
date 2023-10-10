@@ -9,6 +9,7 @@ import '../../../styles/Modal.css'
 import TextButton from '../../../basic-components/TextButton/TextButton'
 import ButtonIcon from "../../../basic-components/ButtonIcon/ButtonIcon";
 import icons from "../../../services/iconService";
+import StandartInput from "../../../basic-components/StandartInput/StandartInput";
 const useStyles = createUseStyles({
     hide: {
         display: 'none'
@@ -93,14 +94,8 @@ const GenderForm = ({ insert, id, confirm, cancel }) => {
                     {insert ? <span>קבוצה חדשה</span> : <span>עדכון קבוצה</span>}
                 </h2>
                 <div className="form">
-                    <p className="input-row">
-                        <label>שם קבוצה: </label>
-                        <input type="text" value={name} onInput={(e) => setName(e.target.value)}></input>
-                    </p>
-                    <p className="input-row">
-                        <label>צבע הקבוצה:</label>
-                        <input type="color" value={genderColor} onInput={(e) => setGenderColor(e.target.value)}></input>
-                    </p>
+                    <StandartInput text="שם קבוצה" type="text" value={name} set={(e) => setName(e.target.value)}></StandartInput>
+                    <StandartInput text="צבע קבוצה" type="color" value={genderColor} set={(e) => setGenderColor(e.target.value)}></StandartInput>
                     <div>
                         <p style={{ textAlign: 'right' }}>מין: </p>
                         <p className="input-row">

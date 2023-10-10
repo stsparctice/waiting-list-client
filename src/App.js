@@ -17,9 +17,7 @@ import MainDataManager from './links/mainDataManager/MainDataManager';
 import Headers from './links/headers/Headers';
 import Patients from './components/patients/Patients';
 
-import FormsTeachers from './components/Teachers/FormsTeacher/FormsTeachers';
-import TableTeacher from './components/Teachers/TableTeachers/TableTeacher';
-import SendToFormSchedule from "./components/Teachers/FormTeacherSchedule/SendToFormSchedule/SendToFormSchedule"
+import MainTeacher from './components/Teachers/MainTeacher/MainTeacher';
 import SmallTable from './small-components/SmallTable/SmallTable';
 import FormSchedule from './components/Teachers/FormTeacherSchedule/FormSchedule/FormSchedule';
 import PoolTableContext, { PoolTable } from './contexts/PoolTable';
@@ -65,10 +63,8 @@ function App() {
             </Route>
             <Route path='gender' element={<MainGender />} />
             <Route path='pool' element={< MainSwimmingPool />} />
-            <Route path='teachers' element={<TableTeacher />} >
+            <Route path='teachers' element={<MainTeacher />} >
               <Route path='details' element={<SmallTable />} />
-              <Route path="oneTeacher" element={<FormsTeachers />} />
-              <Route path='sendToTeacherSchedule' element={<SendToFormSchedule />} />
               <Route path='teacherSchedule' element={<FormSchedule />} />
             </Route>
           </Route>

@@ -9,7 +9,7 @@ import icons from "../../../services/iconService"
 import { checkTimeInBlock } from "../../../services/validations/scheduleValidation"
 
 
-const DaySchedule = ({ scheduleDay, insertButton }) => {
+const DaySchedule = ({ scheduleDay, insertButton, selectSchedule }) => {
     const { scheduleHours } = useContext(ScheduleTableContext)
     const [hourBlocks, setHourBlocks] = useState([])
 
@@ -37,7 +37,7 @@ const DaySchedule = ({ scheduleDay, insertButton }) => {
             {
                 hourBlocks.map((block, i) => (
                     <div key={`block${i}`}>
-                        <HourBlock data={block}  />
+                        <HourBlock data={block} selectSchedule={selectSchedule} />
                     </div>
                 ))
             }

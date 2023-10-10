@@ -41,9 +41,10 @@ const WeekSchedule = ({ insertEvent, editEvent }) => {
         insertEvent(clone)
     }
 
-    const openEdittModal = (clone) => {
-        console.log({ clone })
-        editEvent(clone)
+    const openEdittModal = ({day, value}) => {
+        console.log({ day, value })
+        const selectedSchedule = day.schedules.find(({id})=>value.id===id)
+        editEvent({ day, selectedSchedule})
     }
     useEffect(() => {
         console.log({genderStatus})
@@ -60,7 +61,6 @@ const WeekSchedule = ({ insertEvent, editEvent }) => {
     }, [setScheduleHours])
 
     useEffect(() => {
-        console.log('update')
         console.log({poolSchedules})
         const tempSchedule = JSON.parse(JSON.stringify(poolSchedules))
         for (let day of tempSchedule) {
@@ -101,7 +101,9 @@ const WeekSchedule = ({ insertEvent, editEvent }) => {
                 {
                     weekSchedule.map(day => (
                         <div className={css.tableDay} key={day.day.number}>
-                            <DaySchedule scheduleDay={day} insertButton={openInsertModal} />
+                            <DaySchedule scheduleDay={day} insertButton={openInsertModal} selectSchedule={(value)=>
+
+                                openEdittModal({day, value})}/>
                         </div>
                     ))
                 }

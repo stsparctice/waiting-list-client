@@ -37,9 +37,9 @@ const SelectTeacher = ({ arrgander, arrPool } = []) => {
  
         {
            
-            listTeachers.map((m, index) => (
-                <h2 key={index} onClick={select(m)}>{m} </h2>
-            ))
+            // listTeachers.map((m, index) => (
+            //     <h2 key={index} onClick={select(m)}>{m} </h2>
+            // ))
         }
 
     </>
