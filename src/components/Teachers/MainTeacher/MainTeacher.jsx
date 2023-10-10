@@ -3,12 +3,13 @@ import { useSelector, useDispatch } from 'react-redux'
 import { stateStatus } from "../../../store/storeStatus";
 import { getAllTeachers } from "../../../store/teachers";
 import { useNavigate } from "react-router-dom";
-import Table from "../../../basic-components/DynamicTable/Table/Table"
 import { cellElementOptions } from "../../../basic-components/DynamicTable/Td/Td";
+import Table from "../../../basic-components/DynamicTable/Table/Table"
 import DeleteForm from "../../DeleteForm/DeleteForm";
 import FormTeacher from "../FormTeacher/FormTeacher";
+
 const tableConfig = {
-    headers: [{ key: 'name', header: 'שם המורה' }, { key: 'address', header: 'כתובת' }, { key: 'color', header: 'צבע' }],
+    headers: [{ key: 'teacherName', header: 'שם המורה' },{ key: 'phone', header: 'טלפון' },{ key: 'email', header: 'מייל' }, { key: 'address', header: 'כתובת' }],
     hideKeys: ['id', 'addedDate', 'userName', 'disabled', 'disabledDate', 'disableUser', 'disableReason'],
     convertKeys: [],
     keyElements: [{ key: 'color', element: cellElementOptions.colorLabel }]
@@ -18,7 +19,7 @@ const MainTeacher = () => {
     const dispatch = useDispatch()
     const teachers = useSelector(state => state.Teachers.teachers)
     const teacherStatus = useSelector(state => state.Teachers.status)
-    const [selectedPool, setSelectedPool] = useState({})
+    const [selectedTeacher, setSelectedTeacher] = useState({})
     const [deletePool, setDeletePool] = useState(undefined)
     const [insert, setInsert] = useState(false)
     const [showModal, setShowModal] = useState(false)
@@ -78,13 +79,9 @@ const MainTeacher = () => {
     }
 
     const remove = ()=>{
-        console.log('insert')
+        console.log('remove')
     }
 
-    const addTeacher = () => {
-        console.log("מטפל חדש!!!!!");
-        // navigate('/datamanager/teachers/oneTeacher', {})
-    }
 
     const confirm = () => {
         closeModal()
@@ -94,7 +91,7 @@ const MainTeacher = () => {
     const openModal = () => {
         setInsert(true)
         setShowModal(true)
-        setSelectedPool(0)
+        setSelectedTeacher(0)
     }
 
     const closeModal = () => {
@@ -105,7 +102,7 @@ const MainTeacher = () => {
 
     return <>
        {showModal ?
-            <FormTeacher id={selectedPool} insert={insert} confirm={confirm} cancel={closeModal}></FormTeacher> : <></>}
+            <FormTeacher id={selectedTeacher} insert={insert} confirm={confirm} cancel={closeModal}></FormTeacher> : <></>}
         {showDeleteModal ?
             <DeleteForm obj={deletePool} confirm={confirm} cancel={closeModal}></DeleteForm> : <></>
         }

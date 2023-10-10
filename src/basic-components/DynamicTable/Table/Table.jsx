@@ -37,7 +37,7 @@ const Table = ({ config, data, update, remove }) => {
                         <TableRow key={index} data={item} config={config} update={update} remove={remove}>
 
                         </TableRow>
-                    )) : ''}
+                    )) : <></>}
             </tbody>
         </table>
     </>

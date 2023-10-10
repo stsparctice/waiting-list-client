@@ -16,7 +16,7 @@ const FormTeacher = ({ id, confirm, insert, cancel }) => {
     const nav = useNavigate()
     const dispatch = useDispatch()
     const teacher = useSelector(state => state.Teachers.teacher)
-    const [val, setVal] = useState({ name: "", email: "", phone: "", annotation: "", city: "", street: "", zip: "" })
+    const [val, setVal] = useState({ teacherName: "", email: "", phone: "", annotation: "", city: "", address: "" })
 
     const confirmForm = () => {
 
@@ -135,12 +135,9 @@ const FormTeacher = ({ id, confirm, insert, cancel }) => {
 
 
     const setValue = (event, arg) => {
-        console.log(event.target.value)
         let temp = {}
         temp[arg] = event.target.value
-        console.log({temp})
         setVal(prev => ({ ...prev, ...temp }))
-
     };
 
     // const sendVal = () => {
@@ -160,16 +157,15 @@ const FormTeacher = ({ id, confirm, insert, cancel }) => {
 
 
                 <div className="form">
-                    <StandartInput text="שם המטפל"   type="text" value={val.name} set={(event)=>setValue(event, 'name')}></StandartInput>
+                    <StandartInput text="שם המטפל"   type="text" value={val.name} set={(event)=>setValue(event, 'teacherName')}></StandartInput>
                     <StandartInput text="טלפון"  type="text" value={val.phone} set={(event)=>setValue(event, 'phone')}></StandartInput>
                     <StandartInput text="אימייל"  type="email" value={val.email} set={(event)=>setValue(event, 'email')}></StandartInput>
-                    <StandartInput text="כתובת"  type="text" value={val.street} set={(event)=>setValue(event, 'street')}></StandartInput>
+                    <StandartInput text="כתובת"  type="text" value={val.street} set={(event)=>setValue(event, 'address')}></StandartInput>
                     <StandartInput text="עיר"  type="text" value={val.city} set={(event)=>setValue(event, 'city')}></StandartInput>
-                    <StandartInput text="מיקוד"  type="text" value={val.zip} set={(event)=>setValue(event, 'zip')}></StandartInput>
                     <StandartInput text="הערה"  type="text" value={val.annotation} set={(event)=>setValue(event, 'annotation')}></StandartInput>
 
                     <div className="button-row">
-                        <TextButton text="אישור"   bgColor="purple" click={confirmForm}></TextButton>
+                        <TextButton text="אישור"   bgColor="purple" func={confirmForm}></TextButton>
 
                         <TextButton text="ביטול"   bgColor="purple" click={cancel}></TextButton>
 
