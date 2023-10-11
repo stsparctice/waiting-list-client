@@ -7,6 +7,9 @@ import { useNavigate } from "react-router-dom";
 import genderType from "../../models/genderType";
 import Insert from "../patients/Insert/Insert";
 import ColorLabel from "../../basic-components/ColorLabel/ColorLabel";
+import { useSelector, useDispatch } from 'react-redux'
+import { stateStatus } from "../../store/storeStatus";
+import { getPatientById } from '../../store/patients'
 
 const useStyles = createUseStyles({
     wrapper: {
@@ -54,26 +57,35 @@ const useStyles = createUseStyles({
 });
 
 const ClientDetails = () => {
+    const dispatch = useDispatch()
+    const patient = useSelector(state => state.Patients.selectedPatient)
+    const patientsStatus = useSelector(state => state.Patients.status)
     const css = useStyles();
     const nav = useNavigate()
     const { id } = useParams()
     const [data, setData] = useState('');
     const [genderTypes, setGenderTypes] = useState([]);
     useEffect(() => {
-        const findData = async () => {
-            const ans = await getData('/rapidMed/find', { id: id })
-            console.log('ans', ans);
-            setGenderTypes(genderType(ans.sex, parseInt(new Date().getFullYear()) - parseInt(new Date(ans.birthdate).getFullYear())))
-            setData(ans)
-        }
-        findData()
-    }, [])
+        console.log("i am here!!!!!!!!!!!!!!");
+        console.log(patientsStatus === stateStatus.EMPTY ,'patientsStatus === stateStatus.EMPTY ');
+            if (patientsStatus === stateStatus.EMPTY)
+                dispatch(getPatientById(id))
+        
+        // const findData = async () => {
+        //     const ans = await getData('/rapidMed/find', { id: id })
+        //     console.log('ans', ans);
+        //     setGenderTypes(genderType(ans.sex, parseInt(new Date().getFullYear()) - parseInt(new Date(ans.birthdate).getFullYear())))
+        //     setData(ans)
+        // }
+        // findData()
+    }, [dispatch, patientsStatus]);
 
     const closePatientCard = useCallback(() => {
         nav('/patients')
     }, [],)
 
     return <>
+    <div>{JSON.stringify(patient)}</div>
         <div className={css.wrapper}>
             <div className={css.headerDetails}>
                 <div className={css.square}>

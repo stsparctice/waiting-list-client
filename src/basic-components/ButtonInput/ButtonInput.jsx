@@ -27,6 +27,7 @@ const Input = ({ text, imgName, func }) => {
             {/* <ButtonIcon imgName={imgName}  func={() => func(data)} imageSize={{width:"15px", height:"15px"}} height="35px" width="70px"></ButtonIcon> */}
             <input type="text" className={css.input} onInput={(e) => setData(e.target.value)} />
             <label className={css.label}>:{text}</label>
+            <img src={imgName} />
         </p>
     </>
 }
