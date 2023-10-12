@@ -67,7 +67,6 @@ const ClientDetails = () => {
     const [genderTypes, setGenderTypes] = useState([]);
     useEffect(() => {
         console.log("i am here!!!!!!!!!!!!!!");
-        console.log(patientsStatus === stateStatus.EMPTY ,'patientsStatus === stateStatus.EMPTY ');
             if (patientsStatus === stateStatus.EMPTY)
                 dispatch(getPatientById(id))
         
