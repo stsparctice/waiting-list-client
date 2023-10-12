@@ -29,7 +29,7 @@ export const getPatientById = createAsyncThunk('/getObjectById', async (id,api) 
     // try {
         const response = await getData(`rapidMed/find?id=${id}`)
         console.log(response,'data........................................');
-        return response.data
+        return response
     // }
     // catch (error) {
     //     return api.rejectWithValue(error.message)
@@ -52,6 +52,7 @@ export const patientSlice = createSlice({
     },
     extraReducers(builder) {
         builder.addCase(getPatientById.fulfilled, (state, action) => {
+            console.log(action.payload,'action.payload');
             state.selectedPatient = action.payload
             state.status = stateStatus.SUCCEEDED
             console.log(current(state))

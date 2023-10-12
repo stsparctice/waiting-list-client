@@ -10,6 +10,8 @@ import ColorLabel from "../../basic-components/ColorLabel/ColorLabel";
 import { useSelector, useDispatch } from 'react-redux'
 import { stateStatus } from "../../store/storeStatus";
 import { getPatientById } from '../../store/patients'
+import icons from "../../services/iconService";
+import { logDOM } from "@testing-library/react";
 
 const useStyles = createUseStyles({
     wrapper: {
@@ -59,6 +61,7 @@ const useStyles = createUseStyles({
 const ClientDetails = () => {
     const dispatch = useDispatch()
     const patient = useSelector(state => state.Patients.selectedPatient)
+    
     const patientsStatus = useSelector(state => state.Patients.status)
     const css = useStyles();
     const nav = useNavigate()
@@ -68,7 +71,7 @@ const ClientDetails = () => {
     useEffect(() => {
         console.log("i am here!!!!!!!!!!!!!!");
             if (patientsStatus === stateStatus.EMPTY)
-                dispatch(getPatientById(id))
+                dispatch(getPatientById(id)) 
         
         // const findData = async () => {
         //     const ans = await getData('/rapidMed/find', { id: id })
@@ -83,14 +86,22 @@ const ClientDetails = () => {
         nav('/patients')
     }, [],)
 
+    const sliceBirthdate=()=>{
+        console.log(patient.birthdate,'patient.birthdate')
+        
+
+    }
+
     return <>
-    <div>{JSON.stringify(patient)}</div>
+    {console.log(patient,'here')}
+    {patient?
         <div className={css.wrapper}>
             <div className={css.headerDetails}>
                 <div className={css.square}>
                     {genderTypes.map((g, i) => <ColorLabel key={i} backgroundColor={'blue'} gender={g}></ColorLabel>)}
                 </div>
-                <h2 className={css.header}>כרטיס ממתין - <span>{data.Name} {data['Family Name']}</span></h2>
+                {/* {patient['name']} {patient['familyName']} */}
+                <h2 className={css.header}>כרטיס ממתין - <span> {patient.name} {patient.familyName} </span></h2>
                 <div className={css.mainGender}></div>
                 <div className={css.close}>
                     <Icon className={css.div} imgName={'close'} func={closePatientCard}></Icon>
@@ -98,38 +109,44 @@ const ClientDetails = () => {
             </div>
             <div className={css.patientDetails}>
                 <div className={css.group}>
-                    <Icon imgName={'user'}></Icon>
+                    {/* <Icon imgName={'user'}></Icon> */}
+                    <img src={icons.USER}  />
                     <div className={css.details}>
-                        <p className={css.id}>{data.ID}</p>
-                        {
-                            new Date(data.Birthdate) != 'Invalid Date' ?
-                                <p className={css.dateOfBirth}>{new Date(data.Birthdate).toLocaleDateString()}</p> : <p className={css.dateOfBirth}>{data.Birthdate}</p>
+                    {/* --{patient['id']} */}
+                        <p className={css.id}>{patient.id}</p>
+                        {sliceBirthdate()}
+                        {/* <p className={css.dateOfBirth}>{new Date(patient.birthdate).toLocaleDateString()}</p> */}
+                        {/* --{patient['birthdate']} */}
+                         { new Date(patient.birthdate) != 'Invalid Date' ?
+                                <p className={css.dateOfBirth}>{new Date(patient.birthdate).toLocaleDateString()}</p> : <p className={css.dateOfBirth}>{data.Birthdate}</p>
                         }
                         {
-                            new Date(data.Birthdate) != 'Invalid Date' ?
-                                <p className={css.age}>{parseInt(new Date().getFullYear()) - parseInt(new Date(data.Birthdate).getFullYear())}</p> : ''
+                            new Date(patient.birthdate) != 'Invalid Date' ?
+                                <p className={css.age}>{parseInt(new Date().getFullYear()) - parseInt(new Date(patient.birthdate).getFullYear())}</p> : ''
                         }
                     </div>
                 </div>
                 <div className={css.group}>
-                    <Icon imgName={'telephone'}></Icon>
+                    {/* <Icon imgName={'telephone'}></Icon> */}
+                    <img src={icons.PHONE}  />
                     <div className={css.details}>
-                        <p className={css.phone1}>{data.Phone}</p>
-                        <p className={css.phone2}>{data['Cell Phone']}</p>
-                        <p className={css.phone3}>{data['Work Phone']}</p>
+                        <p className={css.phone1}>{patient.phone}</p>
+                        <p className={css.phone2}>{patient.cellPhone}</p>
+                        <p className={css.phone3}>{patient.workPhone}</p>
                     </div>
                 </div>
                 <div className={css.group}>
-                    <Icon imgName={'stethoscope'}></Icon>
+                    {/* <Icon imgName={'stethoscope'}></Icon> */}
+                    <img src={icons.STETHOSCOPE} />
                     <div className={css.details}>
-                        <p><span className={css.span}>מחירון: </span><span>{data.priceList}</span></p>
-                        <p><span className={css.span}>הערה: </span><span>{data.Comments}</span></p>
+                        <p><span className={css.span}>מחירון: </span><span>{patient.priceList}</span></p>
+                        <p><span className={css.span}>הערה: </span><span>{patient.comments}</span></p>
                         <p><span className={css.span}>מידע רפואי: </span><span>{data.medProb}</span></p>
                     </div>
                 </div>
             </div>
-            <Insert id={id}></Insert>
-        </div>
+            {/* <Insert id={id}></Insert> */}
+        </div>:<></>}
     </>
 }
 
