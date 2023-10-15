@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from 'react-redux'
 import { stateStatus } from "../../../store/storeStatus";
-import { getAllTeachers } from "../../../store/teachers";
+import { getAllTeachers, selectById } from "../../../store/teachers";
 import { useNavigate } from "react-router-dom";
 import { cellElementOptions } from "../../../basic-components/DynamicTable/Td/Td";
+import icons from "../../../services/iconService";
 import Table from "../../../basic-components/DynamicTable/Table/Table"
 import DeleteForm from "../../DeleteForm/DeleteForm";
 import FormTeacher from "../FormTeacher/FormTeacher";
@@ -12,13 +13,14 @@ const tableConfig = {
     headers: [{ key: 'teacherName', header: 'שם המורה' },{ key: 'phone', header: 'טלפון' },{ key: 'email', header: 'מייל' }, { key: 'address', header: 'כתובת' }],
     hideKeys: ['id', 'addedDate', 'userName', 'disabled', 'disabledDate', 'disableUser', 'disableReason'],
     convertKeys: [],
-    keyElements: [{ key: 'color', element: cellElementOptions.colorLabel }]
+    keyElements: []
 }
 
 const MainTeacher = () => {
     const dispatch = useDispatch()
     const teachers = useSelector(state => state.Teachers.teachers)
     const teacherStatus = useSelector(state => state.Teachers.status)
+    const [rowButtons, setRowButtons] = useState([])
     const [selectedTeacher, setSelectedTeacher] = useState({})
     const [deletePool, setDeletePool] = useState(undefined)
     const [insert, setInsert] = useState(false)
@@ -30,6 +32,15 @@ const MainTeacher = () => {
         if (teacherStatus === stateStatus.EMPTY)
             dispatch(getAllTeachers())
     }, [dispatch, teacherStatus]);
+
+    useEffect(() => {
+        const btns = [
+            {icon:icons.SCHEDULE, func:schedule, title:'מערכת'},
+            { icon: icons.EDIT, func: update, title: 'עדכון' },
+            {icon:icons.DELETE, func:remove, title:'מחק'},
+        ]
+        setRowButtons(btns)
+    }, [])
     
     useEffect(() => {
         let days
@@ -74,8 +85,15 @@ const MainTeacher = () => {
         // findInMongo()
     }, [])
 
-    const update = ()=>{
-        console.log('update')
+    const update = (data)=>{
+        console.log({data})
+        setShowModal(true)
+        setInsert(false)
+        setSelectedTeacher(data.id)
+    }
+
+    const schedule = (data)=>{
+        setSelectedTeacher(data.id)
     }
 
     const remove = ()=>{
@@ -106,7 +124,7 @@ const MainTeacher = () => {
         {showDeleteModal ?
             <DeleteForm obj={deletePool} confirm={confirm} cancel={closeModal}></DeleteForm> : <></>
         }
-        <Table config={tableConfig} data={teachers} updateFunc={update} deleteFunc={remove}></Table>
+        <Table config={tableConfig} data={teachers} rowbuttons={rowButtons}></Table>
         <button onClick={openModal}>:מטפל חדש</button>
     </>
 
