@@ -14,9 +14,7 @@ export default configureStore({
     Genders, 
 
     Schedule,
-    Patients
-
-    Schedule, 
+    Patients,
     Teachers
 
   },
