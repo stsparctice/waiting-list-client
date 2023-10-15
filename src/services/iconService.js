@@ -7,6 +7,10 @@ import deleteImg from "../assets/delete-grey.png"
 import edit from "../assets/edit-grey.png"
 import closeIcon from "../assets/close-red.png"
 import arrowdown from '../assets/arrowdown.png'
+import addIcon from "../assets/add-green.png"
+import user from "../assets/user.png"
+import telephone from "../assets/telephone.png"
+
 
 const icons = {
     ADD: add,
@@ -17,7 +21,11 @@ const icons = {
     DELETE: deleteImg,
     EDIT: edit,
     CLOSE: closeIcon,
-    ARROWDOWN:arrowdown
+    ARROWDOWN:arrowdown,
+    ADD:addIcon,
+    USER:user,
+    PHONE:telephone
+
 }
 
 export default icons

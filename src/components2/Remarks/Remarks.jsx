@@ -112,9 +112,9 @@ const Remarks = ({ id, sendRemarks }) => {
 
     useEffect(
         () => {
-            const getDataFromSerevr = async () => {
-                await Promise.all([sendToMongo].map(func => func()))
-            }
+            // const getDataFromSerevr = async () => {
+            //     await Promise.all([sendToMongo].map(func => func()))
+            // }
 
             const sendToMongo = async () => {
                 if (id === '') {
@@ -127,7 +127,7 @@ const Remarks = ({ id, sendRemarks }) => {
                     setRemarks(response.data[0].remarks)
                 }
             }
-            getDataFromSerevr()
+            // getDataFromSerevr()
         }, [])
 
     const addRemark = async () => {
