@@ -62,17 +62,18 @@ const Read = () => {
         //     ansref.current.innerHTML = "אחד מן הפרטים חסר";
         //     return
         // }
-        let response = await server.get(`/patient/findPatientesByFeature/${featureName}/${name}`)
-        console.log(response);
-        if (response.data.length === 0) {
-            ansref.current.innerHTML = "לא נמצאו  נתונים קיימים במערכת"
-        }
-        else {
-            setAns([])
-            prepareToTable(response.data)
-            console.log(response.data);
-            console.log(ans, 'ans');
-        }
+        
+        // let response = await server.get(`/patient/findPatientesByFeature/${featureName}/${name}`)
+        // console.log(response);
+        // if (response.data.length === 0) {
+        //     ansref.current.innerHTML = "לא נמצאו  נתונים קיימים במערכת"
+        // }
+        // else {
+        //     setAns([])
+        //     prepareToTable(response.data)
+        //     console.log(response.data);
+        //     console.log(ans, 'ans');
+        // }
     }
 
     const getAllOrderByPreference = async () => {

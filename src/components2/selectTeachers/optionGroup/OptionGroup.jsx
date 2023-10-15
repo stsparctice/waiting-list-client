@@ -52,8 +52,8 @@ const OptionGroup = ({ pools, genders,click }) => {
                 ))
 
             ));
-            let data = await server.post('teachers/findTeacherByCondition', { filter })
-            setTeachers(data.data)
+            // let data = await server.post('teachers/findTeacherByCondition', { filter })
+            // setTeachers(data.data)
         }
         selectTeachers()
         // 0533182179
@@ -63,7 +63,6 @@ const OptionGroup = ({ pools, genders,click }) => {
     }
     return <>
 
-        
         {
             <div className={css.dropContainer} > 
                 <span className={css.dropHeader} onClick={showList}>מטפלים מועדפים</span>
