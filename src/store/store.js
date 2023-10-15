@@ -12,12 +12,8 @@ export default configureStore({
   reducer: {
     SwimmingPools,
     Genders, 
-
     Schedule,
-    Patients
-
-    Schedule, 
+    Patients,
     Teachers
-
   },
 })
