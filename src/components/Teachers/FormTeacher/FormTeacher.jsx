@@ -1,137 +1,83 @@
 import React, { useState, useEffect, useCallback } from "react"
+import { useNavigate } from "react-router-dom"
 import { useSelector, useDispatch } from 'react-redux'
+
 import { addTeacher, selectById, updateTeacher } from '../../../store/teachers'
-import Checkbox from "../../../small-components/Checkbox/Checkbox"
+import { stateStatus } from "../../../store/storeStatus"
+import { getAllPools } from "../../../store/swimmingPools"
+import { getAllGenders } from "../../../store/genders"
+
+import { levels } from "../../../services/data"
+import icons from "../../../services/iconService"
+
+import CheckBoxList from "../../../basic-components/CheckboxList/CheckBoxList"
+import { listType } from "../../../basic-components/CheckboxList/ListContext"
 import StandartInput from "../../../basic-components/StandartInput/StandartInput"
 import TextButton from "../../../basic-components/TextButton/TextButton"
 import ButtonIcon from "../../../basic-components/ButtonIcon/ButtonIcon"
-import { useNavigate } from "react-router-dom"
-import { levels } from "../../../services/data"
 import '../../../styles/Form.css'
 import '../../../styles/Modal.css'
-import icons from "../../../services/iconService"
+
 
 
 const FormTeacher = ({ id, confirm, insert, cancel }) => {
     const nav = useNavigate()
     const dispatch = useDispatch()
     const teacher = useSelector(state => state.Teachers.teacher)
+    const genders = useSelector(state=>state.Genders.genders)
+    const genderStatus =  useSelector(state=>state.Genders.status)
+    const pools = useSelector(state=>state.SwimmingPools.pools)
+    const poolsStatus = useSelector(state=>state.SwimmingPools.status)
     const [val, setVal] = useState({ teacherName: "", email: "", phone: "", annotation: "", city: "", address: "" })
-
+    const [poolList, setPoolList] = useState([])
+    const [genderList, setGenderList] = useState([])
+    
     const confirmForm = () => {
-
-        console.log({ val })
         if (insert) {
             const data = {
-               val
+                ...val
             }
             dispatch(addTeacher(data))
         }
         else {
             const data = {
                 ...teacher,
-               ...val
+                ...val
             }
+            console.log({ data })
             dispatch(updateTeacher(data))
         }
         confirm()
     }
 
-    // useEffect(() => {
-    //     const level = async (arr) => {
-    //         if (arr) {
-    //             arr.forEach(e => {
-    //                 let level = level.find(f => (f.text == e))
-    //                 if (level)
-    //                     level.checked = true
-    //                 setLevelArr([...levelArr])
-    //             });
-    //         }
-    //     }
-    //     const gender = async (arr) => {
-    //         if (arr) {
-    //             arr.forEach(e => {
-    //                 let genders = genderArr.find(f => (f.text == e))
-    //                 if (genders)
-    //                     genders.checked = true
-    //             });
-    //         }
-    //         SetGenderArr([...genderArr])
-    //     }
-    //     const pool = async (arr) => {
-    //         if (arr) {
-    //             arr.forEach(e => {
-    //                 let pool = poolArr.find(f => (f.text == e))
-    //                 if (pool)
-    //                     pool.checked = true
+    useEffect(() => {
+        dispatch(selectById(id))
+    }, [dispatch, id])
 
-    //             });
-    //         }
-    //         SetPoolArr([...poolArr])
-    //     }
-    //     const setValue = async (obj) => {
+    useEffect(()=>{
+        if (poolsStatus === stateStatus.EMPTY)
+        dispatch(getAllPools())
+        if (genderStatus === stateStatus.EMPTY)
+        dispatch(getAllGenders())
+    })
 
-    //         setVal({ name: obj.name, email: obj.email, phone: obj.phone, annotation: obj.annotation, city: obj.address.city, street: obj.address.street, zip: obj.address.zip })
+    useEffect(()=>{
+setPoolList(pools.map(({id, name, color})=>({id, text:name, color})))
+    }, [pools])
 
+    useEffect(()=>{
+        setGenderList(genders.map(({id, name, color})=>({id, text:name, color})))
+            }, [genders])
 
-    //     }
-
-    //     const getDataFromSerevr = async () => {
-    //         await Promise.all([findGender, findPool].map(func => func()))
-    //     }
-
-    //     const findGender = async () => {
-    //         const res = await server.post('/gender/find', { project: { _id: 0, name: 1, genderColor: 1 } })
-    //         let genders = res.data.map(m => ({ color: m.genderColor, checked: false, text: m.name, isradio: false }))
-    //         let g = genders.find(f => (f.text == "גברים"))
-    //         if (g)
-    //             g.isradio = true
-    //         SetGenderArr([...genders])
-    //         if (type == "update") {
-    //             if (obj.name) {
-    //                 gender(obj.genders)
-    //             }
-    //         }
-    //     }
-    //     const findPool = async () => {
-    //         const ans = await server.post('/pool/find', { project: { _id: 0, poolName: 1, poolColor: 1 } })
-    //         const pools = ans.data.map(m => ({ color: m.poolColor, checked: false, text: m.poolName }))
-    //         SetPoolArr([...pools])
-    //         if (type == "update") {
-    //             if (obj.name) {
-    //                 pool(obj.pools)
-    //             }
-    //         }
-    //     }
-
-    //     getDataFromSerevr()
-    //     if (type == "update") {
-    //         if (obj.name) {
-    //             level(obj.levels)
-    //             setValue(obj)
-    //         }
-
-    //     }
-    // }, [obj])
-
-
-   
-    // const toDdelete = useCallback(async () => {
-    //     if (type == "update") {
-    //         const ans = await server.post('/datamanager/teachers/deleteTeacher', { name: obj.name })
-    //         console.log(ans.data);
-    //     }
-    // }, [val]);
-
-    // const schedule = useCallback(async () => {
-
-    //     nav('/datamanager/teachers/sendToTeacherSchedule', { state: { name: obj.name } })
-
-
-
-
-    // }, [val]);
-
+    useEffect(() => {
+        console.log({ teacher })
+        if (id !== 0) {
+            setVal({ ...teacher })
+        }
+        else {
+            console.log('new')
+        }
+    }, [id, teacher])
 
 
     const setValue = (event, arg) => {
@@ -139,11 +85,6 @@ const FormTeacher = ({ id, confirm, insert, cancel }) => {
         temp[arg] = event.target.value
         setVal(prev => ({ ...prev, ...temp }))
     };
-
-    // const sendVal = () => {
-    //     return { levels: levels.filter(f => (f.checked === true)).map(m => (m = m.text)), pools: poolArr.filter(f => (f.checked == true)).map(m => (m = m.text)), genders: genderArr.filter(f => (f.checked == true)).map(m => (m = m.text)), name: val.name, address: { city: val.city, street: val.street, zip: val.zip }, email: val.email, annotation: val.annotation, phone: val.phone }
-    // };
-
 
     return <>
         <div className="modal" >
@@ -157,17 +98,19 @@ const FormTeacher = ({ id, confirm, insert, cancel }) => {
 
 
                 <div className="form">
-                    <StandartInput text="שם המטפל"   type="text" value={val.name} set={(event)=>setValue(event, 'teacherName')}></StandartInput>
-                    <StandartInput text="טלפון"  type="text" value={val.phone} set={(event)=>setValue(event, 'phone')}></StandartInput>
-                    <StandartInput text="אימייל"  type="email" value={val.email} set={(event)=>setValue(event, 'email')}></StandartInput>
-                    <StandartInput text="כתובת"  type="text" value={val.street} set={(event)=>setValue(event, 'address')}></StandartInput>
-                    <StandartInput text="עיר"  type="text" value={val.city} set={(event)=>setValue(event, 'city')}></StandartInput>
-                    <StandartInput text="הערה"  type="text" value={val.annotation} set={(event)=>setValue(event, 'annotation')}></StandartInput>
-
+                    <StandartInput text="שם המטפל" type="text" value={val.teacherName} set={(event) => setValue(event, 'teacherName')}></StandartInput>
+                    <StandartInput text="טלפון" type="text" value={val.phone} set={(event) => setValue(event, 'phone')}></StandartInput>
+                    <StandartInput text="אימייל" type="email" value={val.email} set={(event) => setValue(event, 'email')}></StandartInput>
+                    <StandartInput text="כתובת" type="text" value={val.address} set={(event) => setValue(event, 'address')}></StandartInput>
+                    <StandartInput text="עיר" type="text" value={val.city} set={(event) => setValue(event, 'city')}></StandartInput>
+                    <StandartInput text="הערה" type="text" value={val.annotation} set={(event) => setValue(event, 'annotation')}></StandartInput>
+                    <CheckBoxList type={listType.MULTIPLE} list={levels}></CheckBoxList>
+                    <CheckBoxList type={listType.MULTIPLE} list={genderList}></CheckBoxList>
+                    <CheckBoxList type={listType.MULTIPLE} list={poolList}></CheckBoxList>
                     <div className="button-row">
-                        <TextButton text="אישור"   bgColor="purple" func={confirmForm}></TextButton>
+                        <TextButton text="אישור" bgColor="purple" func={confirmForm}></TextButton>
 
-                        <TextButton text="ביטול"   bgColor="purple" click={cancel}></TextButton>
+                        <TextButton text="ביטול" bgColor="purple" click={cancel}></TextButton>
 
                         {/* <TextButton text="שעות עבודה" styles={[{ height: 30, width: 120 }]} bgColor="purple"  ></TextButton> */}
                     </div>

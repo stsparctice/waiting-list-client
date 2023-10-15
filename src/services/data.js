@@ -1,7 +1,6 @@
 export const levels = [
-    { text: "גבוהה", color: "rgb(255, 0, 0)" }
-    , { text: "בינונית", color: "rgb(255, 165, 0)" }
-    , { text: "נמוכה", color: "rgb(103, 165, 11)" }
+    { id: 1, text: "גבוהה", color: "rgb(255, 0, 0)" }
+    , { id: 2, text: "בינונית", color: "rgb(255, 165, 0)" }
+    , { id: 3, text: "נמוכה", color: "rgb(50, 228, 63)" }
 ]
 
- 

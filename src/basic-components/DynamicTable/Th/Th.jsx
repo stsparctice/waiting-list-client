@@ -5,7 +5,9 @@ import { createUseStyles } from "react-jss";
 
 
 const useStyles = createUseStyles({
-  
+  th:{
+    padding:4,
+  }
 })
 
 const Th = ({ th }) => {

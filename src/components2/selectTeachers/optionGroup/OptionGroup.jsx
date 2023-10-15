@@ -62,10 +62,7 @@ const OptionGroup = ({ pools, genders,click }) => {
         document.querySelector('#content').style.display='block'
     }
     return <>
-<h1>
-    {console.log("i am in optiongroup")}
-</h1>
-      
+
         {
             <div className={css.dropContainer} > 
                 <span className={css.dropHeader} onClick={showList}>מטפלים מועדפים</span>
