@@ -7,6 +7,7 @@ import Table from "../../../basic-components/DynamicTable/Table/Table";
 import { cellElementOptions } from "../../../basic-components/DynamicTable/Td/Td";
 import { stateStatus } from "../../../store/storeStatus";
 import GenderForm from "../GenderForm/GenderForm";
+import icons from "../../../services/iconService";
 
 const useStyles = createUseStyles({
     mainGender: {
@@ -54,6 +55,7 @@ const MainGender = () => {
     const dispatch = useDispatch()
     const genders = useSelector(state => state.Genders.genders)
     const genderStatus = useSelector(state => state.Genders.status)
+    const [rowButtons, setRowButtons] = useState([])
     const [selectedGender, setSelectedGender] = useState({})
     const [deleteGenderGroup, setDeleteGenderGroup] = useState(undefined)
     const [insert, setInsert] = useState(false)
@@ -66,18 +68,25 @@ const MainGender = () => {
             dispatch(getAllGenders())
     }, [dispatch, genderStatus]);
 
-    const updateFunc = useCallback((data) => {
-        console.log({ data })
+
+    useEffect(() => {
+        const btns = [
+            { icon: icons.EDIT, func: updateFunc, title: 'עדכון' },
+            {icon:icons.DELETE, func:deleteFunc, title:'מחק'}
+        ]
+        setRowButtons(btns)
+    }, [])
+
+    const updateFunc = (data) => {
         setShowModal(true)
         setInsert(false)
         setSelectedGender(data.id)
-    }, [])
-    const deleteFunc = useCallback((data) => {
-        console.log({ data })
+    }
+    const deleteFunc = (data) => {
         setShowDeleteModal(true)
         setInsert(false)
         setDeleteGenderGroup({ data, name: data.name, title: 'קבוצה', deleteFunc: deleteGender })
-    }, [])
+    }
     const openModal = () => {
         console.log('modal')
         setInsert(true)
@@ -104,7 +113,7 @@ const MainGender = () => {
         {showDeleteModal ?
             <DeleteForm obj={deleteGenderGroup} confirm={confirm} cancel={cancel}></DeleteForm> : <></>
         }
-        <Table config={tableConfig} data={genders} updateFunc={updateFunc} deleteFunc={deleteFunc}></Table>
+        <Table config={tableConfig} data={genders} rowbuttons={rowButtons}></Table>
     </>
 }
 
