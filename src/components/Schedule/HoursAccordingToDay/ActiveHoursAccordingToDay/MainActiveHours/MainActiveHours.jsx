@@ -23,6 +23,7 @@ const MainActiveHours = ({ day }) => {
     const [insert, setInsert] = useState(false)
     const [showModal, setShowModal] = useState(false)
     const [selectedDay, setSelectedDay] = useState(undefined)
+    const [schedule, setSchedule] = useState(undefined)
     useEffect(() => {
         console.log({ poolId })
         dispatch(getAllSchedules(poolId))
@@ -34,7 +35,7 @@ console.log('useEffect poolschedules')
     }, [poolSchedules])
 
     const openModal = () => {
-        setInsert(true)
+       
         setShowModal(true)
         // setSelectedPool(0)
     }
@@ -46,10 +47,15 @@ console.log('useEffect poolschedules')
 
     const openInsertModal = (day) => {
         setSelectedDay(day)
+        setInsert(true)
         openModal()
     }
 
-    const openEditModal = (day) => {
+    const openEditModal = ({day, selectedSchedule}) => {
+        console.log({day})
+        setSelectedDay(day)
+        setSchedule(selectedSchedule)
+        setInsert(false)
         openModal()
     }
 
@@ -59,12 +65,12 @@ console.log('useEffect poolschedules')
         <TextButton bgColor={'purple'} text="הוספת יום למערכת"></TextButton>
        </div> */}
         <ScheduleTableProvider>
-            <WeekSchedule schedule={poolSchedules} insertEvent={openInsertModal} editEvent={openEditModal}></WeekSchedule>
+            <WeekSchedule schedule={poolSchedules} insert={insert} insertEvent={openInsertModal} editEvent={openEditModal}></WeekSchedule>
         </ScheduleTableProvider>
 
 
         {showModal ?
-            <PoolGenderHourForm day={selectedDay} cancel={closeModal} ></PoolGenderHourForm> : <></>}
+            <PoolGenderHourForm day={selectedDay} selectedSchedule={schedule} cancel={closeModal} ></PoolGenderHourForm> : <></>}
     </>
 }
 
