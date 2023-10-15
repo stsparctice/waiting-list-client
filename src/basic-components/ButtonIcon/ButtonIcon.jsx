@@ -1,45 +1,61 @@
-import React, { lazy, useEffect, useRef, useState } from "react";
+import React, {  useEffect,  useState , memo} from "react";
 import { createUseStyles } from "react-jss";
-import add from "../../assets/add.png";
-import excel from "../../assets/excel.png";
-import find from "../../assets/find.png";
-import stethoscope from "../../assets/stethoscope.png";
-import telephone from "../../assets/telephone.png";
-
+import icons from "../../services/iconService";
 const useStyles = createUseStyles({
 
-    img: {
-        padding: 0,
-        margin: 0,
-        border: 0,
+    btn: {
         cursor: "pointer",
+        padding: [3],
+
+        background: 'none',
+        
+        borderRadius: '50%',
+        border: 'none',
+        backgroundColor: 'transparent',
+        transitionDuration: '0.3s',
+        transitionProperty: 'all',
+        transitionTimingFunction: 'linear',
+        '&:hover': {
+            backgroundColor: 'rgba(0,0,0,0.1)'
+        },
+
+        '& figure': {
+            padding: 0,
+            margin: 0,
+            height: '100%',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center'
+        },
+        '& img': {
+            objectFit: 'contain',
+        }
+
     }
+   
+
+
 
 })
 
-const images = {
-    'add': add,
-    'excel': excel,
-    'find': find,
-    'stethoscope': stethoscope,
-    'telephone': telephone
-}
 
+const ButtonIcon = ({ imgName, title, func, btnStyle}) => {
 
-const ButtonIcon = ({ imgName, func }) => {
-    console.log('imgNAme',imgName);
+    const [imageSrc, setImageSrc] = useState()
     const css = useStyles()
-    const srcRef = useRef()
+
+    const {width, height, imgheight, imgwidth} = btnStyle
     useEffect(() => {
-        srcRef.current.setAttribute('src', images[imgName])
-    }, [])
+        setImageSrc(imgName)
+    }, [imgName])
 
     return <>
-        <button className={css.img} >
-            <img ref={srcRef} onClick={func} />
-            {/* <img ref={srcRef} style={{ width: '36px', height: '36px' }} onClick={func} /> */}
+        <button className={css.btn} style={{height, width}} title={title} onClick={func} >
+            <figure>
+                <img src={imageSrc} alt="" style={{height:imgheight, width:imgwidth}} />
+            </figure>
         </button>
 
     </>
 }
-export default ButtonIcon;
+export default memo(ButtonIcon);

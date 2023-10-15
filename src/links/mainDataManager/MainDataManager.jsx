@@ -5,10 +5,8 @@ import { Outlet, useNavigate } from "react-router-dom";
 
 const useStyles = createUseStyles({
     border: {
-        marginTop: 1,
-        marginRight: 10,
-        width: 1900,
-        height: 850,
+        width: '100%',
+        minHeight:'85vh',
         borderStyle: 'solid',
         borderWidth: 5,
         position: "absolute",
@@ -31,12 +29,10 @@ const MainDataManager = ({ arr } = []) => {
         setCurrentLink(obj)
     }, [],)
 
-    useEffect(() => {
-        function start() {
-            nav(`${arr[0].link}`)
-        }
-        start()
-    }, [])
+    // useEffect(() => {
+
+    //         nav(`${arr[0].link}`)
+    // }, [nav, arr])
 
     return <>
         <div className={css.out} >

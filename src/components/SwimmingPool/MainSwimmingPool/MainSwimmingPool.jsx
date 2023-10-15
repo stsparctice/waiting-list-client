@@ -1,158 +1,79 @@
-import React, { useCallback, useEffect, useState, useRef, useReducer } from "react";
-import { getData, postData } from "../../../services/axios";
-import Table from "../../../basic-components/Table/Table";
-import InsertFormSwimmingPool from "../InsertFormSwimmingPool/InsertFormSwimmingPool";
-import '../../OpenModalStyle.css'
+import React, { useCallback, useEffect, useState } from "react";
+import { useSelector, useDispatch } from 'react-redux'
+import { getAllPools, deleteSwimmingPool } from '../../../store/swimmingPools'
+import Table from "../../../basic-components/DynamicTable/Table/Table";
+import SwimmingPoolForm from "../SwimmingPoolForm/SwimmingPoolForm";
+import DeleteForm from "../../DeleteForm/DeleteForm";
+import { cellElementOptions } from "../../../basic-components/DynamicTable/Td/Td";
+import { stateStatus } from "../../../store/storeStatus";
+
+
+
+const tableConfig = {
+    headers: [{ key: 'name', header: 'שם הבריכה' }, { key: 'address', header: 'כתובת' }, { key: 'color', header: 'צבע' }],
+    hideKeys: ['id', 'addedDate', 'userName', 'disabled', 'disabledDate', 'disableUser', 'disableReason'],
+    convertKeys: [],
+    keyElements: [{ key: 'color', element: cellElementOptions.colorLabel }]
+}
 
 const MainSwimmingPool = () => {
-    const insertPoolRef = useRef()
-    const [pool, setPool] = useReducer(updatePool, [])
-    const [style, setStyle] = useState([])
-    const [tbody, setTbody] = useState([])
-    const [insert, setInsert] = useState(true)
-    const [trDetails, setTrDetails] = useState()
+    const dispatch = useDispatch()
+    const pools = useSelector(state => state.SwimmingPools.pools)
+    const poolsStatus = useSelector(state => state.SwimmingPools.status)
+    const [selectedPool, setSelectedPool] = useState({})
+    const [deletePool, setDeletePool] = useState(undefined)
+    const [insert, setInsert] = useState(false)
+    const [showModal, setShowModal] = useState(false)
+    const [showDeleteModal, setShowDeleteModal] = useState(false)
 
     useEffect(() => {
-        async function fetchData() {
-            const response = await getData('/pool/getAll')
-            console.log('response', response);
-            let styles = []
-            let th = { poolName: 'שם בריכה', poolAddress: 'כתובת הבריכה' }
-            let ans = new Array(...response)
-            ans.forEach((e) => {
-                styles.push(e['poolColor'])
-                for (let key in e) {
-                    if (Object.keys(th).indexOf(key) === -1) {
-                        delete e[key]
-                    }
-                }
-            });
-            setTbody(ans)
-            setStyle(styles)
-            setPool(response)
-            insertPoolRef.current.style.display = 'none'
-        }
-        fetchData();
-    }, []);
-    // function updateTBody(arr) {
-    //     let style = []
-    //     let th = { poolName: 'שם בריכה', poolAddress: 'כתובת הבריכה' }
-    //     arr.forEach((e, index) => {
-    //         // setStyle(...style,e['poolColor'])
-    //         style.push(e['poolColor'])
-    //         for (let key in e) {
-    //             if (Object.keys(th).indexOf(key) === -1) {
-    //                 delete e[key]
-    //             }
-    //         }
-    //     });
-    //     setTbody(arr)
-    //     setStyle(style)
-    // }
-    const updateFunc = useCallback((tr, color) => {
-        setTrDetails({ name: tr[0], color: color, address: tr[1] })
+        if (poolsStatus === stateStatus.EMPTY)
+            dispatch(getAllPools())
+    }, [dispatch, poolsStatus]);
+
+    const updateFunc = useCallback((data) => {
+        console.log({ data })
+        setShowModal(true)
         setInsert(false)
-        insertPoolRef.current.style.display = 'block'
+        setSelectedPool(data.id)
     }, [])
-    const deleteFunc = useCallback(
-        async (tr) => {
-            let body = { poolName: tr[0], poolAddress: tr[1], status: 'remove' }
-            const response = await postData('/pool/delete', { poolName: tr[0] })
-            let ans = JSON.stringify(response)
-            if (ans) {
-                setPool([body])
-                console.log(pool);
-            }
-        }, [])
-    const confirm = useCallback(async (oldName, poolName, poolColor, poolAddress) => {
-        console.log(oldName, poolName, poolColor, poolAddress);
-        console.log('insert', insert);
-        if (insert) {
-            //  בדיקות ולידציה ???
-            let body = { poolName: poolName, poolColor: poolColor, poolAddress: poolAddress, status: 'add' }
-            if (pool.find(p => p.poolName === body.poolName) === undefined) {
-                const response = await postData('/pool/add', body)
-                console.log('after added', response);
-                if (response)
-                    setPool([body])
-            }
-            else
-                sameName()
-        }
-        else {
-            if (pool.find(p => p.poolName === poolName) !== undefined) {
-                sameName()
-            }
-            else {
-                console.log('in update:)............');
-                console.log('oldName', oldName, 'poolName', poolName, 'poolColor', poolColor, 'poolAddress', poolAddress);
-                !poolName ? poolName = oldName : poolName = poolName
-                let body = { oldPoolName: oldName, poolName: poolName, poolColor: poolColor, poolAddress: poolAddress }
-                console.log(body);
-                const response = await postData('/pool/update', body)
-                console.log('response in confirm, update  ', response);
-                if (response) {
-                    body['status'] = 'update'
-                    setPool([body])
-                }
-                console.log('after update ', pool);
-            }
-        }
-    }, [],)
-    const cancel = useCallback(() => {
-        insertPoolRef.current.style.display = 'none'
-    }, [],)
-    function openInsert() {
+
+    const deleteFunc = useCallback((data) => {
+        console.log({ data })
+        setShowDeleteModal(true)
+        setInsert(false)
+        setDeletePool({ data, name: data.name, title: 'בריכה', deleteFunc: deleteSwimmingPool })
+    }, [])
+
+    const confirm = useCallback(() => {
+        closeModal()
+    }, [])
+
+
+    const openModal = () => {
         setInsert(true)
-        insertPoolRef.current.style.display = 'block'
+        setShowModal(true)
+        setSelectedPool(0)
     }
-    function sameName() {
-        console.log('there is a pool with a same name');
+
+    const closeModal = () => {
+        setShowModal(false)
+        setShowDeleteModal(false)
     }
+
     return <>
         <h1>בריכות</h1>
-        <button onClick={openInsert}>הוספת בריכה חדשה</button>
-        <div ref={insertPoolRef}>
-            {console.log('trDetails',trDetails)}
-            {!trDetails ?
-                <InsertFormSwimmingPool name={''} color={''} address={''} confirm={confirm} cancel={cancel}></InsertFormSwimmingPool>
-                : <InsertFormSwimmingPool name={trDetails.name} color={trDetails.color} address={trDetails.address} confirm={confirm} cancel={cancel}></InsertFormSwimmingPool>
-            }
-        </div>
-        <Table th={['שם בריכה', 'כתובת הבריכה']} tbody={tbody} style={style} updateFunc={updateFunc} deleteFunc={deleteFunc}></Table>
+        <button onClick={openModal}>הוספת בריכה חדשה</button>
+        {showModal ?
+            <SwimmingPoolForm id={selectedPool} insert={insert} confirm={confirm} cancel={closeModal}></SwimmingPoolForm> : <></>}
+        {showDeleteModal ?
+            <DeleteForm obj={deletePool} confirm={confirm} cancel={closeModal}></DeleteForm> : <></>
+        }
+        <Table config={tableConfig} data={pools} updateFunc={updateFunc} deleteFunc={deleteFunc}></Table>
 
     </>
 }
 
-const updatePool = (state, item) => {
-    item.forEach(i => {
-        switch (i.status) {
-            case 'add':
-                console.log('in add++++++++++++++');
-                delete i.status
-                state = [...state, i]
-                break;
-            case 'remove':
-                console.log('===============');
-                delete i.status
-                console.log('index', state.findIndex(p => p.poolName === i.poolName));
-                console.log('state', state);
-                state.splice(state.findIndex(p => p.poolName === i.poolName), 1)
-                state = [...state]
-                break;
-            case 'update':
-                delete i.status
-                let index = state.findIndex(p => p.poolName === i.oldPoolName)
-                state[index] = i
-                state = [...state]
-                delete i.oldPoolName
-                break;
-            default:
-                console.log('default in switch');
-                break;
-        }
-    });
-    return state
-}
+
 
 export default MainSwimmingPool

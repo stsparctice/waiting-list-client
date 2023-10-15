@@ -1,10 +1,18 @@
-import { useState } from 'react';
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import './App.css';
+import { useReducer } from 'react';
+import Navigation from './components/patients/Navigation/Navigation';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import Read from './components/patients/Read/Read'
+import Delete from './components/patients/Delete/Delete'
+import Update from './components/patients/Update/Update';
+import Insert from './components/patients/Insert/Insert';
+import AllButtons from './components2/AllButtons/AllButtons';
+import { useState } from 'react';
 
 import MainSwimmingPool from './components/SwimmingPool/MainSwimmingPool/MainSwimmingPool';
 import MainGender from './components/Gender/MainGender/MainGender'
 import MainSchedule from './components/Schedule/MainSchedule/MainSchedule';
+import MainActiveHours from './components/Schedule/HoursAccordingToDay/ActiveHoursAccordingToDay/MainActiveHours/MainActiveHours';
 import MainDataManager from './links/mainDataManager/MainDataManager';
 import Headers from './links/headers/Headers';
 import Patients from './components/patients/Patients';
@@ -14,15 +22,23 @@ import TableTeacher from './components/Teachers/TableTeachers/TableTeacher';
 import SendToFormSchedule from "./components/Teachers/FormTeacherSchedule/SendToFormSchedule/SendToFormSchedule"
 import SmallTable from './small-components/SmallTable/SmallTable';
 import FormSchedule from './components/Teachers/FormTeacherSchedule/FormSchedule/FormSchedule';
-
+import PoolTableContext, { PoolTable } from './contexts/PoolTable';
+import HoursContext, { HoursReducer } from './contexts/Hours'
+import GenderData from './components/GenderData/GenderData'
 import ClientDetails from './components/ClientDetails/ClientDetails';
+import PoolTableInformation from './components/PoolTableInformation/PoolTableInformation';
+import HoursDetailContext, { HoursDetailsReducer } from './contexts/HoursDetails'
 
 function App() {
+  const [data, setData] = useReducer(PoolTable, {})
+  const [activeHours, setActiveHours] = useReducer(HoursReducer, [])
+  const [details, setDetails] = useReducer(HoursDetailsReducer, [])
+
   const [arrdatamanager] = useState([
-    { text: "שעות פעילות", link: "/datamanager/schedule", color: 'purple' },
-    { text: "בריכות", link: "/datamanager/pool", color: 'green' },
-    { text: "קבוצות", link: "/datamanager/gender", color: 'blue' },
-    { text: "מטפלים", link: "/datamanager/teachers", color: 'red' }
+    { text: "שעות פעילות", link: "/datamanager/schedule", color: '#B63B3B' },
+    { text: "מטפלים", link: "/datamanager/teachers", color: '#F4981F' },
+    { text: "בריכות", link: "/datamanager/pool", color: '#9FDF8A' },
+    { text: "קבוצות", link: "/datamanager/gender", color: '#AB99BF' },
   ])
 
   const [headers] = useState([
@@ -35,6 +51,7 @@ function App() {
   ])
 
   return <>
+    {/* </UserContext.Provider> */}
     <BrowserRouter>
       <Routes>
         <Route path='/' element={<Headers arr={headers} />} >
@@ -43,7 +60,9 @@ function App() {
           {/* <Route path='/archives'></Route> */}
           {/* <Route path='/noMedicalInformation'></Route> */}
           <Route path='datamanager' element={<MainDataManager arr={arrdatamanager} />} >
-            <Route path='schedule' element={<MainSchedule />} />
+            <Route path='schedule' element={<MainSchedule />}>
+              <Route path='dayschedule/:poolId' element={<MainActiveHours />}/>
+            </Route>
             <Route path='gender' element={<MainGender />} />
             <Route path='pool' element={< MainSwimmingPool />} />
             <Route path='teachers' element={<TableTeacher />} >
@@ -52,15 +71,15 @@ function App() {
               <Route path='sendToTeacherSchedule' element={<SendToFormSchedule />} />
               <Route path='teacherSchedule' element={<FormSchedule />} />
             </Route>
-
           </Route>
-          {/* <Route path='/reports'></Route> */}
+
+
+          <Route path='/clientDetails/:id' element={<ClientDetails />} />
         </Route>
-
-        <Route path='/clientDetails/:id' element={<ClientDetails />} />
-
+        {/* <Route path='/insertPatient/:id' element={<Insert />} /> */}
       </Routes>
     </BrowserRouter >
   </>
+
 }
 export default App;

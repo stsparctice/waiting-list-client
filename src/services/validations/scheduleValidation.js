@@ -10,7 +10,7 @@ export async function checkHours(timeTable) {
 
 function checkHoursForDay(day) {
     let flag = true
-    day.hours.map(async hour => {
+    day.hours.map(hour => {
         if (hour.startHour >= hour.endHour) {
             flag = false
         }
@@ -33,4 +33,40 @@ export async function removalIndexsAndCheckEmptyOption(timeTable) {
         }
 
     })
+}
+
+
+export const checkHoursDiff = (start, end) => {
+    console.log({ start, end });
+    return start.getTime() < end.getTime()
+}
+
+export const checkAvailableHours = (day, start, end) => {
+    if (day.schedules.length === 0)
+        return true
+    const error1 = day.schedules.find(({ startHour, endHour }) => startHour.getTime() < start.getTime() && endHour.getTime() > end.getTime())
+    if (error1) {
+        throw new Error('תווך הזמן שנבחר קיים במערכת')
+    }
+
+    const error2 = day.schedules.find(({ startHour, endHour }) => startHour.getTime() > start.getTime() && endHour.getTime() < end.getTime())
+    if (error2) {
+        throw new Error('במערכת קיים זמן הכלול בזמנים שנבחרו')
+    }
+
+    const error3 = day.schedules.find(({ startHour }) => startHour.getTime() > start.getTime() && startHour.getTime() < end.getTime())
+    if (error3) {
+        throw new Error('סוף הזמן שנבחר נמצא בזמן הקיים במערכת')
+    }
+
+    const error4 = day.schedules.find(({ startHour, endHour }) => startHour.getTime() < start.getTime() && start.getTime() < endHour.getTime())
+    if (error4) {
+        throw new Error('תחילת הזמן שנבחר נמצא בזמן הקיים במערכת')
+    }
+
+    return true;
+}
+
+export const checkTimeInBlock = ({ startHour, endHour }, block) => {
+    return block.getTime() >= startHour.getTime() && block.getTime() < endHour.getTime()
 }

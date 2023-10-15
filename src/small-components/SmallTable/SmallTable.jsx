@@ -34,18 +34,18 @@ const SmallTable = () => {
     const nav = useNavigate()
 
     useEffect(() => {
-        const findColor = async () => {
-            let ans = await server.post(`/gender/find/`)
-            ans.data = ans.data.map(col => (
-                {
-                    name: col.name,
-                    genderColor: col.genderColor
-                }
-            ))
-            console.log({ ans })
-            setColor(ans.data)
-        }
-        findColor()
+        // const findColor = async () => {
+        //     let ans = await server.post(`/gender/find/`)
+        //     ans.data = ans.data.map(col => (
+        //         {
+        //             name: col.name,
+        //             genderColor: col.genderColor
+        //         }
+        //     ))
+        //     console.log({ ans })
+        //     setColor(ans.data)
+        // }
+        // findColor()
     }, [])
 
     const close = (event) => {

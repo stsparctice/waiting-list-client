@@ -1,0 +1,34 @@
+.form-wrapper{
+    padding: 15px;
+    border: 1px solid black;
+    border-radius: 4px;
+    box-shadow: 0 0 5px   gray;
+    width: 70%;
+    /* text-align: center; */
+    margin:auto
+}
+
+.form{
+    margin:auto;
+    width: 350px;
+}
+
+.input-row{
+    display:flex;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.button-row{
+    width: 350px;
+    margin: auto;
+    display: flex;
+    justify-content: center;
+}
+
+.input-group{
+    width:  170px;
+    display: flex;
+    flex-direction: column;
+    padding: 2px;
+}

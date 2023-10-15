@@ -1,36 +1,19 @@
 import React, { useReducer, useEffect, useCallback } from "react"
 import { server } from "./../../../../services/axios"
+import { useNavigate } from "react-router-dom"
 import TimetableForDay from './TimetableForDay'
-import { checkHours, removalIndexsAndCheckEmptyOption } from "./../../../../services/validations/scheduleValidation"
+// import ScheduleTeacherContext, { setstate } from "../../../../contexts/ScheduleTeacherContext"
+import Text from "../../../../small-components/ButtonText/ButtonText"
 
 const addDay = (state, day) => {
     state = [...state, { ...day.obj, poolName: day.poolName }]
     return state
 }
 
-const addHour = (state, action) => {
-    let index = state.findIndex(item => item.day === action.day)
-    if (index !== -1) {
-        let indexInHours = state[index].hours.findIndex(item => item.index === action.schedule.index)
-        if (indexInHours === -1)
-            state[index].hours = [...state[index].hours, action.schedule]
-        else
-            state[index].hours[indexInHours] = action.schedule
-    }
-    else {
-        state = [...state, {
-            day: action.day, hours: [action.schedule]
-        }]
-    }
-
-    return state
-}
 
 const FormSchedule = ({ obj }) => {
-    console.log(obj,"===============================");
-    const [hours, setHours] = useReducer(addHour, [
-
-    ])
+    const nav = useNavigate()
+    // const [data, setData] = useReducer(setstate, [])
     const [allSchedule, setAllSchedule] = useReducer(addDay, []);
     useEffect(() => {
         const findInMongo = async () => {
@@ -43,7 +26,6 @@ const FormSchedule = ({ obj }) => {
                         setAllSchedule({ obj: ans[i].data[0].schedule[j], poolName: obj.poolName[i] });
                 }
             }
-
         }
         if (obj)
             findInMongo()
@@ -63,43 +45,48 @@ const FormSchedule = ({ obj }) => {
 
     }
 
+    // const closeSchedule = useCallback(async () => {
+    //     nav('/datamanager/teachers/oneTeacher', { state: { name: obj.name } })
+    // }, [data])
 
 
-    const save = useCallback(async (hour, day) => {
-        setHours({ schedule: hour, day: day })
-    }, [])
 
-    const saveSchedule = async () => {
+    // const saveSchedule = useCallback(async () => {
+    //     // data.map(day => {
+    //     //     day.hours.map((hour, index) => {
+    //     //         day.hours[index] = { startHour: hour.startHour, endHour: hour.endHour, poolName: hour.poolName, gender: hour.gender }
+    //     //     })
+    //     // })
+    //     let ans;
+    //     if (obj.update !== undefined) {
+    //         ans = await server.post('/teacher_schedule/updateTeacherSchedule', { name: obj.name, update: { schedule: data } })
+    //         return;
+    //     }
+    //     else {
+    //         ans = await server.post('/teacher_schedule/insertTeacherSchedule', { name: obj.name, schedule: data })
+    //     }
 
-        if (!await checkHours(hours)) {
-            console.log("xxxxxxxxxxxxxxx");
-        }
-        removalIndexsAndCheckEmptyOption(hours)
-
-        let ans;
-        if (obj.update) {
-            ans = await server.post('/teacher_schedule/updateTeacherSchedule', { name: obj.name, update: { schedule: hours } })
-            return;
-        }
-        ans = await server.post('/teacher_schedule/insertTeacherSchedule', { name: obj.name, schedule: hours })
-
-    }
+    // }, [data])
 
 
 
     if (allSchedule.length > 0) {
         return <>
-            {
-                allSchedule.map((day, index) => {
-                    if (obj.update) {
-                        const hour = getHoursOfDay(obj.update, day.day);
-                        if (hour)
-                            return <TimetableForDay func={save} obj={{ day: day, index: index, gender: obj.gender, update: hour }} key={index} ></TimetableForDay>;
-                    }
-                    return <TimetableForDay func={save} obj={{ day: day, index: index, gender: obj.gender }} key={index}></TimetableForDay>;
-                })
-            }
-            <button onClick={saveSchedule}>שמירה</button>
+            {/* <ScheduleTeacherContext.Provider value={{ data, setData }}> */}
+                {
+                    allSchedule.map((day, index) => {
+                        if (obj.update) {
+                            const hour = getHoursOfDay(obj.update, day.day);
+                            if (hour)
+                                return <TimetableForDay obj={{ day: day, index: index, gender: obj.gender, update: hour }} key={index} ></TimetableForDay>;
+                        }
+                        return <TimetableForDay obj={{ day: day, index: index, gender: obj.gender }} key={index}></TimetableForDay>;
+                    })
+                }
+                {/* <Text text="שמירה" styles={[{ height: 30, width: 120 }]} click={saveSchedule}></Text> */}
+                {/* <Text text="סגור" styles={[{ height: 30, width: 120 }]} click={closeSchedule}></Text> */}
+
+            {/* </ScheduleTeacherContext.Provider > */}
         </>
     }
 
