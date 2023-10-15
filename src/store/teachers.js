@@ -13,9 +13,10 @@ export const getAllTeachers = createAsyncThunk('teachers/getAll', async (url, ap
     }
 })
 
-export const addTeacher = createAsyncThunk('teachers/add', async (swimmingPool, api) => {
+export const addTeacher = createAsyncThunk('teachers/add', async (teacher, api) => {
     try {
-        const response = await postData('/teachers/insert', swimmingPool)
+        const response = await postData('/teachers/insert', teacher)
+        console.log(response)
         return response.data
     }
     catch (error) {
@@ -23,23 +24,23 @@ export const addTeacher = createAsyncThunk('teachers/add', async (swimmingPool, 
     }
 })
 
-export const updateTeacher = createAsyncThunk('teachers/update', async (swimmingPool, api) => {
+export const updateTeacher = createAsyncThunk('teachers/update', async (teacher, api) => {
     try {
-        const response = await postData('/pool/update', swimmingPool)
+        const response = await postData('/teachers/update', teacher)
         console.log({ response })
 
-        return swimmingPool
+        return teacher
     }
     catch (error) {
         return api.rejectWithValue(error.message)
     }
 })
 
-export const deleteTeacher = createAsyncThunk('teachers/delete', async (swimmingPool, api) => {
+export const deleteTeacher = createAsyncThunk('teachers/delete', async (teacher, api) => {
     try {
-        const response = await postData('/pool/delete', swimmingPool)
+        const response = await postData('/teachers/delete', teacher)
         console.log({ response })
-        return swimmingPool
+        return teacher
     }
     catch (error) {
         return api.rejectWithValue(error.message)
