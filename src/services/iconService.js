@@ -22,7 +22,7 @@ const icons = {
     DELETE: deleteImg,
     EDIT: edit,
     CLOSE: closeIcon,
-    SCHEDULE: schedule
+    SCHEDULE: schedule,
     ARROWDOWN:arrowdown,
     ADD:addIcon,
     USER:user,
