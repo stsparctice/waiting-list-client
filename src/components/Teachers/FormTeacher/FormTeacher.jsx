@@ -104,7 +104,7 @@ setPoolList(pools.map(({id, name, color})=>({id, text:name, color})))
                     <StandartInput text="כתובת" type="text" value={val.address} set={(event) => setValue(event, 'address')}></StandartInput>
                     <StandartInput text="עיר" type="text" value={val.city} set={(event) => setValue(event, 'city')}></StandartInput>
                     <StandartInput text="הערה" type="text" value={val.annotation} set={(event) => setValue(event, 'annotation')}></StandartInput>
-                    <CheckBoxList type={listType.MULTIPLE} list={levels}></CheckBoxList>
+                    <CheckBoxList type={listType.MULTIPLE} list={levels} ></CheckBoxList>
                     <CheckBoxList type={listType.MULTIPLE} list={genderList}></CheckBoxList>
                     <CheckBoxList type={listType.MULTIPLE} list={poolList}></CheckBoxList>
                     <div className="button-row">

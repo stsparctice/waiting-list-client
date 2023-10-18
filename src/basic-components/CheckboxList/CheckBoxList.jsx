@@ -5,7 +5,7 @@ import CheckBox from "./Checkbox";
 
 
 
-const CheckBoxList = ({ type, list } = []) => {
+const CheckBoxList = ({ type, list }) => {
 
     return <>
         <ListContextProvider>
