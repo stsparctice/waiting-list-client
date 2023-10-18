@@ -66,7 +66,11 @@ const FormTeacher = ({ id, confirm, insert, cancel }) => {
     }, [pools])
 
     useEffect(() => {
-        setGenderList(genders.map(({ id, name, color }) => ({ id, text: name, color })))
+        console.log({genders})
+        const option1 = genders.filter(({teacherGender})=>teacherGender===1).map(({ id, name, color }) => ({ id, text: name, color, option:1 , type:listType.MULTIPLE}))
+        const option2 = genders.filter(({teacherGender})=>teacherGender===2).map(({ id, name, color }) => ({ id, text: name, color, option:2 , type:listType.MULTIPLE}))
+        console.log({option1, option2})
+        setGenderList([...option1, ...option2])
     }, [genders])
 
     useEffect(() => {
@@ -85,6 +89,16 @@ const FormTeacher = ({ id, confirm, insert, cancel }) => {
         temp[arg] = event.target.value
         setVal(prev => ({ ...prev, ...temp }))
     };
+
+    const selectLevels = (levels)=>{
+        console.log({levels})
+    }
+    const selectGenders = (selectedGenders)=>{
+        console.log({selectedGenders})
+    }
+    const selectPools = (pools)=>{
+        console.log({pools})
+    }
 
     return <>
 
@@ -105,9 +119,9 @@ const FormTeacher = ({ id, confirm, insert, cancel }) => {
                     <StandartInput text="כתובת" type="text" value={val.address} set={(event) => setValue(event, 'address')}></StandartInput>
                     <StandartInput text="עיר" type="text" value={val.city} set={(event) => setValue(event, 'city')}></StandartInput>
                     <StandartInput text="הערה" type="text" value={val.annotation} set={(event) => setValue(event, 'annotation')}></StandartInput>
-                    <CheckBoxList type={listType.MULTIPLE} list={levels} ></CheckBoxList>
-                    <CheckBoxList type={listType.MULTIPLE} list={genderList}></CheckBoxList>
-                    <CheckBoxList type={listType.MULTIPLE} list={poolList}></CheckBoxList>
+                    <CheckBoxList type={listType.MULTIPLE} list={levels} set={selectLevels}></CheckBoxList>
+                    <CheckBoxList type={listType.HYBRID} list={genderList} set={selectGenders}></CheckBoxList>
+                    <CheckBoxList type={listType.MULTIPLE} list={poolList} set={selectPools}></CheckBoxList>
                     <div className="button-row">
                         <TextButton text="אישור" bgColor="purple" func={confirmForm}></TextButton>
 

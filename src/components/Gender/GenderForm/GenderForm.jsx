@@ -10,6 +10,9 @@ import TextButton from '../../../basic-components/TextButton/TextButton'
 import ButtonIcon from "../../../basic-components/ButtonIcon/ButtonIcon";
 import icons from "../../../services/iconService";
 import StandartInput from "../../../basic-components/StandartInput/StandartInput";
+import CheckBoxList from "../../../basic-components/CheckboxList/CheckBoxList";
+import { listType } from "../../../basic-components/CheckboxList/ListContext";
+import { teacherGenders } from "../../../services/data";
 const useStyles = createUseStyles({
     hide: {
         display: 'none'
@@ -28,6 +31,7 @@ const GenderForm = ({ insert, id, confirm, cancel }) => {
     const [sex2, setSex2] = useState(0);
     const [mmaxAge, setmmaxAge] = useState('');
     const [fmaxAge, setfmaxAge] = useState('');
+    const [teacherGender, setTeacherGender] = useState(undefined);
     const [genderColor, setGenderColor] = useState('#000000');
 
     useEffect(() => {
@@ -43,6 +47,7 @@ const GenderForm = ({ insert, id, confirm, cancel }) => {
             setGenderColor(selectedGender.color)
             setSex1(selectedGender.sex1)
             setSex2(selectedGender.sex2)
+            setTeacherGender(selectedGender.teacherGender)
         }
 
     }, [id, selectedGender])
@@ -53,7 +58,8 @@ const GenderForm = ({ insert, id, confirm, cancel }) => {
                 name, sex1, sex2,
                 maxAge1: mmaxAge,
                 maxAge2: fmaxAge,
-                color: genderColor
+                color: genderColor,
+                teacherGender
             }
             dispatch(addGender(data))
         }
@@ -63,11 +69,23 @@ const GenderForm = ({ insert, id, confirm, cancel }) => {
                 name, sex1, sex2,
                 maxAge1: mmaxAge,
                 maxAge2: fmaxAge,
-                color: genderColor
+                color: genderColor,
+                teacherGender
             }
             dispatch(updateGender(data))
         }
         confirm()
+    }
+
+    const selectTeacherGender = (value) => {
+        console.log({ value })
+        const gender = value.find(({ checked }) => checked)
+        if (gender) {
+            setTeacherGender(gender.item.id)
+        }
+        else {
+            setTeacherGender(undefined)
+        }
     }
 
     function female() {
@@ -85,10 +103,11 @@ const GenderForm = ({ insert, id, confirm, cancel }) => {
         setmmaxAge('')
     }
     return <>
+    {console.log({teacherGender, genderColor})}
         <div className="modal">
             <div className="form-wrapper container">
                 <div className={css.lefticon}>
-                    <ButtonIcon title="סגור" func={() => cancel()} imgName={icons.CLOSE}  btnStyle={{ imgwidth: "20px", imgheight: "20px", height: "40px", width: "40px" }}></ButtonIcon>
+                    <ButtonIcon title="סגור" func={() => cancel()} imgName={icons.CLOSE} btnStyle={{ imgwidth: "20px", imgheight: "20px", height: "40px", width: "40px" }}></ButtonIcon>
                 </div>
                 <h2>
                     {insert ? <span>קבוצה חדשה</span> : <span>עדכון קבוצה</span>}
@@ -129,6 +148,9 @@ const GenderForm = ({ insert, id, confirm, cancel }) => {
                                 <input type="number" min={0} max={120} value={fmaxAge} onInput={(e) => setfmaxAge(e.target.value)}></input>
                             </span>
                         </p>
+                    </div>
+                    <div>
+                        <CheckBoxList type={listType.SINGLE} list={teacherGenders} set={selectTeacherGender} selectedItems={insert===false?[{id:teacherGender}]:[]}></CheckBoxList>
                     </div>
 
 
