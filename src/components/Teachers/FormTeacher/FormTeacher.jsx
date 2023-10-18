@@ -24,14 +24,14 @@ const FormTeacher = ({ id, confirm, insert, cancel }) => {
     const nav = useNavigate()
     const dispatch = useDispatch()
     const teacher = useSelector(state => state.Teachers.teacher)
-    const genders = useSelector(state=>state.Genders.genders)
-    const genderStatus =  useSelector(state=>state.Genders.status)
-    const pools = useSelector(state=>state.SwimmingPools.pools)
-    const poolsStatus = useSelector(state=>state.SwimmingPools.status)
+    const genders = useSelector(state => state.Genders.genders)
+    const genderStatus = useSelector(state => state.Genders.status)
+    const pools = useSelector(state => state.SwimmingPools.pools)
+    const poolsStatus = useSelector(state => state.SwimmingPools.status)
     const [val, setVal] = useState({ teacherName: "", email: "", phone: "", annotation: "", city: "", address: "" })
     const [poolList, setPoolList] = useState([])
     const [genderList, setGenderList] = useState([])
-    
+
     const confirmForm = () => {
         if (insert) {
             const data = {
@@ -54,20 +54,20 @@ const FormTeacher = ({ id, confirm, insert, cancel }) => {
         dispatch(selectById(id))
     }, [dispatch, id])
 
-    useEffect(()=>{
+    useEffect(() => {
         if (poolsStatus === stateStatus.EMPTY)
-        dispatch(getAllPools())
+            dispatch(getAllPools())
         if (genderStatus === stateStatus.EMPTY)
-        dispatch(getAllGenders())
+            dispatch(getAllGenders())
     })
 
-    useEffect(()=>{
-setPoolList(pools.map(({id, name, color})=>({id, text:name, color})))
+    useEffect(() => {
+        setPoolList(pools.map(({ id, name, color }) => ({ id, text: name, color })))
     }, [pools])
 
-    useEffect(()=>{
-        setGenderList(genders.map(({id, name, color})=>({id, text:name, color})))
-            }, [genders])
+    useEffect(() => {
+        setGenderList(genders.map(({ id, name, color }) => ({ id, text: name, color })))
+    }, [genders])
 
     useEffect(() => {
         console.log({ teacher })
@@ -87,6 +87,7 @@ setPoolList(pools.map(({id, name, color})=>({id, text:name, color})))
     };
 
     return <>
+
         <div className="modal" >
             <div className="form-wrapper container">
                 <div className="lefticon">

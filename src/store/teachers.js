@@ -15,8 +15,7 @@ export const getAllTeachers = createAsyncThunk('teachers/getAll', async (url, ap
 
 export const addTeacher = createAsyncThunk('teachers/add', async (teacher, api) => {
     try {
-        const response = await postData('/teachers/insert', teacher)
-        console.log(response)
+        const response = await postData('/teachers/insertTeacher', teacher)
         return response.data
     }
     catch (error) {

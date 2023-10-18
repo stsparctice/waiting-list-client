@@ -5,11 +5,11 @@ import CheckBox from "./Checkbox";
 
 
 
-const CheckBoxList = ({ type, list }) => {
+const CheckBoxList = ({ type, list ,set} = []) => {
 
     return <>
         <ListContextProvider>
-            <CheckBox type={type} list={list}></CheckBox>
+            <CheckBox type={type} list={list} set={set}></CheckBox>
         </ListContextProvider>
     </>
 }
