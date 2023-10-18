@@ -26,14 +26,13 @@ const useStyles = createUseStyles({
 })
 
 export const setbackgroundColor = (obj) => {
-    console.log({ obj })
     let index = obj.color.indexOf(')')
     if (obj.color.indexOf(')') !== -1) {
         let backgroundColor = obj.color.slice(4, index)
         return `rgba(${backgroundColor}, 0.26)`;
     }
     if (obj.color.indexOf('#') !== -1) {
-return `${obj.color}42`
+        return `${obj.color}42`
     }
     else {
         return 'white'
@@ -41,8 +40,7 @@ return `${obj.color}42`
 
 }
 
-const OneCheckbox = ({ obj }) => {
-    console.log({ obj })
+const OneCheckbox = ({ obj ,set}) => {
     const { setCheckList } = useContext(ListContext)
     const css = useStyles()
 
@@ -51,11 +49,10 @@ const OneCheckbox = ({ obj }) => {
         setCheckList({ action: listActions.CHECKITEM, value: obj.item })
     }
 
-
     return <>
         <div className={css.out}>
             {
-                <div key={obj.text} className={css.wrapper} id={obj.item.color} style={{ borderTopColor: obj.item.color, backgroundColor: obj.checked ? setbackgroundColor(obj.item) : 'white' }} onClick={isChecked} >
+                <div key={obj.text} className={css.wrapper} id={obj.item.color} style={{ borderTopColor: obj.item.color, backgroundColor: obj.checked ? setbackgroundColor(obj.item) : 'white' }} onClick={isChecked} onMouseDown={set.set}>
 
                     <div className={`${obj.item.color}`}>
                         <span className={css.span}>{obj.item.text}</span>

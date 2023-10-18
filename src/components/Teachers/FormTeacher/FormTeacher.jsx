@@ -24,14 +24,14 @@ const FormTeacher = ({ id, confirm, insert, cancel }) => {
     const nav = useNavigate()
     const dispatch = useDispatch()
     const teacher = useSelector(state => state.Teachers.teacher)
-    const genders = useSelector(state=>state.Genders.genders)
-    const genderStatus =  useSelector(state=>state.Genders.status)
-    const pools = useSelector(state=>state.SwimmingPools.pools)
-    const poolsStatus = useSelector(state=>state.SwimmingPools.status)
+    const genders = useSelector(state => state.Genders.genders)
+    const genderStatus = useSelector(state => state.Genders.status)
+    const pools = useSelector(state => state.SwimmingPools.pools)
+    const poolsStatus = useSelector(state => state.SwimmingPools.status)
     const [val, setVal] = useState({ teacherName: "", email: "", phone: "", annotation: "", city: "", address: "" })
     const [poolList, setPoolList] = useState([])
     const [genderList, setGenderList] = useState([])
-    
+
     const confirmForm = () => {
         if (insert) {
             const data = {
@@ -54,20 +54,24 @@ const FormTeacher = ({ id, confirm, insert, cancel }) => {
         dispatch(selectById(id))
     }, [dispatch, id])
 
-    useEffect(()=>{
+    useEffect(() => {
         if (poolsStatus === stateStatus.EMPTY)
-        dispatch(getAllPools())
+            dispatch(getAllPools())
         if (genderStatus === stateStatus.EMPTY)
-        dispatch(getAllGenders())
+            dispatch(getAllGenders())
     })
 
-    useEffect(()=>{
-setPoolList(pools.map(({id, name, color})=>({id, text:name, color})))
+    useEffect(() => {
+        setPoolList(pools.map(({ id, name, color }) => ({ id, text: name, color })))
     }, [pools])
 
-    useEffect(()=>{
-        setGenderList(genders.map(({id, name, color})=>({id, text:name, color})))
-            }, [genders])
+    useEffect(() => {
+        console.log({genders})
+        const option1 = genders.filter(({teacherGender})=>teacherGender===1).map(({ id, name, color }) => ({ id, text: name, color, option:1 , type:listType.MULTIPLE}))
+        const option2 = genders.filter(({teacherGender})=>teacherGender===2).map(({ id, name, color }) => ({ id, text: name, color, option:2 , type:listType.MULTIPLE}))
+        console.log({option1, option2})
+        setGenderList([...option1, ...option2])
+    }, [genders])
 
     useEffect(() => {
         console.log({ teacher })
@@ -86,7 +90,18 @@ setPoolList(pools.map(({id, name, color})=>({id, text:name, color})))
         setVal(prev => ({ ...prev, ...temp }))
     };
 
+    const selectLevels = (levels)=>{
+        console.log({levels})
+    }
+    const selectGenders = (selectedGenders)=>{
+        console.log({selectedGenders})
+    }
+    const selectPools = (pools)=>{
+        console.log({pools})
+    }
+
     return <>
+
         <div className="modal" >
             <div className="form-wrapper container">
                 <div className="lefticon">
@@ -104,9 +119,9 @@ setPoolList(pools.map(({id, name, color})=>({id, text:name, color})))
                     <StandartInput text="כתובת" type="text" value={val.address} set={(event) => setValue(event, 'address')}></StandartInput>
                     <StandartInput text="עיר" type="text" value={val.city} set={(event) => setValue(event, 'city')}></StandartInput>
                     <StandartInput text="הערה" type="text" value={val.annotation} set={(event) => setValue(event, 'annotation')}></StandartInput>
-                    <CheckBoxList type={listType.MULTIPLE} list={levels} ></CheckBoxList>
-                    <CheckBoxList type={listType.MULTIPLE} list={genderList}></CheckBoxList>
-                    <CheckBoxList type={listType.MULTIPLE} list={poolList}></CheckBoxList>
+                    <CheckBoxList type={listType.MULTIPLE} list={levels} set={selectLevels}></CheckBoxList>
+                    <CheckBoxList type={listType.HYBRID} list={genderList} set={selectGenders}></CheckBoxList>
+                    <CheckBoxList type={listType.MULTIPLE} list={poolList} set={selectPools}></CheckBoxList>
                     <div className="button-row">
                         <TextButton text="אישור" bgColor="purple" func={confirmForm}></TextButton>
 
