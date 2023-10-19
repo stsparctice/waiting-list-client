@@ -101,10 +101,14 @@ const ClientDetails = () => {
     }, [],)
 
     const sex = async () => {
+        // if (patient) {
         let age = parseInt(new Date().getFullYear()) - parseInt(new Date(patient.birthdate).getFullYear())
         let response = await server.get(`/gender/getGender/${patient.sex}`)
+        console.log({response});
         let genders = response.data.filter((a) => a.maxAge1 > age || a.maxAge2 > age)
+        console.log({genders});
         setGender(genders)
+        // }
     }
 
     return <>
@@ -117,6 +121,7 @@ const ClientDetails = () => {
                         {genderTypes.map((g, i) => <ColorLabel key={i} backgroundColor={'blue'} gender={g}></ColorLabel>)}
                         <div >
                             {/* {gender ? <div className={css.gender}>{gender[0].name}</div> : <></>} */}
+                            {console.log({ gender })}
                             {gender ? <Sexs genderName={gender[0].name}></Sexs> : <></>}
                         </div>
                     </div>
