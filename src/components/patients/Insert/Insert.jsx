@@ -129,11 +129,21 @@ const Insert = (idPatient) => {
         // }
     }
 
-    const sendToDb = () => {
+
+    const del = () => {
 
     }
 
-    const del = () => {
+
+    const setLevels = (levels) => {
+        console.log({levels})
+    }
+    const setTreatment = (treatment) => {
+        console.log({treatment})
+
+    }
+    const setInformation = (information) => {
+        console.log({information})
 
     }
     console.log(value, 'value.......')
@@ -162,16 +172,16 @@ const Insert = (idPatient) => {
             }
             <p>רמת הטיפול:</p>
             {
-                <CheckBoxList type={listType.MULTIPLE} list={levels} set={(event) => setValue(event, 'treatmentLevel')}></CheckBoxList>
-          
-           }
+                <CheckBoxList type={listType.MULTIPLE} list={levels} set={setLevels}></CheckBoxList>
+
+            }
             <p>רמת דחיפות:</p>
             {
-                <CheckBoxList type={listType.SINGLE} list={importent} set={(event) => setValue(event, 'treatmentLevel')}></CheckBoxList>
-         
+                <CheckBoxList type={listType.SINGLE} list={importent} set={setTreatment}></CheckBoxList>
+
             }
             {
-                <CheckBoxList type={listType.SINGLE} list={information} set={(event) => setValue(event, 'treatmentLevel')}></CheckBoxList>
+                <CheckBoxList type={listType.SINGLE} list={information} set={setInformation}></CheckBoxList>
             }
 
 
@@ -203,7 +213,7 @@ const Insert = (idPatient) => {
             </p>
             <h4 ref={noteref}>{ }</h4>
         </form>
-       
+
     </>
 };
 

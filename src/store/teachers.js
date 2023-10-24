@@ -1,6 +1,7 @@
 import { createSlice, createAsyncThunk, current } from '@reduxjs/toolkit'
 import { getData, postData } from '../services/axios'
 import { stateStatus } from './storeStatus'
+import { logDOM } from '@testing-library/react'
 
 
 export const getAllTeachers = createAsyncThunk('teachers/getAll', async (url, api) => {
@@ -15,7 +16,9 @@ export const getAllTeachers = createAsyncThunk('teachers/getAll', async (url, ap
 
 export const addTeacher = createAsyncThunk('teachers/add', async (teacher, api) => {
     try {
+        console.log({teacher})
         const response = await postData('/teachers/insert', teacher)
+        console.log(response.data)
         return response.data
     }
     catch (error) {
@@ -80,6 +83,7 @@ export const teachersSlice = createSlice({
         })
         builder.addCase(addTeacher.fulfilled, (state, action) => {
             console.log({ state, action })
+            console.log(current(state))
             state.teachers.push(action.payload)
         })
         builder.addCase(addTeacher.rejected, (state, action) => {
@@ -106,4 +110,63 @@ export const teachersSlice = createSlice({
 export const { selectById } = teachersSlice.actions
 export default teachersSlice.reducer
 
+
+// id
+// teacherName
+// phone
+// email
+// address
+// city
+// gender
+// annotation
+// addedDate
+// userName
+// disabled
+// disabledDate
+// disableUser
+// disableReason
+// teachersPoolGenders
+//  id
+//  teacherId
+//  genderId
+//  addedDate
+//  userName
+//  disabled
+//  disabledDate
+//  disableUser
+//  disableReason
+// teacherSchedule
+//  id
+//  teacherPoolGenderId
+//  pooldayScheduleId
+//  startHour
+//  endHour
+//  addedDate
+//  userName
+//  disabled
+//  disabledDate
+//  disableUser
+//  disableReason
+// teachersLevels
+//   id
+//   teacherId
+//   levelId
+//   addedDate
+//   userName
+//   disabled
+//   disabledDate
+//   disableUser
+//   disableReason
+
+// patientPreferenceTeachers
+//   id
+//   patientId
+//   teacherId
+//   preference
+//   addedDate
+//   userName
+//   disabled
+//   disabledDate
+//   disableUser
+//   disableReason
 

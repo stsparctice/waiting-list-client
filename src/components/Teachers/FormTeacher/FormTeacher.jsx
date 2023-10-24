@@ -31,18 +31,21 @@ const FormTeacher = ({ id, confirm, insert, cancel }) => {
     const [val, setVal] = useState({ teacherName: "", email: "", phone: "", annotation: "", city: "", address: "" })
     const [poolList, setPoolList] = useState([])
     const [genderList, setGenderList] = useState([])
+    const [chooseList, setChooseList] = useState({})
 
     const confirmForm = () => {
         if (insert) {
             const data = {
-                ...val
+                ...val,
+                ...chooseList
             }
             dispatch(addTeacher(data))
         }
         else {
             const data = {
                 ...teacher,
-                ...val
+                ...val,
+                ...chooseList
             }
             console.log({ data })
             dispatch(updateTeacher(data))
@@ -51,7 +54,9 @@ const FormTeacher = ({ id, confirm, insert, cancel }) => {
     }
 
     useEffect(() => {
-        dispatch(selectById(id))
+        if (id !== 0) {
+            dispatch(selectById(id))
+        }
     }, [dispatch, id])
 
     useEffect(() => {
@@ -66,10 +71,10 @@ const FormTeacher = ({ id, confirm, insert, cancel }) => {
     }, [pools])
 
     useEffect(() => {
-        console.log({genders})
-        const option1 = genders.filter(({teacherGender})=>teacherGender===1).map(({ id, name, color }) => ({ id, text: name, color, option:1 , type:listType.MULTIPLE}))
-        const option2 = genders.filter(({teacherGender})=>teacherGender===2).map(({ id, name, color }) => ({ id, text: name, color, option:2 , type:listType.MULTIPLE}))
-        console.log({option1, option2})
+        console.log({ genders })
+        const option1 = genders.filter(({ teacherGender }) => teacherGender === 1).map(({ id, name, color }) => ({ id, text: name, color, option: 1, type: listType.MULTIPLE }))
+        const option2 = genders.filter(({ teacherGender }) => teacherGender === 2).map(({ id, name, color }) => ({ id, text: name, color, option: 2, type: listType.MULTIPLE }))
+        console.log({ option1, option2 })
         setGenderList([...option1, ...option2])
     }, [genders])
 
@@ -90,14 +95,20 @@ const FormTeacher = ({ id, confirm, insert, cancel }) => {
         setVal(prev => ({ ...prev, ...temp }))
     };
 
-    const selectLevels = (levels)=>{
-        console.log({levels})
+    const selectLevels = (levels) => {
+        console.log({ levels })
+        let value1 = { teachersLevels: levels}
+        setChooseList({ ...chooseList, ...value1 })
     }
-    const selectGenders = (selectedGenders)=>{
-        console.log({selectedGenders})
+    const selectGenders = (selectedGenders) => {
+        console.log({ selectedGenders })
+        let value2 = { teachersGenders: selectedGenders }
+        setChooseList({ ...chooseList, ...value2 })
     }
-    const selectPools = (pools)=>{
-        console.log({pools})
+    const selectPools = (pools) => {
+        console.log({ pools })
+        let value3 = { teachersPools: pools}
+        setChooseList({ ...chooseList, ...value3 })
     }
 
     return <>
@@ -123,6 +134,7 @@ const FormTeacher = ({ id, confirm, insert, cancel }) => {
                     <CheckBoxList type={listType.HYBRID} list={genderList} set={selectGenders}></CheckBoxList>
                     <CheckBoxList type={listType.MULTIPLE} list={poolList} set={selectPools}></CheckBoxList>
                     <div className="button-row">
+                        {chooseList ? console.log(chooseList) : <></>}
                         <TextButton text="אישור" bgColor="purple" func={confirmForm}></TextButton>
 
                         <TextButton text="ביטול" bgColor="purple" click={cancel}></TextButton>
