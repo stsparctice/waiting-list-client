@@ -21,6 +21,8 @@ const CheckBox = ({ type, list, set, selectedItems }) => {
     const { checklist, setCheckList } = useContext(ListContext)
 
     useEffect(() => {
+        console.log('useEffect1')
+        console.log({list, type, selectedItems})
         setCheckList({ action: listActions.BUILD, value: { list, type, selectedItems } })
     }, [list, type, selectedItems])
 
@@ -30,11 +32,12 @@ const CheckBox = ({ type, list, set, selectedItems }) => {
     //     setCheckList({ action: listActions.SELECTEDITEMS, value: { list } })
     // }, [selectedItems])
     useEffect(() => {
+        console.log('useEffect2')
         if (checklist.status === listStatus.SELECT) {
             const checkedItems = checklist.list.filter(item => item.checked)
             set(checkedItems)
         }
-    }, [checklist, set])
+    }, [checklist])
 
     return <>
         <div className={css.out}>

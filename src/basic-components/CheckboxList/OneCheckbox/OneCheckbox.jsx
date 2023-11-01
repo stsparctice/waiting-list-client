@@ -40,19 +40,20 @@ export const setbackgroundColor = (obj) => {
 
 }
 
-const OneCheckbox = ({ obj ,set}) => {
+const OneCheckbox = ({ obj, set }) => {
     const { setCheckList } = useContext(ListContext)
     const css = useStyles()
 
 
-    const isChecked = () => {
+    const checkOption = () => {
         setCheckList({ action: listActions.CHECKITEM, value: obj.item })
     }
 
     return <>
         <div className={css.out}>
             {
-                <div key={obj.text} className={css.wrapper} id={obj.item.color} style={{ borderTopColor: obj.item.color, backgroundColor: obj.checked ? setbackgroundColor(obj.item) : 'white' }} onClick={isChecked} onMouseDown={set.set}>
+                <div key={obj.text} className={css.wrapper} id={obj.item.color} style={{ borderTopColor: obj.item.color, backgroundColor: obj.checked ? setbackgroundColor(obj.item) : 'white' }}
+                    onClick={checkOption} onMouseDown={set.set}>
 
                     <div className={`${obj.item.color}`}>
                         <span className={css.span}>{obj.item.text}</span>

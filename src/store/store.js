@@ -6,6 +6,7 @@ import Schedule from './schedule'
 import Patients from './patients'
 
 import Teachers from './teachers'
+import Levels from './levels'
 
 
 export default configureStore({
@@ -14,6 +15,7 @@ export default configureStore({
     Genders, 
     Schedule,
     Patients,
-    Teachers
+    Teachers,
+    Levels
   },
 })

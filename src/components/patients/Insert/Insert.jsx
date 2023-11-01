@@ -1,14 +1,15 @@
 import React, { useCallback, useEffect, useReducer, useRef, useState } from "react";
-import Checkbox from "../../../components2/Checkbox/Checkbox";
+import { useSelector, useDispatch } from 'react-redux'
+import { stateStatus } from "../../../store/storeStatus";
+import { getAllLevels } from "../../../store/levels";
 import { createUseStyles } from "react-jss";
 import { server } from '../../../services/axios';
-import Days from "../../../components2/Days/Days";
 import Select from "../../../components2/selectTeachers/select/Select";
+import Checkbox from "../../../components2/Checkbox/Checkbox";
 import Remarks from "../../../components2/Remarks/Remarks";
-import RemarksContext from "../../../contexts/remarks";
 import { listType } from "../../../basic-components/CheckboxList/ListContext"
 import CheckBoxList from "../../../basic-components/CheckboxList/CheckBoxList";
-import { information, levels, importent } from "../../../services/data"
+import { information,  importent } from "../../../services/data"
 
 const useStyles = createUseStyles({
     form: {
@@ -32,6 +33,9 @@ const Insert = (idPatient) => {
     // const Remarks=useContext(RemarksContext)
 
     const css = useStyles();
+    const dispatch = useDispatch()
+    const levels = useSelector(state=>state.Levels.levels)
+    const levelStatus = useSelector(state => state.Levels.status)
     const checkedGendersAndPools = useCallback(() => { })
     const sendRemarks = useCallback((remarksArray) => { setRemarks(remarksArray) })
     const [id, setId] = useState(idPatient);
@@ -62,6 +66,11 @@ const Insert = (idPatient) => {
     const noteref = useRef()
     const okref = useRef()
     const [value, setValue] = useState('')
+
+    useEffect(() => {
+        if (levelStatus === stateStatus.EMPTY)
+            dispatch(getAllLevels())
+    }, [dispatch, levelStatus]);
 
     const checkedGendersFunc = async () => {
         setCheckedGenders(genders.filter(f => (f.checked)).map(m => (m.text)))

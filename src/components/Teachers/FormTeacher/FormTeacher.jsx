@@ -6,8 +6,7 @@ import { addTeacher, selectById, updateTeacher } from '../../../store/teachers'
 import { stateStatus } from "../../../store/storeStatus"
 import { getAllPools } from "../../../store/swimmingPools"
 import { getAllGenders } from "../../../store/genders"
-
-import { levels } from "../../../services/data"
+import { getAllLevels } from "../../../store/levels";
 import icons from "../../../services/iconService"
 
 import CheckBoxList from "../../../basic-components/CheckboxList/CheckBoxList"
@@ -28,16 +27,29 @@ const FormTeacher = ({ id, confirm, insert, cancel }) => {
     const genderStatus = useSelector(state => state.Genders.status)
     const pools = useSelector(state => state.SwimmingPools.pools)
     const poolsStatus = useSelector(state => state.SwimmingPools.status)
+    const levels = useSelector(state => state.Levels.levels)
+    const levelStatus = useSelector(state => state.Levels.status)
     const [val, setVal] = useState({ teacherName: "", email: "", phone: "", annotation: "", city: "", address: "" })
     const [poolList, setPoolList] = useState([])
     const [genderList, setGenderList] = useState([])
-    const [chooseList, setChooseList] = useState({})
+    const [levelsList, selLevelsList] = useState([])
+    const [selectedLevels, setSelectedLevels] = useState([])
+    const [selectedGenders, setSelectedGenders] = useState([])
+    const [selectedPools, setSelectedPools] = useState([])
+
+    useEffect(() => {
+        if (levelStatus === stateStatus.EMPTY)
+            dispatch(getAllLevels())
+    }, [dispatch, levelStatus]);
 
     const confirmForm = () => {
         if (insert) {
+           
             const data = {
                 ...val,
-                ...chooseList
+                teachersLevels:selectedLevels.map(({item})=>({levelId:item.id})),
+                teachersGenders:selectedGenders.map(({item})=>({genderId:item.id})),
+                teachersPools:selectedPools.map(({item})=>({poolId:item.id}))
             }
             dispatch(addTeacher(data))
         }
@@ -45,7 +57,9 @@ const FormTeacher = ({ id, confirm, insert, cancel }) => {
             const data = {
                 ...teacher,
                 ...val,
-                ...chooseList
+                teachersLevels:selectedLevels.map(({item})=>({id:item.id})),
+                teachersGenders:selectedGenders.map(({item})=>({id:item.id})),
+                teachersPools:selectedPools.map(({item})=>({id:item.id}))
             }
             console.log({ data })
             dispatch(updateTeacher(data))
@@ -64,11 +78,15 @@ const FormTeacher = ({ id, confirm, insert, cancel }) => {
             dispatch(getAllPools())
         if (genderStatus === stateStatus.EMPTY)
             dispatch(getAllGenders())
-    })
+    }, [poolsStatus, genderStatus])
 
     useEffect(() => {
         setPoolList(pools.map(({ id, name, color }) => ({ id, text: name, color })))
     }, [pools])
+
+    useEffect(() => {
+        selLevelsList(levels.map(({ id, name, color }) => ({ id, text: name, color })))
+    }, [levels])
 
     useEffect(() => {
         console.log({ genders })
@@ -95,20 +113,14 @@ const FormTeacher = ({ id, confirm, insert, cancel }) => {
         setVal(prev => ({ ...prev, ...temp }))
     };
 
-    const selectLevels = (levels) => {
-        console.log({ levels })
-        let value1 = { teachersLevels: levels}
-        setChooseList({ ...chooseList, ...value1 })
+    const selectLevel = (level) => {
+        setSelectedLevels(level)
     }
-    const selectGenders = (selectedGenders) => {
-        console.log({ selectedGenders })
-        let value2 = { teachersGenders: selectedGenders }
-        setChooseList({ ...chooseList, ...value2 })
+    const selectGender = (selectedGenders) => {
+        setSelectedGenders(selectedGenders)
     }
-    const selectPools = (pools) => {
-        console.log({ pools })
-        let value3 = { teachersPools: pools}
-        setChooseList({ ...chooseList, ...value3 })
+    const selectPool = (pools) => {
+        setSelectedPools(pools)
     }
 
     return <>
@@ -130,16 +142,12 @@ const FormTeacher = ({ id, confirm, insert, cancel }) => {
                     <StandartInput text="כתובת" type="text" value={val.address} set={(event) => setValue(event, 'address')}></StandartInput>
                     <StandartInput text="עיר" type="text" value={val.city} set={(event) => setValue(event, 'city')}></StandartInput>
                     <StandartInput text="הערה" type="text" value={val.annotation} set={(event) => setValue(event, 'annotation')}></StandartInput>
-                    <CheckBoxList type={listType.MULTIPLE} list={levels} set={selectLevels}></CheckBoxList>
-                    <CheckBoxList type={listType.HYBRID} list={genderList} set={selectGenders}></CheckBoxList>
-                    <CheckBoxList type={listType.MULTIPLE} list={poolList} set={selectPools}></CheckBoxList>
+                    <CheckBoxList header={'רמת טיפול'} type={listType.MULTIPLE} list={levelsList} set={selectLevel}></CheckBoxList>
+                    <CheckBoxList header={'קבוצות'} type={listType.HYBRID} list={genderList} set={selectGender}></CheckBoxList>
+                    <CheckBoxList header={'בריכות'} type={listType.MULTIPLE} list={poolList} set={selectPool}></CheckBoxList>
                     <div className="button-row">
-                        {chooseList ? console.log(chooseList) : <></>}
                         <TextButton text="אישור" bgColor="purple" func={confirmForm}></TextButton>
-
                         <TextButton text="ביטול" bgColor="purple" click={cancel}></TextButton>
-
-                        {/* <TextButton text="שעות עבודה" styles={[{ height: 30, width: 120 }]} bgColor="purple"  ></TextButton> */}
                     </div>
                 </div>
             </div>

@@ -35,7 +35,7 @@ const buildSchedule = scheduleDays => {
 
 export const getAllSchedules = createAsyncThunk('ps/getAllActiveHours', async (poolId, api) => {
     try {
-        const response = await getData(`/schedule/getAllActiveHours/${poolId}`)
+        const response = await getData(`/schedules/getAllActiveHours/${poolId}`)
         console.log({ response })
         return response
     }
@@ -46,7 +46,7 @@ export const getAllSchedules = createAsyncThunk('ps/getAllActiveHours', async (p
 
 export const addSchedule = createAsyncThunk('ps/add', async (poolSchedule, api) => {
     try {
-        const response = await postData('/schedule/addGenderHour', poolSchedule)
+        const response = await postData('/schedules/addGenderHour', poolSchedule)
         console.log({ response })
         return response.data
     }
@@ -57,7 +57,7 @@ export const addSchedule = createAsyncThunk('ps/add', async (poolSchedule, api) 
 
 export const updateSchedule = createAsyncThunk('ps/update', async (poolSchedule, api) => {
     try {
-        const response = await postData('/schedule/update', poolSchedule)
+        const response = await postData('/schedules/update', poolSchedule)
         console.log({ response })
         return poolSchedule
     }
@@ -68,7 +68,7 @@ export const updateSchedule = createAsyncThunk('ps/update', async (poolSchedule,
 
 export const deleteSchedule = createAsyncThunk('ps/delete', async (poolSchedule, api) => {
     try {
-        const response = await postData('/schedule/delete', poolSchedule)
+        const response = await postData('/schedules/delete', poolSchedule)
         console.log({ response })
 
         return poolSchedule

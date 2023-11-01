@@ -5,7 +5,7 @@ import { stateStatus } from './storeStatus'
 
 export const getAllPools = createAsyncThunk('sp/getAll', async (url, api) => {
     try {
-        const response = await getData('pool/getAll')
+        const response = await getData('pools/getAll')
         return response
     }
     catch (error) {
@@ -15,7 +15,7 @@ export const getAllPools = createAsyncThunk('sp/getAll', async (url, api) => {
 
 export const addSwimmingPool = createAsyncThunk('sp/add', async (swimmingPool, api) => {
     try {
-        const response = await postData('/pool/add', swimmingPool)
+        const response = await postData('/pools/add', swimmingPool)
         return response.data
     }
     catch (error) {
@@ -25,7 +25,7 @@ export const addSwimmingPool = createAsyncThunk('sp/add', async (swimmingPool, a
 
 export const updateSwimmingPool = createAsyncThunk('sp/update', async (swimmingPool, api) => {
     try {
-        const response = await postData('/pool/update', swimmingPool)
+        const response = await postData('/pools/update', swimmingPool)
         console.log({ response })
 
         return swimmingPool
@@ -37,7 +37,7 @@ export const updateSwimmingPool = createAsyncThunk('sp/update', async (swimmingP
 
 export const deleteSwimmingPool = createAsyncThunk('sp/delete', async (swimmingPool, api) => {
     try {
-        const response = await postData('/pool/delete', swimmingPool)
+        const response = await postData('/pools/delete', swimmingPool)
         console.log({ response })
         return swimmingPool
     }

@@ -4,14 +4,14 @@ import { stateStatus } from './storeStatus'
 
 
 export const getAllGenders = createAsyncThunk('gr/getAll', async (condition) => {
-    const response = await getData('/gender/getAll')
+    const response = await getData('/genders/getAll')
     console.log({ response })
     return response
 })
 
 export const addGender = createAsyncThunk('gr/add', async (gender, api) => {
     try {
-        const response = await postData('/gender/add', gender)
+        const response = await postData('/genders/add', gender)
         console.log({ response })
         return response.data
     }
@@ -22,7 +22,7 @@ export const addGender = createAsyncThunk('gr/add', async (gender, api) => {
 
 export const updateGender = createAsyncThunk('gr/update', async (gender, api) => {
     try {
-        const response = await postData('/gender/update', gender)
+        const response = await postData('/genders/update', gender)
         console.log({ response })
         return gender
     }
@@ -33,7 +33,7 @@ export const updateGender = createAsyncThunk('gr/update', async (gender, api) =>
 
 export const deleteGender = createAsyncThunk('gr/delete', async (gender, api) => {
     try {
-    const response = await postData('/gender/delete', gender)
+    const response = await postData('/genders/delete', gender)
     console.log({ response })
    
         return gender
