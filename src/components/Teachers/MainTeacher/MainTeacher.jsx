@@ -8,9 +8,11 @@ import icons from "../../../services/iconService";
 import Table from "../../../basic-components/DynamicTable/Table/Table"
 import DeleteForm from "../../DeleteForm/DeleteForm";
 import FormTeacher from "../FormTeacher/FormTeacher";
+import '../../../styles/Modal.css'
+import ScheduleTeachers from "../FormTeacher/ScheduleTeachers";
 
 const tableConfig = {
-    headers: [{ key: 'teacherName', header: 'שם המורה' },{ key: 'phone', header: 'טלפון' },{ key: 'email', header: 'מייל' }, { key: 'address', header: 'כתובת' }],
+    headers: [{ key: 'teacherName', header: 'שם המורה' }, { key: 'phone', header: 'טלפון' }, { key: 'email', header: 'מייל' }, { key: 'address', header: 'כתובת' }],
     hideKeys: ['id', 'addedDate', 'userName', 'disabled', 'disabledDate', 'disableUser', 'disableReason'],
     convertKeys: [],
     keyElements: []
@@ -26,7 +28,7 @@ const MainTeacher = () => {
     const [insert, setInsert] = useState(false)
     const [showModal, setShowModal] = useState(false)
     const [showDeleteModal, setShowDeleteModal] = useState(false)
-
+    const [showModal2, setShowModal2] = useState(false)
 
     useEffect(() => {
         if (teacherStatus === stateStatus.EMPTY)
@@ -35,13 +37,13 @@ const MainTeacher = () => {
 
     useEffect(() => {
         const btns = [
-            {icon:icons.SCHEDULE, func:schedule, title:'מערכת'},
+            { icon: icons.SCHEDULE, func: schedule, title: 'מערכת' },
             { icon: icons.EDIT, func: update, title: 'עדכון' },
-            {icon:icons.DELETE, func:remove, title:'מחק'},
+            { icon: icons.DELETE, func: remove, title: 'מחק' },
         ]
         setRowButtons(btns)
     }, [])
-    
+
     useEffect(() => {
         let days
         let pool
@@ -85,18 +87,20 @@ const MainTeacher = () => {
         // findInMongo()
     }, [])
 
-    const update = (data)=>{
-        console.log({data})
+    const update = (data) => {
+        console.log({ data })
         setShowModal(true)
         setInsert(false)
         setSelectedTeacher(data.id)
     }
 
-    const schedule = (data)=>{
+    const schedule = (data) => {
+        console.log({ data });
+        setShowModal2(true)
         setSelectedTeacher(data.id)
     }
 
-    const remove = ()=>{
+    const remove = () => {
         console.log('remove')
     }
 
@@ -114,16 +118,19 @@ const MainTeacher = () => {
 
     const closeModal = () => {
         setShowModal(false)
+        setShowModal2(false)
         setShowDeleteModal(false)
     }
 
 
     return <>
-       {showModal ?
+        {showModal ?
             <FormTeacher id={selectedTeacher} insert={insert} confirm={confirm} cancel={closeModal}></FormTeacher> : <></>}
         {showDeleteModal ?
             <DeleteForm obj={deletePool} confirm={confirm} cancel={closeModal}></DeleteForm> : <></>
         }
+        {showModal2 ? <ScheduleTeachers id={selectedTeacher} insert={insert} confirm={confirm} cancel={closeModal}></ScheduleTeachers>: <></>}
+
         <Table config={tableConfig} data={teachers} rowbuttons={rowButtons}></Table>
         <button onClick={openModal}>:מטפל חדש</button>
     </>

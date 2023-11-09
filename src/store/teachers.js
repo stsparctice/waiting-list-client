@@ -49,6 +49,18 @@ export const deleteTeacher = createAsyncThunk('teachers/delete', async (teacher,
 })
 
 
+export const findDays = createAsyncThunk('teachers/updateSchedule', async (teacher, api) => {
+    try {
+        console.log('iessss i am here!!!!!!!!!!!!!!!!!!!!!!!!!1');
+        const response = await postData(`/teachers/findGendersAndDaysByTeachers/`, { id: teacher.id })
+        console.log({ response })
+        return response.data
+    }
+    catch (error) {
+        return api.rejectWithValue(error.message)
+    }
+})
+
 const initialState = { teachers: [], status: stateStatus.EMPTY, teacher: {}, error: '' }
 
 
@@ -100,6 +112,16 @@ export const teachersSlice = createSlice({
             let teacherindex = state.teachers.findIndex(t => t.id === action.payload.id)
             console.log({ teacherindex })
             state.teachers.splice(teacherindex, 1)
+        })
+        builder.addCase(findDays.fulfilled, (state, action) => {
+            // console.log({ state, action })
+            // let teacherindex = state.teachers.findIndex(t => t.id === action.payload.id)
+            // console.log({ teacherindex })
+            // state.setSchdule = action.payload
+            console.log(action.payload,'action.payload');
+            console.log(state.teachers,'state');
+            state.setSchdule = action.payload
+            state.status = stateStatus.SUCCEEDED
         })
 
     }

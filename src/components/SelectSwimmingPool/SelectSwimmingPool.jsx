@@ -19,6 +19,7 @@ const SelectSwimmingPool = ({ onSelect }) => {
     onSelect(val)
   }
   return <>
+  
     <Select placeholder="בחר..." options={pools.map(p => ({ label: p.name, value: p.id }))} onChange={selectPool}></Select>
   </>
 }
