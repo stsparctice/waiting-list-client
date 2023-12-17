@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk, current } from '@reduxjs/toolkit'
 import { getData, postData } from '../services/axios'
 import { stateStatus } from './storeStatus'
-
+d..
 
 export const getAllTeachers = createAsyncThunk('teachers/getAll', async (url, api) => {
     try {
