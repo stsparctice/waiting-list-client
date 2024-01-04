@@ -2,6 +2,9 @@ import React, { useCallback, useEffect, useReducer, useRef, useState } from "rea
 import { useSelector, useDispatch } from 'react-redux'
 import { stateStatus } from "../../../store/storeStatus";
 import { getAllLevels } from "../../../store/levels";
+import { getAllGenders } from "../../../store/genders";
+import { getAllPools } from "../../../store/swimmingPools";
+
 import { createUseStyles } from "react-jss";
 import { server } from '../../../services/axios';
 import Select from "../../../components2/selectTeachers/select/Select";
@@ -9,7 +12,7 @@ import Checkbox from "../../../components2/Checkbox/Checkbox";
 import Remarks from "../../../components2/Remarks/Remarks";
 import { listType } from "../../../basic-components/CheckboxList/ListContext"
 import CheckBoxList from "../../../basic-components/CheckboxList/CheckBoxList";
-import { information,  importent } from "../../../services/data"
+import { information, importent } from "../../../services/data"
 
 const useStyles = createUseStyles({
     form: {
@@ -17,7 +20,7 @@ const useStyles = createUseStyles({
     },
     ok: {
         margin: '7px',
-        display: 'none'
+        // display: 'none'
     },
     button: {
         color: 'white',
@@ -29,35 +32,35 @@ const useStyles = createUseStyles({
 const evaluate = () => {
 }
 
-const Insert = (idPatient) => {
+const Insert = ({ idPatient, gender }) => {
     // const Remarks=useContext(RemarksContext)
-
     const css = useStyles();
     const dispatch = useDispatch()
-    const levels = useSelector(state=>state.Levels.levels)
+    const levels = useSelector(state => state.Levels.levels)
     const levelStatus = useSelector(state => state.Levels.status)
+    const swimmingPools = useSelector(state => state.SwimmingPools.pools)
+    const swimmingPoolsStatus = useSelector(state => state.SwimmingPools.status)
     const checkedGendersAndPools = useCallback(() => { })
     const sendRemarks = useCallback((remarksArray) => { setRemarks(remarksArray) })
     const [id, setId] = useState(idPatient);
     const [name, setName] = useState();
     const [medicalDocsDate, setMedicalDocsDate] = useState();
-    const [embededDate, setEmbededDate] = useState(new Date().toISOString());
-    const [genders, setGenders] = useState([]);
+    // const [embededDate, setEmbededDate] = useState(new Date().toISOString());
+    const [genders, setGenders] = useState(gender);
     const [treatmentLevel, setTreatmentLevel] = useState([{ text: "גבוהה", color: "rgb(255, 0, 0)" }
-        , { text: "בינונית", color: "rgb(255, 165, 0)" }
-        , { text: "נמוכה", color: "rgb(103, 165, 11)" }]);
+    , { text: "בינונית", color: "rgb(255, 165, 0)" }
+    , { text: "נמוכה", color: "rgb(103, 165, 11)" }]);
     const [treatmentPreference, setTreatmentPreference] = useState([{ text: "גבוהה", color: 'rgb(255, 0, 0)', checked: false },
     { text: "בינונית", color: 'rgb(255, 165, 0)', checked: false },
     { text: "נמוכה", color: 'rgb(0, 128, 0)', checked: false },
     { text: "ללא מידע רפואי", color: 'rgb(0, 0, 255)', checked: false }]);
     const [evaluated, setEvaluated] = useReducer(evaluate, '');
     const [evaluationDate, setEvaluationDate] = useState('');
-    const [swimmingPools, setSwimmingPools] = useState([]);
     const [teachers, setTeachers] = useState();
     const [days, setDays] = useState();
     const [remarks, setRemarks] = useState();
     const [user, setUser] = useState();
-
+    
     const [checkedGenders, setCheckedGenders] = useState([]);
     const [checkedPools, setCheckedPools] = useState([]);
 
@@ -71,6 +74,11 @@ const Insert = (idPatient) => {
         if (levelStatus === stateStatus.EMPTY)
             dispatch(getAllLevels())
     }, [dispatch, levelStatus]);
+
+    useEffect(() => {
+        if (swimmingPoolsStatus === stateStatus.EMPTY)
+            dispatch(getAllPools())
+    }, [dispatch, swimmingPoolsStatus]);
 
     const checkedGendersFunc = async () => {
         setCheckedGenders(genders.filter(f => (f.checked)).map(m => (m.text)))
@@ -90,12 +98,6 @@ const Insert = (idPatient) => {
 
         //     setGenders([...genders])
         // }
-        const findPools = async () => {
-            const ans = await server.post('/pool/find', { filter: {}, project: { _id: 0, poolName: 1, poolColor: 1 } })
-            console.log('ans ', ans);
-            const pools = ans.data.map(m => ({ color: m.poolColor, checked: false, text: m.poolName }))
-            setSwimmingPools([...pools])
-        }
         const findTeachers = async () => {
             const ans = await server.get('/teachers/findTeacher')
             console.log('ans', ans);
@@ -106,31 +108,29 @@ const Insert = (idPatient) => {
     }, [])
 
     const insert = async () => {
-        console.log(newPatient);
-        const response = await server.post('/patient/insertPatient', newPatient);
+        console.log(newPatient,'new ');
+        const response = await server.post('/patients/insertPatient', newPatient);
         console.log(response);
     };
 
     const ok = async () => {
-        okref.current = 'block'
-
+        // okref.current = 'block'
+        // css.ok.display= 'block'
         // if (!id || !name) {
         //     noteref.current.innerHTML = "אחד או יותר מהפרטים המבוקשים חסר"
         // }
         // else {
-        const gen = genders.filter(f => (f.checked)).map(m => (m.text))
-        const pool = swimmingPools.filter(p => (p.checked)).map(m => (m.text))
-        const treatLevel = treatmentLevel.filter(f => (f.checked)).map(m => (m.text))
-        const treatpref = treatmentPreference.filter(f => (f.checked)).map(m => (m.text))
+        // const pool = swimmingPools.filter(p => (p.checked)).map(m => (m.text))
+        // const treatLevel = treatmentLevel.filter(f => (f.checked)).map(m => (m.text))
+        // const treatpref = treatmentPreference.filter(f => (f.checked)).map(m => (m.text))
 
         // if (gen.length > 0 && pool.length > 0 && treatLevel.length > 0 && treatpref.length > 0) {
         setnewPatient({
-            id, name, medicalDocsDate, genders: gen, treatmentLevel: treatLevel, treatmentPreference: treatpref,
-            evaluated, evaluationDate, swimmingPools: pool, teachers, days, remarks, user
+            id, name, medicalDocsDate, genders, treatmentLevel, treatmentPreference,
+            evaluated, evaluationDate, swimmingPools, teachers, days, remarks, user
         })
-        // evaluated, evaluationDate,
         noteref.current.innerHTML = `הפרטים שהכנסת: ${id}, ${name}`
-        okref.current.display = 'block'
+        // okref.current.display = 'block'
         // }
         // else {
         // noteref.current.innerHTML = "אחד או יותר מהפרטים המבוקשים חסר"
@@ -143,23 +143,26 @@ const Insert = (idPatient) => {
 
     }
 
-
+    const setPools = (swimmingPools) => {
+        console.log({ swimmingPools })
+    }
     const setLevels = (levels) => {
-        console.log({levels})
+        console.log({ levels })
     }
     const setTreatment = (treatment) => {
-        console.log({treatment})
+        console.log({ treatment })
 
     }
     const setInformation = (information) => {
-        console.log({information})
+        console.log({ information })
 
     }
-    console.log(value, 'value.......')
+    // console.log(value, 'value.......')
 
     return <>
         <form className={css.form}>
-            {/* 
+            {
+            /* 
             <p>
                 <label >תאריך הגשת מסמכים:</label>
                 <input type="date" onInput={(e) => setMedicalDocsDate(e.target.value)} />
@@ -173,10 +176,10 @@ const Insert = (idPatient) => {
                 //     <Checkbox title="בחר קבוצה:" type="checkbox" arr={genders} ></Checkbox>
                 // </> : ""
             }
-
+            <p>בריכות:</p>
             {
                 swimmingPools.length > 0 ? <>
-                    <Checkbox title="בריכות:" type="checkbox" arr={swimmingPools}></Checkbox>
+                    <CheckBoxList type={listType.MULTIPLE} list={swimmingPools} set={setPools}></CheckBoxList>
                 </> : ""
             }
             <p>רמת הטיפול:</p>
@@ -198,7 +201,7 @@ const Insert = (idPatient) => {
                 <label >מורים:</label>
                 <input type="text" onInput={(e) => setTeachers(e.target.value)} />
             </p> */}
-            <Select genders={genders} pools={swimmingPools}></Select>
+            {/* <Select genders={genders} pools={swimmingPools}></Select> */}
             <p>
                 {/* <label >ימים:</label>
                 <input type="text" onInput={(e) => setDays(e.target.value)} /> */}
@@ -214,13 +217,13 @@ const Insert = (idPatient) => {
                 <label >משתמש:</label>
                 <input type="text" onInput={(e) => setUser(e.target.value)} />
             </p>
+            <h4 ref={noteref}>{ }</h4>
             <p>
                 <input type="button" onClick={ok} value="שמירה" className={css.button} />
                 <input type="button" onClick={del} value="מחיקה" className={css.button} />
                 {/* disabled={true} */}
                 <input type="button" onClick={insert} value="אישור" className={css.ok} ref={okref} />
             </p>
-            <h4 ref={noteref}>{ }</h4>
         </form>
 
     </>

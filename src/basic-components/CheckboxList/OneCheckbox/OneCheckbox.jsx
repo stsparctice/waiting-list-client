@@ -56,7 +56,11 @@ const OneCheckbox = ({ obj, set }) => {
                     onClick={checkOption} onMouseDown={set.set}>
 
                     <div className={`${obj.item.color}`}>
-                        <span className={css.span}>{obj.item.text}</span>
+                        {
+                            obj.item.text?<>
+                            <span className={css.span}>{obj.item.text}</span>
+                            </>: <span className={css.span}>{obj.item.name}</span>
+                        }
                     </div>
                 </div>
             }

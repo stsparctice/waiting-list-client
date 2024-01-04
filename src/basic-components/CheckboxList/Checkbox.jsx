@@ -44,7 +44,7 @@ const CheckBox = ({ type, list, set, selectedItems }) => {
             {
                 checklist.list.length > 0 ?
                     checklist.list.map(item => (
-                        <OneCheckbox obj={item} key={item.item.text} set={set}></OneCheckbox>
+                        <OneCheckbox obj={item} key={item.item.id} set={set}></OneCheckbox>
                     )) : <></>
             }
         </div>
