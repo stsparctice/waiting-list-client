@@ -100,6 +100,7 @@ const ClientDetails = () => {
 
     const sex = async () => {
         if (patient) {
+            console.log({patient});
             let age = parseInt(new Date().getFullYear()) - parseInt(new Date(patient.birthdate).getFullYear())
             let response = await server.get(`/genders/getGender/${patient.sex}`)
             // console.log({ response });
@@ -171,7 +172,7 @@ const ClientDetails = () => {
                         </div>
                     </div>
                 </div>
-                <Insert idPatient={id} gender={gender}></Insert>
+                <Insert  idPatient={id} gender={gender} patientName={patient.name+" "+patient.familyName} medDate={patient.MedUpdate}></Insert>
             </div > : <></>
         }
     </>

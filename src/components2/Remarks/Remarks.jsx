@@ -136,9 +136,11 @@ const Remarks = ({ id, sendRemarks }) => {
         }
         else {
             // const res = await server.post('/patient/updateAnArray', { id: id, remark: { text: remark, user: "בועות", placing, date: date.toISOString() } })
+            // don't put user it comes from the server
             setRemarks([...remarks, { text: remark, user: "בועות", placing, date: date.toISOString() }])
             // successRef.current.innerHTML = "ההערה נשמרה בהצלחה"
-            sendRemarks(remarks)
+            // sendRemarks(remarks)
+            sendRemarks([...remarks, { text: remark, user: "בועות", placing, date: date.toISOString() }])
             setFlagClick('false')
             setRemark('')
             setPlacing('')

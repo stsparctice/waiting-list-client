@@ -18,10 +18,6 @@ const useStyles = createUseStyles({
     form: {
         direction: 'rtl'
     },
-    ok: {
-        margin: '7px',
-        // display: 'none'
-    },
     button: {
         color: 'white',
         backgroundColor: 'black',
@@ -29,10 +25,10 @@ const useStyles = createUseStyles({
         alignItems: "center"
     }
 })
-const evaluate = () => {
-}
+// const evaluate = () => {
+// }
 
-const Insert = ({ idPatient, gender }) => {
+const Insert = ({ idPatient, gender ,patientName,medDate}) => {
     // const Remarks=useContext(RemarksContext)
     const css = useStyles();
     const dispatch = useDispatch()
@@ -43,32 +39,23 @@ const Insert = ({ idPatient, gender }) => {
     const checkedGendersAndPools = useCallback(() => { })
     const sendRemarks = useCallback((remarksArray) => { setRemarks(remarksArray) })
     const [id, setId] = useState(idPatient);
-    const [name, setName] = useState();
-    const [medicalDocsDate, setMedicalDocsDate] = useState();
+    const [name, setName] = useState(patientName);
+    const [medicalDocsDate, setMedicalDocsDate] = useState(medDate);
     // const [embededDate, setEmbededDate] = useState(new Date().toISOString());
     const [genders, setGenders] = useState(gender);
-    const [treatmentLevel, setTreatmentLevel] = useState([{ text: "גבוהה", color: "rgb(255, 0, 0)" }
-    , { text: "בינונית", color: "rgb(255, 165, 0)" }
-    , { text: "נמוכה", color: "rgb(103, 165, 11)" }]);
-    const [treatmentPreference, setTreatmentPreference] = useState([{ text: "גבוהה", color: 'rgb(255, 0, 0)', checked: false },
-    { text: "בינונית", color: 'rgb(255, 165, 0)', checked: false },
-    { text: "נמוכה", color: 'rgb(0, 128, 0)', checked: false },
-    { text: "ללא מידע רפואי", color: 'rgb(0, 0, 255)', checked: false }]);
-    const [evaluated, setEvaluated] = useReducer(evaluate, '');
+    // const [evaluated, setEvaluated] = useReducer(evaluate, '');
     const [evaluationDate, setEvaluationDate] = useState('');
-    const [teachers, setTeachers] = useState();
-    const [days, setDays] = useState();
-    const [remarks, setRemarks] = useState();
-    const [user, setUser] = useState();
-    
-    const [checkedGenders, setCheckedGenders] = useState([]);
-    const [checkedPools, setCheckedPools] = useState([]);
+    const [teachers, setTeachers] = useState([]);
+    const [days, setDays] = useState([]);
+    const [remarks, setRemarks] = useState([]);
+    const [user, setUser] = useState('');
 
-    const [newPatient, setnewPatient] = useState({});
+    const [checkedPools, setCheckedPools] = useState([]);
+    const [checkedLevels, setCheckedLevels] = useState([]);
+    const [checkedTreatment, setCheckedTreatment] = useState([]);
+    const [checkedEvaluation, setCheckedEvaluation] = useState([]);
 
     const noteref = useRef()
-    const okref = useRef()
-    const [value, setValue] = useState('')
 
     useEffect(() => {
         if (levelStatus === stateStatus.EMPTY)
@@ -80,23 +67,10 @@ const Insert = ({ idPatient, gender }) => {
             dispatch(getAllPools())
     }, [dispatch, swimmingPoolsStatus]);
 
-    const checkedGendersFunc = async () => {
-        setCheckedGenders(genders.filter(f => (f.checked)).map(m => (m.text)))
-    }
-
-    const checkedPoolsFunc = async () => {
-        setCheckedPools(swimmingPools.filter(p => (p.checked)).map(m => (m.text)))
-    }
 
     useEffect(() => {
         // const getDataFromSerevr = async () => {
         //     await Promise.all([findGenders, findPools, findTeachers].map(func => func()))
-        // }
-        // const findGenders = async () => {
-        //     const res = await server.post('/gender/find', { project: { _id: 0, name: 1, genderColor: 1 } })
-        //     let genders = res.data.map(m => ({ color: m.genderColor, checked: false, text: m.name }))
-
-        //     setGenders([...genders])
         // }
         const findTeachers = async () => {
             const ans = await server.get('/teachers/findTeacher')
@@ -106,36 +80,31 @@ const Insert = ({ idPatient, gender }) => {
         }
         // getDataFromSerevr()
     }, [])
-
+    
     const insert = async () => {
-        console.log(newPatient,'new ');
-        const response = await server.post('/patients/insertPatient', newPatient);
-        console.log(response);
-    };
-
-    const ok = async () => {
-        // okref.current = 'block'
-        // css.ok.display= 'block'
+        // if (gen.length > 0 && pool.length > 0 && treatLevel.length > 0 && treatpref.length > 0) {
         // if (!id || !name) {
         //     noteref.current.innerHTML = "אחד או יותר מהפרטים המבוקשים חסר"
         // }
         // else {
-        // const pool = swimmingPools.filter(p => (p.checked)).map(m => (m.text))
-        // const treatLevel = treatmentLevel.filter(f => (f.checked)).map(m => (m.text))
-        // const treatpref = treatmentPreference.filter(f => (f.checked)).map(m => (m.text))
-
-        // if (gen.length > 0 && pool.length > 0 && treatLevel.length > 0 && treatpref.length > 0) {
-        setnewPatient({
-            id, name, medicalDocsDate, genders, treatmentLevel, treatmentPreference,
-            evaluated, evaluationDate, swimmingPools, teachers, days, remarks, user
-        })
-        noteref.current.innerHTML = `הפרטים שהכנסת: ${id}, ${name}`
-        // okref.current.display = 'block'
-        // }
-        // else {
-        // noteref.current.innerHTML = "אחד או יותר מהפרטים המבוקשים חסר"
-        // }
-        // }
+            // noteref.current.innerHTML = `הפרטים שהכנסת: ${id}, ${name}`
+            // okref.current.display = 'block'
+            // }
+            // }
+            console.log(genders,'cp'); 
+        const data = {
+            id, name, medicalDocsDate,
+            genders: genders.map((item) => ({ genderId: item.id })),
+            treatmentLevel: checkedLevels.map(({ item }) => ({ levelId: item.id })),
+            treatmentPreference: checkedTreatment.map(({ item }) => ({ treatmentId: item.id })),
+            evaluated:checkedEvaluation.map(({item})=>({evaluated:item.id})),
+            evaluationDate,
+            swimmingPools: checkedPools.map(({ item }) => ({ poolId: item.id })),
+            teachers, days, remarks, user
+        }
+        console.log({data});
+        const response = await server.post('/patients/insertPatient', data);
+        console.log(response);
     }
 
 
@@ -143,19 +112,17 @@ const Insert = ({ idPatient, gender }) => {
 
     }
 
-    const setPools = (swimmingPools) => {
-        console.log({ swimmingPools })
+    const setPools = (pools) => {
+        setCheckedPools(pools)
     }
     const setLevels = (levels) => {
-        console.log({ levels })
+        setCheckedLevels(levels)
     }
     const setTreatment = (treatment) => {
-        console.log({ treatment })
-
+        setCheckedTreatment(treatment)
     }
     const setInformation = (information) => {
-        console.log({ information })
-
+        setCheckedEvaluation(information)
     }
     // console.log(value, 'value.......')
 
@@ -219,10 +186,8 @@ const Insert = ({ idPatient, gender }) => {
             </p>
             <h4 ref={noteref}>{ }</h4>
             <p>
-                <input type="button" onClick={ok} value="שמירה" className={css.button} />
+                <input type="button" onClick={insert} value="שמירה" className={css.button} />
                 <input type="button" onClick={del} value="מחיקה" className={css.button} />
-                {/* disabled={true} */}
-                <input type="button" onClick={insert} value="אישור" className={css.ok} ref={okref} />
             </p>
         </form>
 
