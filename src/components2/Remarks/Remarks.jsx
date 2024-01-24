@@ -20,8 +20,8 @@ const useStyles = createUseStyles({
 
     },
     buttonNew: {
-        width: "33px",
-        height: "25px",
+        width: "45px",
+        height: "30px",
         backgroundColor: "black",
         color: "white",
         padding: "6px",
@@ -136,14 +136,16 @@ const Remarks = ({ id, sendRemarks }) => {
         }
         else {
             // const res = await server.post('/patient/updateAnArray', { id: id, remark: { text: remark, user: "בועות", placing, date: date.toISOString() } })
-            setRemarks(...remarks, { text: remark, user: "בועות", placing, date: date.toISOString() })
+            // don't put user it comes from the server
+            setRemarks([...remarks, { text: remark, user: "בועות", placing, date: date.toISOString() }])
             // successRef.current.innerHTML = "ההערה נשמרה בהצלחה"
-            sendRemarks(remarks)
+            // sendRemarks(remarks)
+            sendRemarks([...remarks, { text: remark, user: "בועות", placing, date: date.toISOString() }])
             setFlagClick('false')
             setRemark('')
             setPlacing('')
-            // returnRemarks(remarks)
             // console.log(remarks);
+            // returnRemarks(remarks)
         }
     }
 
@@ -165,7 +167,7 @@ const Remarks = ({ id, sendRemarks }) => {
                     <span className={css.buttonNew} onClick={changeFlagClick}>חדש</span> :
                     flagClick === 'true' ?
                         <div>
-                            <button className={css.buttonafterB} onClick={addRemark}>אישור</button>
+                            <span className={css.buttonafterB} onClick={addRemark}>אישור</span>
                             <span className={css.buttonafter} onClick={(_) => { setRemark('') }}>ביטול</span>
                         </div>
                         :
@@ -194,6 +196,7 @@ const Remarks = ({ id, sendRemarks }) => {
                     :
                     ""}
             <p ref={successRef}></p>
+            {/* <p>כל ההערות</p> */}
             <div style={{ width: "700px" }}>
                 {
                     remarks.length > 0 ?

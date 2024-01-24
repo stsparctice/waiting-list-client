@@ -72,7 +72,7 @@ const useStyles = createUseStyles({
 const ClientDetails = () => {
     const dispatch = useDispatch()
     const patient = useSelector(state => state.Patients.selectedPatient)
-    const patientsStatus = useSelector(state => state.Patients.status)
+    const patientStatus = useSelector(state => state.Patients.status)
     const css = useStyles();
     const nav = useNavigate()
     const { id } = useParams()
@@ -81,11 +81,9 @@ const ClientDetails = () => {
     const [gender, setGender] = useState()
 
     useEffect(() => {
-
-        console.log("i am here!!!!!!!!!!!!!!");
-        if (patientsStatus === stateStatus.EMPTY)
+        // console.log("i am here!!!!!!!!!!!!!!");
+        if (patientStatus === stateStatus.EMPTY)
             dispatch(getPatientById(id))
-
         // const findData = async () => {
         //     const ans = await getData('/rapidMed/find', { id: id })
         //     console.log('ans', ans);
@@ -94,21 +92,22 @@ const ClientDetails = () => {
         // }
         // findData()
         sex()
-    }, [dispatch, patientsStatus]);
+    }, [dispatch, patientStatus]);
 
     const closePatientCard = useCallback(() => {
         nav('/patients')
-    }, [],)
+    }, [])
 
     const sex = async () => {
-        // if (patient) {
-        let age = parseInt(new Date().getFullYear()) - parseInt(new Date(patient.birthdate).getFullYear())
-        let response = await server.get(`/gender/getGender/${patient.sex}`)
-        console.log({response});
-        let genders = response.data.filter((a) => a.maxAge1 > age || a.maxAge2 > age)
-        console.log({genders});
-        setGender(genders)
-        // }
+        if (patient) {
+            console.log({patient});
+            let age = parseInt(new Date().getFullYear()) - parseInt(new Date(patient.birthdate).getFullYear())
+            let response = await server.get(`/genders/getGender/${patient.sex}`)
+            // console.log({ response });
+            let genders = response.data.filter((a) => a.maxAge1 > age || a.maxAge2 > age)
+            // console.log({ genders });
+            setGender(genders)
+        }
     }
 
     return <>
@@ -142,12 +141,15 @@ const ClientDetails = () => {
 
                             {/* <p className={css.dateOfBirth}>{new Date(patient.birthdate).toLocaleDateString()}</p> */}
                             {/* --{patient['birthdate']} */}
-                            {new Date(patient.birthdate) != 'Invalid Date' ?
-                                <p className={css.dateOfBirth}>{new Date(patient.birthdate).toLocaleDateString()}</p> : <p className={css.dateOfBirth}>{data.Birthdate}</p>
+                            {patient.birthdate ?
+                                new Date(patient.birthdate) != 'Invalid Date' ?
+                                    <p className={css.dateOfBirth}>{new Date(patient.birthdate).toLocaleDateString()}</p> : <p className={css.dateOfBirth}>{data.Birthdate}</p>
+                                    :""
                             }
-                            {
+                            {patient.birthdate ?
                                 new Date(patient.birthdate) != 'Invalid Date' ?
                                     <p className={css.age}>{parseInt(new Date().getFullYear()) - parseInt(new Date(patient.birthdate).getFullYear())}</p> : ''
+                            :""
                             }
                         </div>
                     </div>
@@ -170,7 +172,7 @@ const ClientDetails = () => {
                         </div>
                     </div>
                 </div>
-                <Insert id={id}></Insert>
+                <Insert  idPatient={id} gender={gender} patientName={patient.name+" "+patient.familyName} medDate={patient.MedUpdate}></Insert>
             </div > : <></>
         }
     </>

@@ -85,7 +85,7 @@ const MainActiveHours = () => {
             {/* {items.length > 0 ? <p>{items.length}</p> : <p>no items</p>} */}
             <div className="mainComponent" ref={refMainComponent}>
                 <table className={css.table}>
-                    <caption className={css.caption}>מערכת שעות פעילות</caption>
+                    <caption className={css.caption}>מערכת פעילות</caption>
                     <thead>
                         <tr>
                             <th className={css.th}>

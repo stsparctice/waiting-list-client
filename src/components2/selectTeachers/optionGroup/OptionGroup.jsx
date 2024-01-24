@@ -52,7 +52,8 @@ const OptionGroup = ({ pools, genders, click }) => {
                 ))
 
             ));
-            let data=await server.get('teachers/findAllTeachers')
+            let data=await server.get('teachers/all')
+            console.log(data,'data teachers');
             //  = await server.post('teachers/findTeacherByCondition', { filter })
             setTeachers(data.data)
         }
