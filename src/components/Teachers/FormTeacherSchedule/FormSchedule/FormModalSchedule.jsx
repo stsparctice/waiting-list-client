@@ -43,40 +43,63 @@ const FormModalSchedule = ({ id, confirm, insert, cancel }) => {
     const [poolFlag, setPoolFlag] = useState(false)
 
     useEffect(() => {
-        if (teacherStatus === stateStatus.EMPTY)
+        async function getTeachersData(id) {
+            const levels = await getData(`/teachers/teacherlevels/${id}`)
+            const pools = await getData(`/teachers/teacherpools/${id}`)
+            const genders = await getData(`/teachers/teachergenders/${id}`)
+            console.log({ levels, pools, genders });
+        }
+        if (teacherStatus === stateStatus.EMPTY && id>0){
             dispatch(selectById(id))
-    }, [dispatch, teacherStatus]);
+            getTeachersData(id)
+        }
+    }, [dispatch, teacherStatus, id]);
 
-    const confirmForm = () => {
+    const confirmForm = async () => {
         if (insert) {
             const data = {
                 id, name: teacher.name,
                 TeacherPoolGenderId: selectedGender.id,
-                startHour:selectedDays.startHour,
-                endHour:selectedDays.endHour,
+                startHour: selectedDays.startHour,
+                endHour: selectedDays.endHour,
                 PooldayScheduleId: selectedDays.id
             }
-            const res = postData('teacher_schedule/insertTeacherSchedule', data)
+            const res = await postData('teacher_schedule/insertTeacherSchedule', data)
             console.log({ res });
         }
         else {
             const data = {
                 id, name: teacher.name,
                 TeacherPoolGenderId: selectedGender.map(({ item }) => ({ genderId: item.id })),
-                startHour:selectedDays.map(({item})=>({startHour:item.startHour})),
-                endHour:selectedDays.map(({item})=>({endHour:item.endHour})),
+                startHour: selectedDays.map(({ item }) => ({ startHour: item.startHour })),
+                endHour: selectedDays.map(({ item }) => ({ endHour: item.endHour })),
                 PooldayScheduleId: selectedDays.map((item) => ({ PooldayScheduleId: item.id }))
             }
             console.log({ data })
-            const res = postData('teacher_schedule/updateTeacherSchedule', data)
+            const res = await postData('teacher_schedule/updateTeacherSchedule', data)
             console.log({ res });
         }
         confirm()
     }
 
+    // const getTeachersData = async (id) => {
+    //     const levels = await getData(`/teachers/teacherlevels/${id}`)
+    //     const pools = await getData(`/teachers/teacherpools/${id}`)
+    //     const genders = await getData(`/teachers/teachergenders/${id}`)
+    //     console.log({ levels, pools, genders });
+    // }
+
     useEffect(() => {
+        async function getTeachersData(id) {
+            const levels = await getData(`/teachers/teacherlevels/${id}`)
+            const pools = await getData(`/teachers/teacherpools/${id}`)
+            const genders = await getData(`/teachers/teachergenders/${id}`)
+            console.log({ levels, pools, genders });
+        }
+        console.log({id});
         if (id !== 0) {
             dispatch(selectById(id))
+            getTeachersData(id)
         }
     }, [dispatch, id])
 
@@ -85,7 +108,7 @@ const FormModalSchedule = ({ id, confirm, insert, cancel }) => {
             dispatch(getAllPools())
         if (genderStatus === stateStatus.EMPTY)
             dispatch(getAllGenders())
-    }, [poolsStatus, genderStatus])
+    }, [poolsStatus, genderStatus, dispatch])
 
     useEffect(() => {
         console.log({ genders })

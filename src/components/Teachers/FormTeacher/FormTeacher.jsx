@@ -16,6 +16,7 @@ import TextButton from "../../../basic-components/TextButton/TextButton"
 import ButtonIcon from "../../../basic-components/ButtonIcon/ButtonIcon"
 import '../../../styles/Form.css'
 import '../../../styles/Modal.css'
+import { getData } from "../../../services/axios"
 
 
 
@@ -44,12 +45,12 @@ const FormTeacher = ({ id, confirm, insert, cancel }) => {
 
     const confirmForm = () => {
         if (insert) {
-           
+
             const data = {
                 ...val,
-                teachersLevels:selectedLevels.map(({item})=>({levelId:item.id})),
-                teachersGenders:selectedGenders.map(({item})=>({genderId:item.id})),
-                teachersPools:selectedPools.map(({item})=>({poolId:item.id}))
+                teachersLevels: selectedLevels.map(({ item }) => ({ levelId: item.id })),
+                teachersGenders: selectedGenders.map(({ item }) => ({ genderId: item.id })),
+                teachersPools: selectedPools.map(({ item }) => ({ poolId: item.id }))
             }
             dispatch(addTeacher(data))
         }
@@ -57,9 +58,9 @@ const FormTeacher = ({ id, confirm, insert, cancel }) => {
             const data = {
                 ...teacher,
                 ...val,
-                teachersLevels:selectedLevels.map(({item})=>({id:item.id})),
-                teachersGenders:selectedGenders.map(({item})=>({id:item.id})),
-                teachersPools:selectedPools.map(({item})=>({id:item.id}))
+                teachersLevels: selectedLevels.map(({ item }) => ({ id: item.id })),
+                teachersGenders: selectedGenders.map(({ item }) => ({ id: item.id })),
+                teachersPools: selectedPools.map(({ item }) => ({ id: item.id }))
             }
             console.log({ data })
             dispatch(updateTeacher(data))
@@ -68,8 +69,10 @@ const FormTeacher = ({ id, confirm, insert, cancel }) => {
     }
 
     useEffect(() => {
+
         if (id !== 0) {
             dispatch(selectById(id))
+            // getTeachersData(id)
         }
     }, [dispatch, id])
 
@@ -78,23 +81,52 @@ const FormTeacher = ({ id, confirm, insert, cancel }) => {
             dispatch(getAllPools())
         if (genderStatus === stateStatus.EMPTY)
             dispatch(getAllGenders())
-    }, [poolsStatus, genderStatus])
+    }, [poolsStatus, genderStatus, dispatch])
 
     useEffect(() => {
-        setPoolList(pools.map(({ id, name, color }) => ({ id, text: name, color })))
-    }, [pools])
+        async function getTeachersData(id) {
+            let teacherpools = await getData(`/teachers/teacherpools/${id}`)
+            teacherpools = teacherpools.map(({ poolId }) => poolId)
+            setPoolList(pools.map(({ id, name, color }) => ({ id, text: name, color, checked: teacherpools.find(tp => tp.id === id) ? true : false })))
+        }
+        if (id > 0) {
+            getTeachersData(id)
+        }
+        else
+            setPoolList(pools.map(({ id, name, color }) => ({ id, text: name, color, checked: false })))
+    }, [pools, id])
 
     useEffect(() => {
-        selLevelsList(levels.map(({ id, name, color }) => ({ id, text: name, color })))
-    }, [levels])
+        async function getTeachersData(id) {
+            let teacherLevels = await getData(`/teachers/teacherlevels/${id}`)
+            teacherLevels = teacherLevels.map(({ levelId }) => levelId)
+            selLevelsList(levels.map(({ id, name, color }) => ({ id, text: name, color, checked: teacherLevels.find(tl => tl.id === id) ? true : false })))
+        }
+        if (id > 0) {
+            getTeachersData(id)
+        }
+        else
+            selLevelsList(levels.map(({ id, name, color }) => ({ id, text: name, color, checked: false })))
+    }, [levels, id])
 
     useEffect(() => {
-        console.log({ genders })
+        async function getTeachersData(id, fullList) {
+            let teacherGenders = await getData(`/teachers/teachergenders/${id}`)
+            teacherGenders = teacherGenders.map(({ genderId }) => genderId)
+            fullList = fullList.map((item) => ({ ...item, checked: teacherGenders.find(tg => tg.id === item.id) ? true : false }))
+            setGenderList(fullList)
+        }
         const option1 = genders.filter(({ teacherGender }) => teacherGender === 1).map(({ id, name, color }) => ({ id, text: name, color, option: 1, type: listType.MULTIPLE }))
         const option2 = genders.filter(({ teacherGender }) => teacherGender === 2).map(({ id, name, color }) => ({ id, text: name, color, option: 2, type: listType.MULTIPLE }))
-        console.log({ option1, option2 })
-        setGenderList([...option1, ...option2])
-    }, [genders])
+        let fullList =[...option1, ...option2]
+        if (id > 0) {
+            getTeachersData(id, fullList)
+        }
+        else {
+            fullList = fullList.map(item=>({...item, checked:false}))
+            setGenderList(fullList)
+        }
+    }, [genders, id])
 
     useEffect(() => {
         console.log({ teacher })

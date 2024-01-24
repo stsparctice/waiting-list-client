@@ -9,8 +9,8 @@ export const listActions = {
     SELECTEDITEMS: 'selectedItems'
 }
 
-export const listStatus={
-LOAD:'load', SELECT:'select'
+export const listStatus = {
+    LOAD: 'load', SELECT: 'select'
 }
 
 export const listType = {
@@ -21,11 +21,16 @@ export const listType = {
 
 const listReducer = (state, item) => {
     const { action, value } = item
-    console.log({ action, value })
     switch (action) {
         case listActions.BUILD:
-            let list = value.list.map(x => ({ item: x, checked: false }))
-            if (value.selectedItems &&value.selectedItems.length > 0) {
+            let list = value.list.map(x => {
+                if (x.checked !== undefined) {
+                    const { checked, ...rest } = x;
+                    return { item: rest, checked }
+                }
+                return { item: x, checked: false }
+            })
+            if (value.selectedItems && value.selectedItems.length > 0) {
                 list = list.map(({ item, checked }) => {
                     const { id } = item
                     const selectedItem = value.selectedItems.find(li => li.id === id)
@@ -35,7 +40,7 @@ const listReducer = (state, item) => {
                     return { item, checked }
                 })
             }
-            state = { type: value.type, list, status:listStatus.LOAD }
+            state = { type: value.type, list, status: listStatus.LOAD }
             break;
         case listActions.CHECKITEM:
             const { type } = state
@@ -48,7 +53,7 @@ const listReducer = (state, item) => {
                         }
                         return { item: x.item, checked }
                     })
-                    state = { type, list,  status:listStatus.SELECT }
+                    state = { type, list, status: listStatus.SELECT }
                     break;
                 }
                 case listType.MULTIPLE: {
@@ -59,7 +64,7 @@ const listReducer = (state, item) => {
                         }
                         return { item: x.item, checked }
                     })
-                    state = { type, list,  status:listStatus.SELECT }
+                    state = { type, list, status: listStatus.SELECT }
                     break;
                 }
                 case listType.HYBRID:
@@ -78,7 +83,7 @@ const listReducer = (state, item) => {
                                     }
                                     return { item: x.item, checked }
                                 })
-                                state = { type, list,  status:listStatus.SELECT }
+                                state = { type, list, status: listStatus.SELECT }
                                 break;
                             }
                             case listType.MULTIPLE: {
@@ -98,7 +103,7 @@ const listReducer = (state, item) => {
 
                                     return { item: x.item, checked }
                                 })
-                                state = { type, list,  status:listStatus.SELECT }
+                                state = { type, list, status: listStatus.SELECT }
                                 break;
                             }
                             default:

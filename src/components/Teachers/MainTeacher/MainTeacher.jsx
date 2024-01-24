@@ -8,8 +8,8 @@ import icons from "../../../services/iconService";
 import Table from "../../../basic-components/DynamicTable/Table/Table"
 import DeleteForm from "../../DeleteForm/DeleteForm";
 import FormTeacher from "../FormTeacher/FormTeacher";
-import SendToFormSchedule from "../FormTeacherSchedule/SendToFormSchedule/SendToFormSchedule";
 import FormModalSchedule from "../FormTeacherSchedule/FormSchedule/FormModalSchedule";
+import { getData } from "../../../services/axios";
 
 const tableConfig = {
     headers: [{ key: 'teacherName', header: 'שם המורה' }, { key: 'phone', header: 'טלפון' }, { key: 'email', header: 'מייל' }, { key: 'address', header: 'כתובת' }],
@@ -26,7 +26,7 @@ const MainTeacher = () => {
     const [selectedTeacher, setSelectedTeacher] = useState({})
     const [deletePool, setDeletePool] = useState(undefined)
     const [insert, setInsert] = useState(false)
-    const [inserSchedule,setInsertSchedule]=useState(true)
+    const [inserSchedule, setInsertSchedule] = useState(true)
     const [showModal, setShowModal] = useState(false)
     const [showDeleteModal, setShowDeleteModal] = useState(false)
     const [showScheduleModal, setShowScheduleModal] = useState(false)
@@ -89,10 +89,10 @@ const MainTeacher = () => {
         // findInMongo()
     }, [])
 
-    const update = (data) => {
-        console.log({ data })
+    const update = async (data) => {
+     
         setShowModal(true)
-        setInsert(true)
+        setInsert(false)
         setSelectedTeacher(data.id)
     }
 
@@ -143,7 +143,7 @@ const MainTeacher = () => {
             <DeleteForm obj={deletePool} confirm={confirm} cancel={closeModal}></DeleteForm> : <></>
         }
         {showScheduleModal ?
-        <FormModalSchedule id={selectedTeacher} insert={inserSchedule} confirm={confirmSchedule} cancel={closeScheduleModal}></FormModalSchedule>:""
+            <FormModalSchedule id={selectedTeacher} insert={inserSchedule} confirm={confirmSchedule} cancel={closeScheduleModal}></FormModalSchedule> : ""
             // <SendToFormSchedule id={selectedTeacher} insert={insert} confirm={confirmSchedule} cancel={closeScheduleModal}></SendToFormSchedule> : <></>
         }
         <Table config={tableConfig} data={teachers} rowbuttons={rowButtons}></Table>
