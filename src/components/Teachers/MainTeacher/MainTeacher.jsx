@@ -8,9 +8,11 @@ import icons from "../../../services/iconService";
 import Table from "../../../basic-components/DynamicTable/Table/Table"
 import DeleteForm from "../../DeleteForm/DeleteForm";
 import FormTeacher from "../FormTeacher/FormTeacher";
+import SendToFormSchedule from "../FormTeacherSchedule/SendToFormSchedule/SendToFormSchedule";
+import FormModalSchedule from "../FormTeacherSchedule/FormSchedule/FormModalSchedule";
 
 const tableConfig = {
-    headers: [{ key: 'teacherName', header: 'שם המורה' },{ key: 'phone', header: 'טלפון' },{ key: 'email', header: 'מייל' }, { key: 'address', header: 'כתובת' }],
+    headers: [{ key: 'teacherName', header: 'שם המורה' }, { key: 'phone', header: 'טלפון' }, { key: 'email', header: 'מייל' }, { key: 'address', header: 'כתובת' }],
     hideKeys: ['id', 'addedDate', 'userName', 'disabled', 'disabledDate', 'disableUser', 'disableReason'],
     convertKeys: [],
     keyElements: []
@@ -24,9 +26,11 @@ const MainTeacher = () => {
     const [selectedTeacher, setSelectedTeacher] = useState({})
     const [deletePool, setDeletePool] = useState(undefined)
     const [insert, setInsert] = useState(false)
+    const [inserSchedule,setInsertSchedule]=useState(true)
     const [showModal, setShowModal] = useState(false)
     const [showDeleteModal, setShowDeleteModal] = useState(false)
-
+    const [showScheduleModal, setShowScheduleModal] = useState(false)
+    const [selectedTeacherSchedule, setSelectedTeacherSchedule] = useState({})
 
     useEffect(() => {
         if (teacherStatus === stateStatus.EMPTY)
@@ -35,13 +39,13 @@ const MainTeacher = () => {
 
     useEffect(() => {
         const btns = [
-            {icon:icons.SCHEDULE, func:schedule, title:'מערכת'},
+            { icon: icons.SCHEDULE, func: schedule, title: 'מערכת' },
             { icon: icons.EDIT, func: update, title: 'עדכון' },
-            {icon:icons.DELETE, func:remove, title:'מחק'},
+            { icon: icons.DELETE, func: remove, title: 'מחק' },
         ]
         setRowButtons(btns)
     }, [])
-    
+
     useEffect(() => {
         let days
         let pool
@@ -85,18 +89,20 @@ const MainTeacher = () => {
         // findInMongo()
     }, [])
 
-    const update = (data)=>{
-        console.log({data})
+    const update = (data) => {
+        console.log({ data })
         setShowModal(true)
-        setInsert(false)
+        setInsert(true)
         setSelectedTeacher(data.id)
     }
 
-    const schedule = (data)=>{
+    const schedule = (data) => {
+        setShowScheduleModal(true)
+        // setInsert(false)
         setSelectedTeacher(data.id)
     }
 
-    const remove = ()=>{
+    const remove = () => {
         console.log('remove')
     }
 
@@ -105,6 +111,9 @@ const MainTeacher = () => {
         closeModal()
     }
 
+    const confirmSchedule = () => {
+        closeScheduleModal()
+    }
 
     const openModal = () => {
         setInsert(true)
@@ -116,13 +125,26 @@ const MainTeacher = () => {
         setShowModal(false)
         setShowDeleteModal(false)
     }
+    const openScheduleModal = () => {
+        // setInsertSchedule(true)
+        setShowScheduleModal(true)
+        // setSelectedTeacher(0)
+    }
 
+    const closeScheduleModal = () => {
+        setShowScheduleModal(false)
+        // setShowDeleteModal(false)
+    }
 
     return <>
-       {showModal ?
+        {showModal ?
             <FormTeacher id={selectedTeacher} insert={insert} confirm={confirm} cancel={closeModal}></FormTeacher> : <></>}
         {showDeleteModal ?
             <DeleteForm obj={deletePool} confirm={confirm} cancel={closeModal}></DeleteForm> : <></>
+        }
+        {showScheduleModal ?
+        <FormModalSchedule id={selectedTeacher} insert={inserSchedule} confirm={confirmSchedule} cancel={closeScheduleModal}></FormModalSchedule>:""
+            // <SendToFormSchedule id={selectedTeacher} insert={insert} confirm={confirmSchedule} cancel={closeScheduleModal}></SendToFormSchedule> : <></>
         }
         <Table config={tableConfig} data={teachers} rowbuttons={rowButtons}></Table>
         <button onClick={openModal}>:מטפל חדש</button>

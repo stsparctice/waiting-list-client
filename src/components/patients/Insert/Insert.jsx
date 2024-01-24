@@ -6,7 +6,7 @@ import { getAllGenders } from "../../../store/genders";
 import { getAllPools } from "../../../store/swimmingPools";
 
 import { createUseStyles } from "react-jss";
-import { server } from '../../../services/axios';
+import { postData, server } from '../../../services/axios';
 import Select from "../../../components2/selectTeachers/select/Select";
 import Checkbox from "../../../components2/Checkbox/Checkbox";
 import Remarks from "../../../components2/Remarks/Remarks";
@@ -28,7 +28,7 @@ const useStyles = createUseStyles({
 // const evaluate = () => {
 // }
 
-const Insert = ({ idPatient, gender ,patientName,medDate}) => {
+const Insert = ({ idPatient, gender, patientName, medDate }) => {
     // const Remarks=useContext(RemarksContext)
     const css = useStyles();
     const dispatch = useDispatch()
@@ -69,41 +69,47 @@ const Insert = ({ idPatient, gender ,patientName,medDate}) => {
 
 
     useEffect(() => {
-        // const getDataFromSerevr = async () => {
-        //     await Promise.all([findGenders, findPools, findTeachers].map(func => func()))
-        // }
+        const getDataFromSerevr = async () => {
+            await Promise.all([insertBasicPatientDetails].map(func => func()))
+        }
         const findTeachers = async () => {
             const ans = await server.get('/teachers/findTeacher')
             console.log('ans', ans);
             const teachers = ans.data.map(m => ({ checked: false, text: m.name }))
             setTeachers([...teachers])
         }
-        // getDataFromSerevr()
+        const insertBasicPatientDetails = async () => {
+            const res = await postData('patients/insertPatient', [id, name, medicalDocsDate])
+            console.log(res.data, 'res p');
+        }
+        getDataFromSerevr()
+        console.log(genders,'ggggggggggggg');
     }, [])
-    
+
     const insert = async () => {
         // if (gen.length > 0 && pool.length > 0 && treatLevel.length > 0 && treatpref.length > 0) {
         // if (!id || !name) {
         //     noteref.current.innerHTML = "אחד או יותר מהפרטים המבוקשים חסר"
         // }
         // else {
-            // noteref.current.innerHTML = `הפרטים שהכנסת: ${id}, ${name}`
-            // okref.current.display = 'block'
-            // }
-            // }
-            console.log(genders,'cp'); 
+        // noteref.current.innerHTML = `הפרטים שהכנסת: ${id}, ${name}`
+        // okref.current.display = 'block'
+        // }
+        // }
+        console.log(genders, 'cp');
         const data = {
-            id, name, medicalDocsDate,
-            genders: genders.map((item) => ({ genderId: item.id })),
+            id,
+            //  name, medicalDocsDate,
+            genders: gender.map((item) => ({ genderId: item.id })),
             treatmentLevel: checkedLevels.map(({ item }) => ({ levelId: item.id })),
             treatmentPreference: checkedTreatment.map(({ item }) => ({ treatmentId: item.id })),
-            evaluated:checkedEvaluation.map(({item})=>({evaluated:item.id})),
+            evaluated: checkedEvaluation.map(({ item }) => ({ evaluated: item.id })),
             evaluationDate,
             swimmingPools: checkedPools.map(({ item }) => ({ poolId: item.id })),
-            teachers, days, remarks, user
+            teachers,preferenceDays: days, comments:remarks, user
         }
-        console.log({data});
-        const response = await server.post('/patients/insertPatient', data);
+        console.log({ data });
+        const response = await server.post('/patients/insertRestDetailes', data);
         console.log(response);
     }
 
