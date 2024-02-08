@@ -1,64 +1,58 @@
-import React, { useState, useEffect, useCallback } from "react"
-import { useNavigate } from "react-router-dom"
+import React, { useState, useEffect, useCallback, useRef } from "react"
 import { useSelector, useDispatch } from 'react-redux'
 
-import { setSelectedPool, getAllSchedules } from '../../../../store/schedule'
-import { addTeacher, selectById, updateTeacher } from '../../../../store/teachers'
+import { selectById } from '../../../../store/teachers'
 import { stateStatus } from "../../../../store/storeStatus"
-import { getAllPools } from "../../../../store/swimmingPools"
 import { getAllGenders } from "../../../../store/genders"
-import { getAllLevels } from "../../../../store/levels";
 import icons from "../../../../services/iconService"
 
-import CheckBoxList from "../../../../basic-components/CheckboxList/CheckBoxList"
-import { listType } from "../../../../basic-components/CheckboxList/ListContext"
-import StandartInput from "../../../../basic-components/StandartInput/StandartInput"
 import TextButton from "../../../../basic-components/TextButton/TextButton"
 import ButtonIcon from "../../../../basic-components/ButtonIcon/ButtonIcon"
 import '../../../../styles/Form.css'
 import '../../../../styles/Modal.css'
-import { getData, postData, server } from "../../../../services/axios"
-import SelectSwimmingPool from "../../../SelectSwimmingPool/SelectSwimmingPool"
-import SelectGender from "../../../SelectGender/SelectGender"
+import { getData, postData } from "../../../../services/axios"
 import SelectDays from "../../../SelectDays/SelectDays"
+import Select from "react-select"
 
 
 
 const FormModalSchedule = ({ id, confirm, insert, cancel }) => {
-    const nav = useNavigate()
     const dispatch = useDispatch()
     const teacher = useSelector(state => state.Teachers.teacher)
     const teacherStatus = useSelector(state => state.Teachers.status)
-    const genders = useSelector(state => state.Genders.genders)
+    const gender = useSelector(state => state.Genders.genders)
     const genderStatus = useSelector(state => state.Genders.status)
-    const pools = useSelector(state => state.SwimmingPools.pools)
-    const poolsStatus = useSelector(state => state.SwimmingPools.status)
-    const [val, setVal] = useState({ teacherName: "", email: "", phone: "", annotation: "", city: "", address: "" })
-    const [genderList, setGenderList] = useState([])
-    const [selectedGender, setSelectedGender] = useState()
-    const [selectedPools, setSelectedPools] = useState([])
-    const selectedPool = useSelector(state => state.Schedule.selectedPool)
+    const [genders, setGenders] = useState([])
+    const [pools, setPools] = useState([])
     const [days, setDays] = useState([])
+    const [selectedPool, setSelectedPool] = useState()
+    const [selectedGender, setSelectedGender] = useState()
     const [selectedDays, setSelectedDays] = useState()
-    const [poolFlag, setPoolFlag] = useState(false)
+
+    const daysRef = useRef()
 
     useEffect(() => {
         async function getTeachersData(id) {
             const levels = await getData(`/teachers/teacherlevels/${id}`)
             const pools = await getData(`/teachers/teacherpools/${id}`)
             const genders = await getData(`/teachers/teachergenders/${id}`)
+            setPools(pools.map(({ poolId }) => poolId))
+            setGenders(genders)
             console.log({ levels, pools, genders });
         }
-        if (teacherStatus === stateStatus.EMPTY && id>0){
+        if (teacherStatus === stateStatus.EMPTY && id > 0) {
             dispatch(selectById(id))
             getTeachersData(id)
         }
     }, [dispatch, teacherStatus, id]);
 
     const confirmForm = async () => {
+        const response = await getData(`teacher_schedule/findTeacherScheduleToSpecificTeacher/${teacher.teacherName}`)
+        console.log(response, 'rerererere');
+        // no work
+        // if(res.data.length>0)
         if (insert) {
             const data = {
-                id, name: teacher.name,
                 TeacherPoolGenderId: selectedGender.id,
                 startHour: selectedDays.startHour,
                 endHour: selectedDays.endHour,
@@ -69,11 +63,10 @@ const FormModalSchedule = ({ id, confirm, insert, cancel }) => {
         }
         else {
             const data = {
-                id, name: teacher.name,
-                TeacherPoolGenderId: selectedGender.map(({ item }) => ({ genderId: item.id })),
-                startHour: selectedDays.map(({ item }) => ({ startHour: item.startHour })),
-                endHour: selectedDays.map(({ item }) => ({ endHour: item.endHour })),
-                PooldayScheduleId: selectedDays.map((item) => ({ PooldayScheduleId: item.id }))
+                TeacherPoolGenderId: selectedGender.id,
+                startHour: selectedDays.startHour,
+                endHour: selectedDays.endHour,
+                PooldayScheduleId: selectedDays.id
             }
             console.log({ data })
             const res = await postData('teacher_schedule/updateTeacherSchedule', data)
@@ -94,9 +87,11 @@ const FormModalSchedule = ({ id, confirm, insert, cancel }) => {
             const levels = await getData(`/teachers/teacherlevels/${id}`)
             const pools = await getData(`/teachers/teacherpools/${id}`)
             const genders = await getData(`/teachers/teachergenders/${id}`)
+            setPools(pools.map(({ poolId }) => poolId))
+            setGenders(genders)
             console.log({ levels, pools, genders });
         }
-        console.log({id});
+        console.log({ id });
         if (id !== 0) {
             dispatch(selectById(id))
             getTeachersData(id)
@@ -104,47 +99,20 @@ const FormModalSchedule = ({ id, confirm, insert, cancel }) => {
     }, [dispatch, id])
 
     useEffect(() => {
-        if (poolsStatus === stateStatus.EMPTY)
-            dispatch(getAllPools())
         if (genderStatus === stateStatus.EMPTY)
             dispatch(getAllGenders())
-    }, [poolsStatus, genderStatus, dispatch])
-
-    useEffect(() => {
-        console.log({ genders })
-        const option1 = genders.filter(({ teacherGender }) => teacherGender === 1).map(({ id, name, color }) => ({ id, text: name, color, option: 1, type: listType.MULTIPLE }))
-        const option2 = genders.filter(({ teacherGender }) => teacherGender === 2).map(({ id, name, color }) => ({ id, text: name, color, option: 2, type: listType.MULTIPLE }))
-        console.log({ option1, option2 })
-        setGenderList([...option1, ...option2])
-    }, [genders])
-
-    useEffect(() => {
-        console.log({ teacher })
-        if (id !== 0) {
-            setVal({ ...teacher })
-        }
-        else {
-            console.log('new')
-        }
-    }, [id, teacher])
-
-    const setValue = (event, arg) => {
-        let temp = {}
-        temp[arg] = event.target.value
-        setVal(prev => ({ ...prev, ...temp }))
-    };
+    }, [genderStatus, dispatch])
 
     const selectGender = (value) => {
         const gender = genders.find(g => g.id === value.value)
         setSelectedGender(gender)
+        console.log(gender, 'gender');
         getDays(gender.id)
     }
 
-    const selectPool = (value) => {
-        setPoolFlag(true)
+    const selectPool = async (value) => {
         const pool = pools.find(p => p.id === value.value)
-        dispatch(setSelectedPool(pool))
-        // dispatch(getAllSchedules(pool.id))
+        setSelectedPool(pool)
     }
 
     const selectDay = (value) => {
@@ -153,12 +121,18 @@ const FormModalSchedule = ({ id, confirm, insert, cancel }) => {
     }
 
     const getDays = async (genId) => {
-        const condition = { swimmingPoolId: selectPool.id, genderId: genId }
-        const res = await postData('schedules/findGenderDaysByPools', condition)
-        res.data.sort((a, b) => a.day - b.day)
-        setDays(res.data)
-        // setSelectedDays()
-        console.log(res.data, 'res');
+        const response = await getData(`schedules/getAllActiveHours/${selectedPool.id}`)
+        console.log(response, 'res.data');
+        const data = { condition: { swimmingPoolId: selectedPool.id, genderId: genId } }
+        const res = await postData('schedules/findGenderDaysByPools', data)
+        if (res.data.length === 0) {
+            daysRef.current.innerHTML="לא נמצאו ימים מתאימים"
+        }
+        else {
+            res.data.sort((a, b) => a.day - b.day)
+            setDays(...response, ...res.data)
+            console.log(res.data, 'res');
+        }
     }
 
     return <>
@@ -176,17 +150,21 @@ const FormModalSchedule = ({ id, confirm, insert, cancel }) => {
 
                 <div className="form">
                     <div >
-                        <div className="input-group" >
-                            <label>בריכה</label>
-                            <SelectSwimmingPool onSelect={selectPool} />
-                        </div>
+                        {pools.length > 0 ?
+                            <>
+                                <div className="input-group" >
+                                    <label>בריכה</label>
+                                    <Select placeholder="בחר..." options={pools.map(p => ({ label: p.name, value: p.id }))} onChange={selectPool}></Select>
+                                </div>
+                            </>
+                            : <p>עדכן בריכה למטפל {teacher.teacherName}</p>}
                     </div>
-                    {poolFlag ?
-                        // selectedPool.id ?
-                        <div className="input-group" >
-                            <label>קבוצה</label>
-                            <SelectGender onSelect={selectGender} />
-                        </div>
+                    {selectedPool ?
+                        genders.length > 0 ? <>
+                            <div className="input-group" >
+                                <label>קבוצה</label>
+                                <Select placeholder="בחר..." options={genders.map(g => ({ label: g.name, value: g.id }))} onChange={selectGender}></Select>
+                            </div></> : <p>עדכן קבוצה למטפל {teacher.teacherName}</p>
                         : <></>
                     }
                     {days.length > 0 ?
@@ -194,7 +172,7 @@ const FormModalSchedule = ({ id, confirm, insert, cancel }) => {
                             <label>יום</label>
                             <SelectDays days={days} onSelect={selectDay}></SelectDays>
                         </div>
-                        : (console.log({ days }))
+                        : <p ref={daysRef}></p>
                     }
                     <div className="button-row">
                         <TextButton text="אישור" bgColor="purple" func={confirmForm}></TextButton>

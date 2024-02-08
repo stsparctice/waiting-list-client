@@ -30,7 +30,6 @@ const MainTeacher = () => {
     const [showModal, setShowModal] = useState(false)
     const [showDeleteModal, setShowDeleteModal] = useState(false)
     const [showScheduleModal, setShowScheduleModal] = useState(false)
-    const [selectedTeacherSchedule, setSelectedTeacherSchedule] = useState({})
 
     useEffect(() => {
         if (teacherStatus === stateStatus.EMPTY)
@@ -98,7 +97,6 @@ const MainTeacher = () => {
 
     const schedule = (data) => {
         setShowScheduleModal(true)
-        // setInsert(false)
         setSelectedTeacher(data.id)
     }
 
@@ -133,7 +131,6 @@ const MainTeacher = () => {
 
     const closeScheduleModal = () => {
         setShowScheduleModal(false)
-        // setShowDeleteModal(false)
     }
 
     return <>
@@ -144,7 +141,6 @@ const MainTeacher = () => {
         }
         {showScheduleModal ?
             <FormModalSchedule id={selectedTeacher} insert={inserSchedule} confirm={confirmSchedule} cancel={closeScheduleModal}></FormModalSchedule> : ""
-            // <SendToFormSchedule id={selectedTeacher} insert={insert} confirm={confirmSchedule} cancel={closeScheduleModal}></SendToFormSchedule> : <></>
         }
         <Table config={tableConfig} data={teachers} rowbuttons={rowButtons}></Table>
         <button onClick={openModal}>:מטפל חדש</button>
