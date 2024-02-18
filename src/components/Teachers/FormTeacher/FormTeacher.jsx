@@ -58,9 +58,9 @@ const FormTeacher = ({ id, confirm, insert, cancel }) => {
             const data = {
                 ...teacher,
                 ...val,
-                teachersLevels: selectedLevels.map(({ item }) => ({ id: item.id })),
-                teachersGenders: selectedGenders.map(({ item }) => ({ id: item.id })),
-                teachersPools: selectedPools.map(({ item }) => ({ id: item.id }))
+                teachersLevels: selectedLevels.map(({ item }) => ({ levelId: item.id })),
+                teachersGenders: selectedGenders.map(({ item }) => ({ genderId: item.id })),
+                teachersPools: selectedPools.map(({ item }) => ({ poolId: item.id }))
             }
             console.log({ data })
             dispatch(updateTeacher(data))
