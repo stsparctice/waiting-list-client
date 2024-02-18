@@ -51,6 +51,7 @@ const Insert = ({ idPatient, gender, patientName, medDate }) => {
     const [remarks, setRemarks] = useState([]);
     const [user, setUser] = useState('');
 
+    const [checkedDays, setCheckedDays] = useState([]);
     const [checkedTeachers, setCheckedTeachers] = useState([]);
     const [checkedPools, setCheckedPools] = useState([]);
     const [checkedLevels, setCheckedLevels] = useState([]);
@@ -85,7 +86,7 @@ const Insert = ({ idPatient, gender, patientName, medDate }) => {
             console.log(res.data, 'res p');
         }
         getDataFromSerevr()
-        console.log(genders, 'ggggggggggggg');
+        console.log(gender, 'ggggggggggggg');
     }, [])
 
     const insert = async () => {
@@ -135,6 +136,9 @@ const Insert = ({ idPatient, gender, patientName, medDate }) => {
     const selectTeachers = (teacher) => {
         setCheckedTeachers(teacher)
     }
+    const selectDays = (day) => {
+        setCheckedDays(day)
+    }
     // console.log(value, 'value.......')
 
     return <>
@@ -176,7 +180,7 @@ const Insert = ({ idPatient, gender, patientName, medDate }) => {
 
             {checkedPools.length > 0 ?
                 <>
-                    <SelectTeachers pools={checkedPools} genders={gender} onSelect={selectTeachers}></SelectTeachers>
+                    <SelectTeachers pools={checkedPools} genders={gender} onSelect={selectTeachers} selectDays={selectDays}></SelectTeachers>
                 </>
                 : ""
             }

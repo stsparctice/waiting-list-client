@@ -1,34 +1,34 @@
 import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
 import Select from "react-select";
 import { postData } from "../../services/axios";
-import { stateStatus } from "../../store/storeStatus";
-import { getAllTeachers } from "../../store/teachers";
+import SelectDays from '../SelectDays/SelectDays'
 
+const SelectTeachers = ({ pools, genders, onSelect, selectDays }) => {
 
-const SelectTeachers = ({ pools, genders, onSelect }) => {
-    const dispatch = useDispatch()
-    const teachers = useSelector(state => state.Teachers.teachers)
-    const teachersStatus = useSelector(state => state.Teachers.status)
+    const [teachers, setTeachers] = useState([])
+    const [days, setDays] = useState([])
 
     useEffect(() => {
-        if (teachersStatus === stateStatus.EMPTY)
-            dispatch(getAllTeachers())
-    }, [dispatch, teachersStatus]);
-
-    useEffect(() => {
-        const findTeachers = async () => {
-            const res = await postData('teachers/findTeacherByPoolAndGender', { condition: { swimmingPools: pools, genders:genders } })
-            console.log({ res });
-            
+        const getDataFromSerevr = async () => {
+            await Promise.all([findTeachers].map(func => func()))
         }
-        findTeachers()
-    }, [dispatch, teachers]);
+        const findTeachers = async () => {
+            const poolsId = pools.map(p => ({ poolId: p.id }))
+            const gendersId = genders.map(g => ({ genderId: g.id }))
+            const res = await postData('teachers/findTeacherByPoolAndGender', { poolId: pools[0].item.id, genderId: genders[0].id })
+            console.log({ res });
+            setTeachers(res.data)
+        }
+        getDataFromSerevr()
+    }, []);
 
-    const SelectTeacher = (val) => {
+    const SelectTeacher = async (val) => {
+        console.log(val, 'val');
         onSelect(val)
+        const res = await postData('teachers/findGendersAndDaysByTeachers', { id: val.value })
+        setDays(res.data)
+        console.log({ res });
     }
-
 
     return <>
         {
@@ -38,6 +38,14 @@ const SelectTeachers = ({ pools, genders, onSelect }) => {
                     <Select placeholder="בחר..."
                         options={teachers.map(t => ({ label: t.teacherName, value: t.id }))} onChange={SelectTeacher}>
                     </Select>
+                </div>
+            </> : ""
+        }
+        {
+            days.length > 0 ? <>
+                <div className="input-group">
+                    <label>ימים</label>
+                    <SelectDays days={days} onSelect={selectDays}></SelectDays>
                 </div>
             </> : ""
         }
