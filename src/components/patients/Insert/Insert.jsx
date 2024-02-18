@@ -13,6 +13,7 @@ import Remarks from "../../../components2/Remarks/Remarks";
 import { listType } from "../../../basic-components/CheckboxList/ListContext"
 import CheckBoxList from "../../../basic-components/CheckboxList/CheckBoxList";
 import { information, importent } from "../../../services/data"
+import  SelectTeachers from "../../SelectTeachers/SelectTeachers";
 
 const useStyles = createUseStyles({
     form: {
@@ -50,6 +51,8 @@ const Insert = ({ idPatient, gender, patientName, medDate }) => {
     const [remarks, setRemarks] = useState([]);
     const [user, setUser] = useState('');
 
+    const [checkedDays, setCheckedDays] = useState([]);
+    const [checkedTeachers, setCheckedTeachers] = useState([]);
     const [checkedPools, setCheckedPools] = useState([]);
     const [checkedLevels, setCheckedLevels] = useState([]);
     const [checkedTreatment, setCheckedTreatment] = useState([]);
@@ -83,7 +86,7 @@ const Insert = ({ idPatient, gender, patientName, medDate }) => {
             console.log(res.data, 'res p');
         }
         getDataFromSerevr()
-        console.log(genders,'ggggggggggggg');
+        console.log(gender, 'ggggggggggggg');
     }, [])
 
     const insert = async () => {
@@ -106,7 +109,7 @@ const Insert = ({ idPatient, gender, patientName, medDate }) => {
             evaluated: checkedEvaluation.map(({ item }) => ({ evaluated: item.id })),
             evaluationDate,
             swimmingPools: checkedPools.map(({ item }) => ({ poolId: item.id })),
-            teachers,preferenceDays: days, comments:remarks, user
+            teachers, preferenceDays: days, comments: remarks, user
         }
         console.log({ data });
         const response = await server.post('/patients/insertRestDetailes', data);
@@ -129,6 +132,12 @@ const Insert = ({ idPatient, gender, patientName, medDate }) => {
     }
     const setInformation = (information) => {
         setCheckedEvaluation(information)
+    }
+    const selectTeachers = (teacher) => {
+        setCheckedTeachers(teacher)
+    }
+    const selectDays = (day) => {
+        setCheckedDays(day)
     }
     // console.log(value, 'value.......')
 
@@ -169,11 +178,12 @@ const Insert = ({ idPatient, gender, patientName, medDate }) => {
                 <CheckBoxList type={listType.SINGLE} list={information} set={setInformation}></CheckBoxList>
             }
 
-
-            {/* <p>
-                <label >מורים:</label>
-                <input type="text" onInput={(e) => setTeachers(e.target.value)} />
-            </p> */}
+            {checkedPools.length > 0 ?
+                <>
+                    <SelectTeachers pools={checkedPools} genders={gender} onSelect={selectTeachers} selectDays={selectDays}></SelectTeachers>
+                </>
+                : ""
+            }
             {/* <Select genders={genders} pools={swimmingPools}></Select> */}
             <p>
                 {/* <label >ימים:</label>
