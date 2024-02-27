@@ -121,7 +121,7 @@ const ClientDetails = () => {
                         <div >
                             {/* {gender ? <div className={css.gender}>{gender[0].name}</div> : <></>} */}
                             {console.log({ gender })}
-                            {gender ? <Sexs genderName={gender[0].name}></Sexs> : <></>}
+                            {gender ? <Sexs genderName={gender[0].name} color={gender[0].color}></Sexs> : <></>}
                         </div>
                     </div>
                     {/* {patient['name']} {patient['familyName']} */}
