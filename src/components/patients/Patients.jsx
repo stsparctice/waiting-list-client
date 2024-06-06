@@ -11,12 +11,9 @@ const Patients = () => {
     const addPatient = useCallback(
         async (id) => {
             // const ans = await getData('/rapidMed/find', { id: id })
-            // console.log('ans', ans);
             // if (ans.error) {
-            //     console.log('error');
             // }
             // if (ans) {
-                console.log("i am in patientsss");
                 nav(`/clientDetails/${id}`);
             // }
         }, [],)

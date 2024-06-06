@@ -16,12 +16,10 @@ const Delete = () => {
     }
 
     const handleSubmit = async event => {
-        console.log(state);
         event.preventDefault()
         if (state.ID) {
             await server.post('patient/delete',{ID:state.ID,status:state.status})
                 .then(res => {
-                    console.log(res.data);
                     if (!res.data) {
                         noteref.current.innerHTML = "the id is wrong or not exist!"
                     }

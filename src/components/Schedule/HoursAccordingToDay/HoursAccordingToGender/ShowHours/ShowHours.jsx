@@ -23,13 +23,10 @@ const ShowHours = ({ td1, td2, td3 }) => {
     const { info, setInfo } = useContext(HoursAccordingToDayContext)
 
     async function deleteHour() {
-        console.log(td1, td2, td3);
         let ans = await postData('/schedule/deleteHourByDay', { poolName: info.poolName, day: info.day, startHour: td1, endHour: td2, gender: td3 })
-        console.log('delete ans--',ans);
 
     }
     async function editHour() {
-        console.log(td1, td2, td3);
     }
     return <>
         <tr className={css.tr}>

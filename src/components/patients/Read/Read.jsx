@@ -27,7 +27,6 @@ const Read = () => {
         // else {
         //     // setAns([])
         //     await prepareToTable(response.data)
-        //     console.log(ans);
         // }
     }
 
@@ -56,7 +55,6 @@ const Read = () => {
     const numberWaitingRef = useRef()
 
     const sendToMongo = async (featureName, name) => {
-        console.log(name, featureName);
         ansref.current.innerHTML = ""
         // if (name === '' || featureName === '') {
         //     ansref.current.innerHTML = "אחד מן הפרטים חסר";
@@ -64,16 +62,12 @@ const Read = () => {
         // }
         
         // let response = await server.get(`/patient/findPatientesByFeature/${featureName}/${name}`)
-        // console.log(response);
         // if (response.data.length === 0) {
         //     ansref.current.innerHTML = "לא נמצאו  נתונים קיימים במערכת"
         // }
         // else {
         //     setAns([])
         //     prepareToTable(response.data)
-        //     console.log(response.data);
-        //     console.log(ans, 'ans');
-        // }
     }
 
     const getAllOrderByPreference = async () => {
@@ -85,7 +79,6 @@ const Read = () => {
         else {
             setAns([])
             prepareToTable(response.data)
-            // console.log(response.data);
         }
     }
 
@@ -98,7 +91,6 @@ const Read = () => {
         else {
             setAns([])
             prepareToTable(response.data)
-            // console.log(response.data);
         }
     }
 
@@ -111,7 +103,6 @@ const Read = () => {
         else {
             setAns([])
             prepareToTable(response.data)
-            // console.log(response.data);
         }
     }
 
@@ -138,11 +129,9 @@ const Read = () => {
                     // "": { type: 'readonly', visible: true, value: p.treatmentPreference },
                 }
             ))
-            console.log(a, 'arr');
             setAns(a)
             let index = arr.findIndex(p => p.treatmentPreference !== "גבוהה")
             setUrgentLen(index < 0 ? arr.length : index)
-            console.log(ans, 'anssss');
         }
     }
 

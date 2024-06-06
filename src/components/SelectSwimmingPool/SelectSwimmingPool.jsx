@@ -15,7 +15,6 @@ const SelectSwimmingPool = ({ onSelect }) => {
   }, [poolsStatus, dispatch])
 
   const selectPool = (val) => {
-    console.log({val})
     onSelect(val)
   }
   return <>

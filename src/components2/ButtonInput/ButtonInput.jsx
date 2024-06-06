@@ -21,7 +21,6 @@ const useStyles = createUseStyles({
 })
 
 const Input = ({ text, imgName }) => {
-    console.log(imgName,'img-----------------------------');
     const css = useStyles()
     return <>
         <p className={css.p}>

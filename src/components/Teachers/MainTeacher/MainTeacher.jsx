@@ -56,7 +56,6 @@ const MainTeacher = () => {
         //         days = (await server.get(`/teacher_schedule/findTeacherScheduleToSpecificTeacher/${teacher.name}`)),
         //         days.data[0] ?
         //             days.data[0].schedule.map(async (day) => (
-        //                 console.log("day", day),
         //                 await day.hours.map(async (hour) => (
         //                     pool = await server.post('/schedule/getHour', {
         //                         poolName: hour.swimmingPool, day: day.day, startHour: hour.start, project:
@@ -101,7 +100,6 @@ const MainTeacher = () => {
     }
 
     const remove = () => {
-        console.log('remove')
     }
 
 
@@ -142,8 +140,8 @@ const MainTeacher = () => {
         {showScheduleModal ?
             <FormModalSchedule id={selectedTeacher} insert={inserSchedule} confirm={confirmSchedule} cancel={closeScheduleModal}></FormModalSchedule> : ""
         }
-        <Table config={tableConfig} data={teachers} rowbuttons={rowButtons}></Table>
         <button onClick={openModal}>:מטפל חדש</button>
+        <Table config={tableConfig} data={teachers} rowbuttons={rowButtons}></Table>
     </>
 
 }

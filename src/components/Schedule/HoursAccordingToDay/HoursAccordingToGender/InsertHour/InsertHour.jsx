@@ -42,12 +42,10 @@ const InsertHour = () => {
     const body = { startHour, endHour, gender }
 
     async function confirm() {
-        console.log(body);
         if (startHour && endHour && gender) {
             //  בדיקות ולידציה
         }
         let ans=await postData('/schedule/addHourByDay',{poolName:info.poolName,day:info.day,startHour:startHour,endHour:endHour,gender:gender})
-        console.log('hours--- ans:',ans);
     }
 
 

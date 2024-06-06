@@ -16,7 +16,6 @@ const DaySchedule = ({ scheduleDay, insertButton, selectSchedule }) => {
     useEffect(() => {
 
         const buildBlocks = scheduleHours.map(sch => {
-            console.log({sch})
             const x = scheduleDay.schedules.find(sc => checkTimeInBlock(sc, sch))
             const block = { ...sch }
             if (x) {

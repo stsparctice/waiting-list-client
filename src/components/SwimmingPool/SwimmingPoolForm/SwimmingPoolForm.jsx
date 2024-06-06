@@ -19,7 +19,6 @@ const SwimmingPoolForm = ({ insert, id, confirm, cancel }) => {
 
     const confirmForm = () => {
 
-        console.log({ poolName, poolAddress, poolColor })
         if (insert) {
             const data = {
                 name: poolName,
@@ -45,7 +44,6 @@ const SwimmingPoolForm = ({ insert, id, confirm, cancel }) => {
     }, [dispatch, id])
 
     useEffect(() => {
-        console.log({ onePool })
         if (id !== 0) {
             setPoolName(onePool.name)
             setPoolColor(onePool.color)

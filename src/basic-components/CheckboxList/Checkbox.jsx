@@ -21,12 +21,10 @@ const CheckBox = ({ type, list, set, selectedItems }) => {
     const { checklist, setCheckList } = useContext(ListContext)
 
     useEffect(() => {
-        console.log({list});
         setCheckList({ action: listActions.BUILD, value: { list, type, selectedItems } })
     }, [list, type, selectedItems])
 
     // useEffect(() => {
-    //     console.log({selectedItems})
     //     setCheckList({ action: listActions.SELECTEDITEMS, value: { list } })
     // }, [selectedItems])
     useEffect(() => {

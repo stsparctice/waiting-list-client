@@ -43,19 +43,14 @@ const Table = ({ All }) => {
    const [Allobj, setAllobj] = useState(All);
    const css = useStyles()
    const sortobj = (m) => {
-      console.log(m);
       let arr5 = [{ קבוצה: { type: 'readonly', visible: false, value: 'נשים' }, name: { type: 'readonly', visible: true, value: 'ציפי' }, evaluated: { type: 'icon', visible: true, value: true, nameIcon: "vi" } }]
-      console.log("m " + m);
       let min = Allobj[0][m].value;
       let mini = 0;
       let arr = []
-      console.log(min, "111111111");
       while (Allobj.length > 0) {
          for (let i = 0; i < Allobj.length; i++) {
             for (let j = 0; j < Allobj.length; j++) {
-               console.log(Allobj[i][m].value, Allobj[j][m].value);
                if (Allobj[i][m].value < Allobj[j][m].value) {
-                  console.log("good", Allobj[i][m], "min", min);
                   if (Allobj[i][m].value < min) {
                      min = Allobj[i][m].value
                      mini = i
@@ -74,7 +69,6 @@ const Table = ({ All }) => {
       setAllobj(arr)
       arr = []
    }
-   console.log(All);
    return <>
       {
 

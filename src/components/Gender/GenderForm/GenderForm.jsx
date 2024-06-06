@@ -39,7 +39,6 @@ const GenderForm = ({ insert, id, confirm, cancel }) => {
     }, [dispatch, id])
 
     useEffect(() => {
-        console.log({ selectedGender })
         if (id !== 0) {
             setName(selectedGender.name)
             setfmaxAge(selectedGender.maxAge2)
@@ -78,7 +77,6 @@ const GenderForm = ({ insert, id, confirm, cancel }) => {
     }
 
     const selectTeacherGender = (value) => {
-        console.log({ value })
         const gender = value.find(({ checked }) => checked)
         if (gender) {
             setTeacherGender(gender.item.id)
@@ -103,7 +101,6 @@ const GenderForm = ({ insert, id, confirm, cancel }) => {
         setmmaxAge('')
     }
     return <>
-    {console.log({teacherGender, genderColor})}
         <div className="modal">
             <div className="form-wrapper container">
                 <div className={css.lefticon}>

@@ -88,7 +88,6 @@ const MainGender = () => {
         setDeleteGenderGroup({ data, name: data.name, title: 'קבוצה', deleteFunc: deleteGender })
     }
     const openModal = () => {
-        console.log('modal')
         setInsert(true)
         setShowModal(true)
         setSelectedGender(0)

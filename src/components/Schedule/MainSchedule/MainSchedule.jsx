@@ -59,7 +59,6 @@ const MainSchedule = () => {
 
     // const sortSchedule = (data) => {
     //     data.forEach(day => {
-    //         console.log('day', day);
     //         if (day.activeHours) {
     //             let minHour = day.activeHours[0].startActiveHour
     //             let maxHour = day.activeHours[0].endActiveHour

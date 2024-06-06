@@ -16,7 +16,6 @@ const useStyles = createUseStyles({
 })
 
 const BasicDetailsInRow = ({ day, stratHour, endHour, exclamationMarkBool ,funcDelete,funcDetails}) => {
-    console.log('in BasicDetailsInRow');
     const css = useStyles();
     return <>
         <div className={css.wrapper}>

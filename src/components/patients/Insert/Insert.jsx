@@ -77,16 +77,13 @@ const Insert = ({ idPatient, gender, patientName, medDate }) => {
         }
         const findTeachers = async () => {
             const ans = await server.get('/teachers/findTeacher')
-            console.log('ans', ans);
             const teachers = ans.data.map(m => ({ checked: false, text: m.name }))
             setTeachers([...teachers])
         }
         const insertBasicPatientDetails = async () => {
             const res = await postData('patients/insertPatient', [id, name, medicalDocsDate])
-            console.log(res.data, 'res p');
         }
         getDataFromSerevr()
-        console.log(gender, 'ggggggggggggg');
     }, [])
 
     const insert = async () => {
@@ -99,7 +96,6 @@ const Insert = ({ idPatient, gender, patientName, medDate }) => {
         // okref.current.display = 'block'
         // }
         // }
-        console.log(genders, 'cp');
         const data = {
             id,
             //  name, medicalDocsDate,
@@ -111,9 +107,7 @@ const Insert = ({ idPatient, gender, patientName, medDate }) => {
             swimmingPools: checkedPools.map(({ item }) => ({ poolId: item.id })),
             teachers, preferenceDays: days, comments: remarks, user
         }
-        console.log({ data });
         const response = await server.post('/patients/insertRestDetailes', data);
-        console.log(response);
     }
 
 
@@ -139,7 +133,6 @@ const Insert = ({ idPatient, gender, patientName, medDate }) => {
     const selectDays = (day) => {
         setCheckedDays(day)
     }
-    // console.log(value, 'value.......')
 
     return <>
         <form className={css.form}>

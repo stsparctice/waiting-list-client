@@ -15,7 +15,6 @@ const buildSchedule = scheduleDays => {
 
     })
 
-    console.log({ scheduleDays })
 
     // days.forEach(day => {
     //     day.schedules.sort((h1, h2) => 
@@ -36,7 +35,6 @@ const buildSchedule = scheduleDays => {
 export const getAllSchedules = createAsyncThunk('ps/getAllActiveHours', async (poolId, api) => {
     try {
         const response = await getData(`/schedules/getAllActiveHours/${poolId}`)
-        console.log({ response })
         return response
     }
     catch (error) {
@@ -47,7 +45,6 @@ export const getAllSchedules = createAsyncThunk('ps/getAllActiveHours', async (p
 export const addSchedule = createAsyncThunk('ps/add', async (poolSchedule, api) => {
     try {
         const response = await postData('/schedules/addGenderHour', poolSchedule)
-        console.log({ response })
         return response.data
     }
     catch (error) {
@@ -58,7 +55,6 @@ export const addSchedule = createAsyncThunk('ps/add', async (poolSchedule, api) 
 export const updateSchedule = createAsyncThunk('ps/update', async (poolSchedule, api) => {
     try {
         const response = await postData('/schedules/update', poolSchedule)
-        console.log({ response })
         return poolSchedule
     }
     catch (error) {
@@ -69,7 +65,6 @@ export const updateSchedule = createAsyncThunk('ps/update', async (poolSchedule,
 export const deleteSchedule = createAsyncThunk('ps/delete', async (poolSchedule, api) => {
     try {
         const response = await postData('/schedules/delete', poolSchedule)
-        console.log({ response })
 
         return poolSchedule
     }
@@ -91,12 +86,10 @@ export const schedulesSlice = createSlice({
     reducers: {
         selectById: {
             reducer(state, action) {
-                console.log(action)
 
                 let find = state.allSchedules.find(p => p.id === action.payload)
                 if (find) {
                     state.selectedPoolSchedule = find
-                    console.log(current(state.selectedPoolSchedule))
                 }
                 else {
                     state.selectedPoolSchedule = {}
@@ -106,46 +99,34 @@ export const schedulesSlice = createSlice({
         setSelectedPool: {
 
             reducer(state, action) {
-                console.log(action)
                 state.selectedPool = action.payload
-                console.log(current(state))
             }
         }
     },
     extraReducers(builder) {
         builder.addCase(getAllSchedules.fulfilled, (state, action) => {
-            console.log({ state, action })
             const answer = action.payload
             state.allSchedules = buildSchedule(answer)
             state.status = stateStatus.SUCCEEDED
-            console.log(current(state))
         })
         builder.addCase(getAllSchedules.pending, (state, action) => {
             state.status = stateStatus.LOADING
         })
         builder.addCase(addSchedule.fulfilled, (state, action) => {
-            console.log({ state, action })
 
             const day = state.allSchedules.find(d => d.day.number === action.payload.day)
-            console.log({ day })
             if (day)
                 day.schedules.push(action.payload)
-            console.log(current(state))
         })
         builder.addCase(addSchedule.rejected, (state, action) => {
-            console.log({ state, action })
             state.error = action.error.message
         })
         builder.addCase(updateSchedule.fulfilled, (state, action) => {
-            console.log({ state, action })
             let poolScheduleIndex = state.allSchedules.findIndex(g => g.id === action.payload.id)
-            console.log({ poolScheduleIndex })
             state.allSchedules[poolScheduleIndex] = action.payload
         })
         builder.addCase(deleteSchedule.fulfilled, (state, action) => {
-            console.log({ state, action })
             let poolScheduleIndex = state.allSchedules.findIndex(g => g.id === action.payload.id)
-            console.log({ poolScheduleIndex })
             state.allSchedules.splice(poolScheduleIndex, 1)
         })
 

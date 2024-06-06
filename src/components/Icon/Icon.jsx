@@ -36,7 +36,6 @@ const useStyles = createUseStyles({
 })
 
 const Icon = ({ imgName, funcDelete, funcDetails}) => {
-    console.log("in icon");
     const css = useStyles()
     return <>
         <div className={css.wrapper} >

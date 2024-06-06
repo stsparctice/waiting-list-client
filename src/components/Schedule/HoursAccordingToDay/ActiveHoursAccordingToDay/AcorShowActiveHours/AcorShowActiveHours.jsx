@@ -22,18 +22,14 @@ const AcorShowActiveHours = ({ td1, td2 }) => {
     const css = useStyles();
     let { info, setInfo } = useContext(HoursAccordingToDayContext)
     async function deleteHour() {
-        console.log(td1, td2);
         // בריכה,יום,שעת התחלה
         let ans = await postData('/schedule/deleteActiveHourByDay', { poolName: info.poolName, day: info.day, startActiveHour: td1 })
-        console.log('delete ans---------', ans);
     }
     async function editHour() {
-        console.log(td1, td2);
         let ans = await postData('/schedule/updateActiveHourByDay', {
             poolName: info.poolName, day: info.day,
             old: { startActiveHour: "16:00", endActiveHour: "17:00" }, "new": { startActiveHour: td1, endActiveHour: td2 }
         })
-        console.log('edit ans---------', ans);
     }
     return <>
         <tr className={css.tr}>

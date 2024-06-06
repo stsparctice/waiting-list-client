@@ -26,8 +26,6 @@ export const addSwimmingPool = createAsyncThunk('sp/add', async (swimmingPool, a
 export const updateSwimmingPool = createAsyncThunk('sp/update', async (swimmingPool, api) => {
     try {
         const response = await postData('/pools/update', swimmingPool)
-        console.log({ response })
-
         return swimmingPool
     }
     catch (error) {
@@ -38,7 +36,6 @@ export const updateSwimmingPool = createAsyncThunk('sp/update', async (swimmingP
 export const deleteSwimmingPool = createAsyncThunk('sp/delete', async (swimmingPool, api) => {
     try {
         const response = await postData('/pools/delete', swimmingPool)
-        console.log({ response })
         return swimmingPool
     }
     catch (error) {
@@ -56,11 +53,9 @@ export const swimmingPoolsSlice = createSlice({
     reducers: {
         selectById: {
             reducer(state, action) {
-                console.log(action)
                 let find = state.pools.find(p => p.id === action.payload)
                 if (find) {
                     state.onePool = find
-                    console.log(current(state.onePool))
                 }
                 else {
                     state.onePool = {}
@@ -72,30 +67,22 @@ export const swimmingPoolsSlice = createSlice({
         builder.addCase(getAllPools.fulfilled, (state, action) => {
             state.pools = action.payload
             state.status = stateStatus.SUCCEEDED
-            console.log(current(state))
         })
         builder.addCase(getAllPools.pending, (state, action) => {
             state.status = stateStatus.LOADING
-            console.log(current(state))
         })
         builder.addCase(addSwimmingPool.fulfilled, (state, action) => {
-            console.log({ state, action })
             state.pools.push(action.payload)
         })
         builder.addCase(addSwimmingPool.rejected, (state, action) => {
-            console.log({ state, action })
             state.error = action.error.message
         })
         builder.addCase(updateSwimmingPool.fulfilled, (state, action) => {
-            console.log({ state, action })
             let poolindex = state.pools.findIndex(p => p.id === action.payload.id)
-            console.log({ poolindex })
             state.pools[poolindex] = action.payload
         })
         builder.addCase(deleteSwimmingPool.fulfilled, (state, action) => {
-            console.log({ state, action })
             let poolindex = state.pools.findIndex(p => p.id === action.payload.id)
-            console.log({ poolindex })
             state.pools.splice(poolindex, 1)
         })
 

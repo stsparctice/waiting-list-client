@@ -30,8 +30,6 @@ const DetailsDetailed = ({stratHour,endHour,flag,funcDelete,day,editDetails}) =>
     const[flagBtn,setFlagBtn]=useState(false)
     let det;
     const funcDetails=(day,stratHour,endHour)=>{
-        console.log('in funcDetails');
-        console.log(day,stratHour,endHour);
         setFlagBtn(true)
         setHours({day:day,shour:stratHour,ehour:endHour})
     }
@@ -39,10 +37,8 @@ const DetailsDetailed = ({stratHour,endHour,flag,funcDelete,day,editDetails}) =>
         await editDetails(day,stratHour,endHour,newStart,newEnd)
         setFlagBtn(false)
     }, [])
-    console.log("in DetailsDetailed");
     const css=useStyles()
     return <>
-    {console.log(hours.day)}
         <div className={css.wrapper}>
            {!flag?<Icon imgName={"deleteImg"} funcDelete={async () => await funcDelete(day,stratHour,endHour)}></Icon>:<div className={css.space}></div>}
            {!flag?<Icon imgName={"edit"} funcDetails={()=>funcDetails(day,stratHour,endHour)}></Icon>:<div className={css.space}></div>}
@@ -51,7 +47,6 @@ const DetailsDetailed = ({stratHour,endHour,flag,funcDelete,day,editDetails}) =>
            {hours.day!==undefined&&hours.day===day&&hours.ehour===endHour? <span>עד שעה  <input type="text" defaultValue={endHour} onInput={(e) => setNewEnd(e.target.value)}/> </span>:<span>   עד שעה        {endHour} </span>}
            <span className={css.space}>      </span>
            {flagBtn?<button className={css.button} onClick={async()=>await btn(day,stratHour,endHour,newStart,newEnd)}>{'אישור'}</button>:''}
-{console.log(det,'det')}        
 </div>
     </>
 }

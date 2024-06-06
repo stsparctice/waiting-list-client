@@ -7,15 +7,11 @@ const SelectStartHour = ({ day, onSelect }) => {
     useEffect(() => {
         const startHours = []
         let hour = new Date(day.startHour)
-        console.log(hour, 'hour');
-        console.log(day.startHour, 'start hour');
-        console.log({ day });
         while (new Date(hour).getTime() < new Date(day.endHour).getTime()) {
             startHours.push(hour)
             hour = new Date(hour.setMinutes(new Date(hour).getMinutes() + 30))
         }
         setHours(startHours)
-        console.log(startHours, 'startHours');
     }, []);
 
     const SelectHour = (val) => {

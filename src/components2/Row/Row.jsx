@@ -32,8 +32,6 @@ const Row = ({ objRow }) => {
     const css = useStyles()
 
     const mouseOver = (event) => {
-        // console.log(event.target.parentNode);
-        // console.log(document.querySelector().getElementsByClassName('mouse').event())
         event.target.parentNode.classList.add(css.back)
     }
 
@@ -48,9 +46,6 @@ const Row = ({ objRow }) => {
             //     i['over'] ?
             //         i['over'] == true ?
             //             mouseOver() :
-            //             console.log("no") :
-            //         console.log("")
-            // ))
         }
 
         {
@@ -61,7 +56,7 @@ const Row = ({ objRow }) => {
             //             Object.values(objRow).map(ke =>
             //             (ke.type == "readonly" ?
             //                 <Readonly text={ke.value} color={ke.color} backgroundColor={ke.backgroundColor} fontWeight={ke.fontWeight} key={ke.value} ></Readonly> :
-            //                 ke.type == "icon" ? ke.value == true ? <Icon obj={ke} key={ke.nameIcon}></Icon> : <span key={ke.nameIcon}  ></span> : console.log("ll"))
+            //                 ke.type == "icon" ? ke.value == true ? <Icon obj={ke} key={ke.nameIcon}></Icon> : <span key={ke.nameIcon}  ></span> : )
             //             )
             //         }
             //     </tr> 
@@ -77,9 +72,9 @@ const Row = ({ objRow }) => {
                                 <Readonly text={k.value} color={k.color} backgroundColor={k.backgroundColor} fontWeight={k.fontWeight} key={k.value} ></Readonly>
                                 //    k.nameIcon && k.value === "גבוהה" ?<Icon obj={k} key={k.nameIcon}></Icon>
                                 : k.type === "gender" ? <Gender key={k.value} text={k.value}></Gender> :
-                                    k.type === "icon" ? k.value === true ? <Icon obj={k} key={k.nameIcon}></Icon> : <span key={k.nameIcon}  ></span> : console.log("ll")
+                                    k.type === "icon" ? k.value === true ? <Icon obj={k} key={k.nameIcon}></Icon> : <span key={k.nameIcon}  ></span> : <></>)
                     )
-                    )
+
                 }
             </tr>
         }

@@ -15,8 +15,7 @@ const BeforRemarks = () => {
             <input type="text" onInput={(e) => setFeatureName(e.target.value)}></input>
             <label> :הכנס שם פציינט</label>
             {flag === 'true' ?
-                <Remarks name={name} featureName={featureName} key={name}></Remarks> :
-                console.log("lll")
+                <Remarks name={name} featureName={featureName} key={name}></Remarks> :<></>
             }
             {/* <input type="text" onInput={(e) => setName(e.target.value)}></input>
         <label>הכנס שם:</label> */}

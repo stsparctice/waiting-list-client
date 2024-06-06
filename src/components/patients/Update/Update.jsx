@@ -14,7 +14,6 @@ const Update = () => {
                 return
             }
             let response = await server.get(`/patient/findPatientesByFeature/id/${id}`)
-            console.log("jkjkj");
             if(response.data.length ===0){
                 document.querySelector('#help').innerHTML = "לא נמצא כזה פציינט במערכת";
                 return;
@@ -27,12 +26,9 @@ const Update = () => {
             obj1['id']=id
             let obj2 = {}
             obj2[featureName]=featureValue
-            console.log(obj1);
-            console.log(obj2);
             // let ans = await server.post(`/patient/Basicupdate/${obj1}/${obj2}`)
             // let ans = await server.post(`/patient/basicupdate/${featureName}/${response.data[0][featureName]}/${featureValue}`)
             let ans = await server.post('/patient/Basicupdate',{obj1,obj2});
-            console.log(ans.data);
         }
         getData()
     }

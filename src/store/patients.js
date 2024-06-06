@@ -4,10 +4,7 @@
 // const { readDetails } = require('../modules/rapidMed')
 
 // router.get('/find', async (req, res) => {
-// console.log('find')
-//     try {
 //         patient= await readDetails(req.query.id)
-//         console.log('patient',patient);
 //         res.status(200).send(patient)
 //     }
 //     catch (error) {
@@ -24,11 +21,8 @@ import { stateStatus } from './storeStatus'
 
 
 export const getPatientById = createAsyncThunk('/getObjectById', async (id,api) => {
-    console.log("i am in the store!!!!!!!!!!!!!");
-    // console.log(req.query,'id');
     // try {
         const response = await getData(`rapidMed/find?id=${id}`)
-        console.log(response,'data........................................');
         return response
     // }
     // catch (error) {
@@ -44,18 +38,14 @@ export const patientSlice = createSlice({
     reducers: {
         selectById: {
             reducer(state, action) {
-                console.log(state,'state')
                 let find = state.patient.find(p => p.id === action.payload)
-                console.log(find);
             }
         }
     },
     extraReducers(builder) {
         builder.addCase(getPatientById.fulfilled, (state, action) => {
-            console.log(action.payload,'action.payload');
             state.selectedPatient = action.payload
             state.status = stateStatus.SUCCEEDED
-            console.log(current(state))
         })
     }
 })

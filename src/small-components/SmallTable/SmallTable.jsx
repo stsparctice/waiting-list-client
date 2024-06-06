@@ -27,7 +27,6 @@ const useStyle = createUseStyles({
 const SmallTable = () => {
     const css = useStyle()
     const details = useLocation().state
-    console.log("details.details", details);
     const [color, setColor] = useState([])
     // const [small, setSmall] = useState()
 
@@ -42,7 +41,7 @@ const SmallTable = () => {
         //             genderColor: col.genderColor
         //         }
         //     ))
-        //     console.log({ ans })
+        //     ({ ans })
         //     setColor(ans.data)
         // }
         // findColor()
@@ -53,7 +52,6 @@ const SmallTable = () => {
         nav('/datamanager/teachers/list')
     }
 
-    // console.log(small);
     return <>
         <div className={css.table}>
             <table>

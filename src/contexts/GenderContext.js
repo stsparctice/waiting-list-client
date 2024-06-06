@@ -22,11 +22,9 @@ export const updateGenders = (state, item) => {
                 state = [...state]
                 break;
             default:
-                console.log('default in switch');
                 break;
         }
     });
-    console.log(state);
     return state
 }
 
