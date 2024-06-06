@@ -37,7 +37,6 @@ const MainHours = ({ poolName, day }) => {
       
     async function start(){
         let ans = await getData(`/schedule/getAllHoursByDay?poolName=${poolName}&day=${day}`)
-        console.log('hours',ans);
         if (ans.hours) {
             setHours(ans.hours)
         }

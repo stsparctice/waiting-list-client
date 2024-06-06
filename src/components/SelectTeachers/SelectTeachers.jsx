@@ -16,18 +16,15 @@ const SelectTeachers = ({ pools, genders, onSelect, selectDays }) => {
             const poolsId = pools.map(p => ({ poolId: p.id }))
             const gendersId = genders.map(g => ({ genderId: g.id }))
             const res = await postData('teachers/findTeacherByPoolAndGender', { poolId: pools[0].item.id, genderId: genders[0].id })
-            console.log({ res });
             setTeachers(res.data)
         }
         getDataFromSerevr()
     }, []);
 
     const SelectTeacher = async (val) => {
-        console.log(val, 'val');
         onSelect(val)
         const res = await postData('teachers/findGendersAndDaysByTeachers', { id: val.value })
         setDays(res.data)
-        console.log({ res });
     }
 
     return <>

@@ -12,7 +12,6 @@ const Select = ({genders,pools}) => {
     const [selectedTeachers, setSelectedTeachers] = useReducer(addteacher, [])
 
     const toAddTeacher = useCallback(async (name, genders) => {
-        console.log(name, "---------------------", genders);
 
         setSelectedTeachers({ type: 'add', value: name })
     }, [])

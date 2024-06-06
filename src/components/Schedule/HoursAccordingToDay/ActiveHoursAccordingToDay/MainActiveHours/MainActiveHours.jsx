@@ -17,7 +17,6 @@ import ScheduleTableProvider from "../../../ScheduleTable/ScheduleTableContext";
 
 const MainActiveHours = ({ day }) => {
     const { poolId } = useParams()
-    console.log({poolId})
     const dispatch = useDispatch()
     const poolSchedules = useSelector(state => state.Schedule.allSchedules)
     const [insert, setInsert] = useState(false)
@@ -25,13 +24,11 @@ const MainActiveHours = ({ day }) => {
     const [selectedDay, setSelectedDay] = useState(undefined)
     const [schedule, setSchedule] = useState(undefined)
     useEffect(() => {
-        console.log({ poolId })
         dispatch(getAllSchedules(poolId))
 
     }, [poolId, dispatch])
 
     useEffect(()=>{
-console.log('useEffect poolschedules')
     }, [poolSchedules])
 
     const openModal = () => {

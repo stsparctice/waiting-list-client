@@ -45,14 +45,12 @@ const MainSwimmingPool = () => {
     }, [])
 
     const updateFunc = (data) => {
-        console.log({ data })
         setShowModal(true)
         setInsert(false)
         setSelectedPool(data.id)
     }
 
     const deleteFunc = (data) => {
-        console.log({ data })
         setShowDeleteModal(true)
         setInsert(false)
         setDeletePool({ data, name: data.name, title: 'בריכה', deleteFunc: deleteSwimmingPool })

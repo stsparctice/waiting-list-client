@@ -21,7 +21,6 @@ const SelectTeacher = ({ arrgander, arrPool } = []) => {
                 await arrgander.map(async (m) => {
                     let ans = await server.post('teachers/findTeacher', { name: m, phone: p })
                     if (ans.data[0]) {
-                        console.log(ans.data[0].name);
                         await setListTeachers(ans.data[0].name)
                     }
                 })
@@ -32,7 +31,6 @@ const SelectTeacher = ({ arrgander, arrPool } = []) => {
         findTeacher()
     }, [])
     return <>
-        {console.log(listTeachers)}
 
  
         {

@@ -17,7 +17,6 @@ const useStyles = createUseStyles({
 
 const BasicDetailsInRow = ({ day, stratHour, endHour, exclamationMarkBool ,funcDelete,funcDetails}) => {
     const css = useStyles();
-    console.log('BasicDetailsInRow --- exclamationMarkBool',exclamationMarkBool);
     return <>
         <div className={css.wrapper}>
             <Icon imgName={"deleteImg"} funcDelete={funcDelete} funcDetails={funcDetails}></Icon>

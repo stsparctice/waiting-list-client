@@ -84,8 +84,7 @@ const MainHours = ({ times, color, poolName, gender }) => {
 
     }, []);
     const editDetails = useCallback(async (day, stratHour, endHour, newStart, newEnd) => {
-        console.log({ day: day, start: stratHour, end: endHour, newStart: newStart, newEnd: newEnd });
-        if (newEnd != undefined && newStart != undefined) {
+        if (newEnd !== undefined && newStart !== undefined) {
             await postData('schedule/deleteHourByDay', { poolName: poolName, day: day, gender: gender, startHour: stratHour, endHour: endHour })
             await postData('schedule/addHourByDay', { poolName: poolName, day: day, gender: gender, startHour: newStart, endHour: newEnd })
         }

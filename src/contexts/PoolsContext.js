@@ -20,7 +20,6 @@ export const updatePool = (state, item) => {
                 delete i.oldPoolName
                 break;
             default:
-                console.log('default in switch');
                 break;
         }
     });

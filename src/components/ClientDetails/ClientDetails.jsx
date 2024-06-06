@@ -81,12 +81,10 @@ const ClientDetails = () => {
     const [gender, setGender] = useState()
 
     useEffect(() => {
-        // console.log("i am here!!!!!!!!!!!!!!");
         if (patientStatus === stateStatus.EMPTY)
             dispatch(getPatientById(id))
         // const findData = async () => {
         //     const ans = await getData('/rapidMed/find', { id: id })
-        //     console.log('ans', ans);
         //     setGenderTypes(genderType(ans.sex, parseInt(new Date().getFullYear()) - parseInt(new Date(ans.birthdate).getFullYear())))
         //     setData(ans)
         // }
@@ -100,12 +98,9 @@ const ClientDetails = () => {
 
     const sex = async () => {
         if (patient) {
-            console.log({patient});
             let age = parseInt(new Date().getFullYear()) - parseInt(new Date(patient.birthdate).getFullYear())
             let response = await server.get(`/genders/getGender/${patient.sex}`)
-            // console.log({ response });
             let genders = response.data.filter((a) => a.maxAge1 > age || a.maxAge2 > age)
-            // console.log({ genders });
             setGender(genders)
         }
     }
@@ -120,7 +115,6 @@ const ClientDetails = () => {
                         {genderTypes.map((g, i) => <ColorLabel key={i} backgroundColor={'blue'} gender={g}></ColorLabel>)}
                         <div >
                             {/* {gender ? <div className={css.gender}>{gender[0].name}</div> : <></>} */}
-                            {console.log({ gender })}
                             {gender ? <Sexs genderName={gender[0].name}></Sexs> : <></>}
                         </div>
                     </div>

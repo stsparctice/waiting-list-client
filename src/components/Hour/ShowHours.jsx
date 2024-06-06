@@ -21,7 +21,6 @@ const useStyles = createUseStyles({
 })
 
 const ShowHours = ({poolName, day, startHour, endHour }) => {
-    console.log("in ShowHours");
     const css = useStyles();
     const nav = useNavigate()
     // const { Hours, setHours } = useContext(HoursContext)

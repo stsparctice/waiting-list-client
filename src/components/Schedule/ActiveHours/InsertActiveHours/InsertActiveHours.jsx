@@ -26,11 +26,7 @@ const InsertActiveHours = () => {
     const save = async () => {
         const item = {poolName:'ashdod', day: day, startActiveHour: startActiveHour, endActiveHour: endActiveHour }
         const response = await postData('/schedule/addActiveHour',item)
-        console.log("response");
-        console.log(response);
         item.option = 'add'
-        console.log("in save function");
-        console.log(item);
         setActiveHours(item)
         setTimeout(() => {
             activeHoursRef.refModal.current.style.display = 'none'

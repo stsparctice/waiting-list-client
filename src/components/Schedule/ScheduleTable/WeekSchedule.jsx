@@ -37,17 +37,14 @@ const WeekSchedule = ({ insertEvent, editEvent }) => {
     const [weekSchedule, setWeekSchedule] = useState([])
 
     const openInsertModal = (clone) => {
-        console.log({ clone })
         insertEvent(clone)
     }
 
     const openEdittModal = ({day, value}) => {
-        console.log({ day, value })
         const selectedSchedule = day.schedules.find(({id})=>value.id===id)
         editEvent({ day, selectedSchedule})
     }
     useEffect(() => {
-        console.log({genderStatus})
         if (genderStatus === stateStatus.EMPTY) {
             dispatch(getAllGenders())
         }
@@ -61,7 +58,6 @@ const WeekSchedule = ({ insertEvent, editEvent }) => {
     }, [setScheduleHours])
 
     useEffect(() => {
-        console.log({poolSchedules})
         const tempSchedule = JSON.parse(JSON.stringify(poolSchedules))
         for (let day of tempSchedule) {
             if (day.schedules.length > 0) {
@@ -82,7 +78,6 @@ const WeekSchedule = ({ insertEvent, editEvent }) => {
 
     return <>
     {
-        console.log({weekSchedule})
     }
         <div>
             <div className={css.table} >

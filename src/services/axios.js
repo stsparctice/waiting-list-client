@@ -17,7 +17,7 @@ export const getData = async (url, query) => {
     if (response.status === 200)
         return response.data
     else{
-        console.log('error')
+        console.log({response});
     }
 }
 

@@ -22,7 +22,6 @@ const Days = ({ poolArray, genderArray }) => {
                 }))
                 setArr(ans.data)
             }
-            console.log(arr);
         }
         getDataFromSerevr()
     }, [])

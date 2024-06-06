@@ -28,14 +28,10 @@ const ShowActiveHours = ({poolName, day, startActiveHour, endActiveHour }) => {
     async function deleteActiveHours() {
         setActiveHours({ day: day.day, option: 'remove' })
         const response = await postData('/schedule/deleteDay', { poolName: 'ashdod', day: day })
-        console.log(activeHours);
-        console.log(response);
     }
 
     function showDetails() {
         // const response = await getData(`/schedule/getAllHoursByDay?poolName=ashdod&day=${day}`)
-        // console.log(response);
-        console.log("Hello");
         // <MainHoursAccordingToDay/>
         nav(`/schedule/mainAccordingToDay/${poolName}/${day}`)
     }

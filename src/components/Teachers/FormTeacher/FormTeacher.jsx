@@ -18,7 +18,7 @@ import '../../../styles/Form.css'
 import '../../../styles/Modal.css'
 import { getData } from "../../../services/axios"
 
-
+const getTeachersGenders = () => [{ id: 1, text: 'מטפל', color: 'rgb(85,21,255)' }, { id: 2, text: 'מטפלת', color: 'rgb(255,87,132)' }]
 
 const FormTeacher = ({ id, confirm, insert, cancel }) => {
     const nav = useNavigate()
@@ -30,7 +30,8 @@ const FormTeacher = ({ id, confirm, insert, cancel }) => {
     const poolsStatus = useSelector(state => state.SwimmingPools.status)
     const levels = useSelector(state => state.Levels.levels)
     const levelStatus = useSelector(state => state.Levels.status)
-    const [val, setVal] = useState({ teacherName: "", email: "", phone: "", annotation: "", city: "", address: "" })
+    const [val, setVal] = useState({ teacherName: "", email: "", phone: "", annotation: "", city: "", address: "", gender: 0 })
+    const [teacherGendersList, setTeschersGenderList] = useState(getTeachersGenders())
     const [poolList, setPoolList] = useState([])
     const [genderList, setGenderList] = useState([])
     const [levelsList, selLevelsList] = useState([])
@@ -62,7 +63,6 @@ const FormTeacher = ({ id, confirm, insert, cancel }) => {
                 teachersGenders: selectedGenders.map(({ item }) => ({ genderId: item.id })),
                 teachersPools: selectedPools.map(({ item }) => ({ poolId: item.id }))
             }
-            console.log({ data })
             dispatch(updateTeacher(data))
         }
         confirm()
@@ -116,25 +116,26 @@ const FormTeacher = ({ id, confirm, insert, cancel }) => {
             fullList = fullList.map((item) => ({ ...item, checked: teacherGenders.find(tg => tg.id === item.id) ? true : false }))
             setGenderList(fullList)
         }
-        const option1 = genders.filter(({ teacherGender }) => teacherGender === 1).map(({ id, name, color }) => ({ id, text: name, color, option: 1, type: listType.MULTIPLE }))
-        const option2 = genders.filter(({ teacherGender }) => teacherGender === 2).map(({ id, name, color }) => ({ id, text: name, color, option: 2, type: listType.MULTIPLE }))
-        let fullList =[...option1, ...option2]
+        const option1 = genders.filter(({ teacherGender }) => teacherGender === 1).map(({ id, name, color, teacherGender }) => ({ id, text: name, color, option: 1, teacherGender, type: listType.MULTIPLE }))
+        const option2 = genders.filter(({ teacherGender }) => teacherGender === 2).map(({ id, name, color, teacherGender }) => ({ id, text: name, color, option: 2, teacherGender, type: listType.MULTIPLE }))
+        let fullList = [...option1, ...option2]
+        fullList = fullList.map(item => ({ ...item, checked: false, disabled: true }))
         if (id > 0) {
             getTeachersData(id, fullList)
         }
         else {
-            fullList = fullList.map(item=>({...item, checked:false}))
             setGenderList(fullList)
         }
     }, [genders, id])
 
     useEffect(() => {
-        console.log({ teacher })
         if (id !== 0) {
+            const teachersGenders = getTeachersGenders().map(tg => tg.id === teacher.gender ? ({ ...tg, checked: true }) : ({ ...tg }))
+            setTeschersGenderList(teachersGenders)
             setVal({ ...teacher })
         }
         else {
-            console.log('new')
+            setTeschersGenderList(getTeachersGenders())
         }
     }, [id, teacher])
 
@@ -144,6 +145,21 @@ const FormTeacher = ({ id, confirm, insert, cancel }) => {
         temp[arg] = event.target.value
         setVal(prev => ({ ...prev, ...temp }))
     };
+
+    const selectTeachersGender = (gender) => {
+        const selectedGender = gender[0].item.id
+        genderList.forEach(item => {
+            if (item.teacherGender === selectedGender) {
+                item.disabled = false
+            }
+            else {
+                item.checked = false
+                item.disabled = true
+            }
+        })
+        setGenderList([...genderList])
+        setVal(prev => ({ ...prev, gender: gender[0].item.id }))
+    }
 
     const selectLevel = (level) => {
         setSelectedLevels(level)
@@ -174,6 +190,7 @@ const FormTeacher = ({ id, confirm, insert, cancel }) => {
                     <StandartInput text="כתובת" type="text" value={val.address} set={(event) => setValue(event, 'address')}></StandartInput>
                     <StandartInput text="עיר" type="text" value={val.city} set={(event) => setValue(event, 'city')}></StandartInput>
                     <StandartInput text="הערה" type="text" value={val.annotation} set={(event) => setValue(event, 'annotation')}></StandartInput>
+                    <CheckBoxList type={listType.SINGLE} list={teacherGendersList} set={selectTeachersGender}></CheckBoxList>
                     <CheckBoxList header={'רמת טיפול'} type={listType.MULTIPLE} list={levelsList} set={selectLevel}></CheckBoxList>
                     <CheckBoxList header={'קבוצות'} type={listType.HYBRID} list={genderList} set={selectGender}></CheckBoxList>
                     <CheckBoxList header={'בריכות'} type={listType.MULTIPLE} list={poolList} set={selectPool}></CheckBoxList>

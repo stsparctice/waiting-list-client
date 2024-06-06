@@ -27,7 +27,6 @@ const Icon = (obj) => {
 
     const obj2 = obj.obj
     // {
-    //     console.log(images[ obj2.nameIcon]);
     // }
     const css = useStyles()
     const srcref = useRef()

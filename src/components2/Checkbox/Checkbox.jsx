@@ -12,7 +12,6 @@ export const setbackgroundColor = (obj) => {
 
 }
 const ListReducer = (state, item) => {
-    // console.log(item.obj.checked + " before");
     if (state.type === "radio") {
         if (state.arr.some(x => x.checked)) {
             let switch1 = state.arr.find(x => x.checked)
@@ -40,7 +39,6 @@ const ListReducer = (state, item) => {
                 if (checkbox.color.indexOf(')') !== -1) {
                     let backgroundColor = checkbox.color.slice(4, index)
                     checkbox.backgroundColor = `rgba(${backgroundColor}, 0.5)`;
-                    // console.log(checkbox.checked);
                 }
             }
             else{
@@ -52,7 +50,6 @@ const ListReducer = (state, item) => {
 
             checkbox.backgroundColor = "rgb(235, 235, 235)"
             checkbox.checked = false;
-            // console.log(checkbox.checked);
         }
 
         // state.arr.find(x => x.text == item.obj.text).checked = true

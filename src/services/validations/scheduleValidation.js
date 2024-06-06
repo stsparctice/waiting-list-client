@@ -37,7 +37,6 @@ export async function removalIndexsAndCheckEmptyOption(timeTable) {
 
 
 export const checkHoursDiff = (start, end) => {
-    console.log({ start, end });
     return start.getTime() < end.getTime()
 }
 

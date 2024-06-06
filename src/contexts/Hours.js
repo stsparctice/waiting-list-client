@@ -1,7 +1,6 @@
 import { createContext } from 'react'
 
 export const HoursReducer = (state, item) => {
-    console.log(state,'state');
     switch (item.option) {
         case 'add':
             delete item.option;

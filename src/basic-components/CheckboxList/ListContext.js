@@ -69,13 +69,8 @@ const listReducer = (state, item) => {
                 }
                 case listType.HYBRID:
                     {
-                        console.log(listType.HYBRID)
-                        console.log({ value })
-                        console.log(value.type)
-                        console.log(state.list)
                         switch (value.type) {
                             case listType.SINGLE: {
-                                console.log(value.type)
                                 const list = state.list.map(x => {
                                     let checked = false
                                     if (value.id === x.item.id) {
@@ -87,7 +82,6 @@ const listReducer = (state, item) => {
                                 break;
                             }
                             case listType.MULTIPLE: {
-                                console.log(value.type)
                                 const list = state.list.map(x => {
                                     let checked = x.checked
                                     if (x.item.option === value.option) {
@@ -131,7 +125,6 @@ const listReducer = (state, item) => {
             state = { ...state }
             break;
     }
-    console.log({ state })
     return state
 }
 

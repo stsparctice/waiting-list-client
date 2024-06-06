@@ -35,7 +35,6 @@ const PoolTableInformation = () => {
             })
         }
         catch {
-            console.log('data.pool.schedule unrecognized');
         }
         setDetail(newdata)
 

@@ -32,7 +32,6 @@ const Timetable = ({ obj }) => {
 
     const select = (event) => {
         setChecked(true)
-        console.log("in select", event.value.checked)
     }
 
     function add15Minutes(time) {

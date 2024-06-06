@@ -40,7 +40,6 @@ const FormModalSchedule = ({ id, confirm, insert, cancel }) => {
             const genders = await getData(`/teachers/teachergenders/${id}`)
             setPools(pools.map(({ poolId }) => poolId))
             setGenders(genders)
-            console.log({ levels, pools, genders });
         }
         if (teacherStatus === stateStatus.EMPTY && id > 0) {
             dispatch(selectById(id))
@@ -50,7 +49,7 @@ const FormModalSchedule = ({ id, confirm, insert, cancel }) => {
 
     const confirmForm = async () => {
         // const response = await getData(`teacher_schedule/findTeacherScheduleToSpecificTeacher/${teacher.teacherName}`)
-        // console.log(response, 'rerererere');
+        // (response, 'rerererere');
         // no work
         // if(res.data.length>0)
         if (insert) {
@@ -61,7 +60,6 @@ const FormModalSchedule = ({ id, confirm, insert, cancel }) => {
                 PooldayScheduleId: selectedDays.id
             }
             const res = await postData('teacher_schedule/insertTeacherSchedule', data)
-            console.log({ res });
         }
         else {
             const data = {
@@ -70,9 +68,7 @@ const FormModalSchedule = ({ id, confirm, insert, cancel }) => {
                 endHour: selectedEndHour,
                 PooldayScheduleId: selectedDays.id
             }
-            console.log({ data })
             const res = await postData('teacher_schedule/updateTeacherSchedule', data)
-            console.log({ res });
         }
         confirm()
     }
@@ -81,7 +77,6 @@ const FormModalSchedule = ({ id, confirm, insert, cancel }) => {
     //     const levels = await getData(`/teachers/teacherlevels/${id}`)
     //     const pools = await getData(`/teachers/teacherpools/${id}`)
     //     const genders = await getData(`/teachers/teachergenders/${id}`)
-    //     console.log({ levels, pools, genders });
     // }
 
     useEffect(() => {
@@ -91,9 +86,7 @@ const FormModalSchedule = ({ id, confirm, insert, cancel }) => {
             const genders = await getData(`/teachers/teachergenders/${id}`)
             setPools(pools.map(({ poolId }) => poolId))
             setGenders(genders)
-            console.log({ levels, pools, genders });
         }
-        console.log({ id });
         if (id !== 0) {
             dispatch(selectById(id))
             getTeachersData(id)
@@ -103,7 +96,6 @@ const FormModalSchedule = ({ id, confirm, insert, cancel }) => {
     const selectGender = (value) => {
         const gender = genders.find(g => g.id === value.value)
         setSelectedGender(gender)
-        console.log(gender, 'gender');
         getDays(gender.id)
     }
 
@@ -118,7 +110,6 @@ const FormModalSchedule = ({ id, confirm, insert, cancel }) => {
     }
 
     const selectStartHour = (value) => {
-        console.log(value.value,'val');
         setSelectedStartHour(new Date(value.value))
     }
 

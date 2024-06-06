@@ -12,8 +12,6 @@ const HourBlock = ({ data, selectSchedule }) => {
     const showData= ()=>{
         if(data.schedule){
 
-            console.log(data.schedule)
-            console.log(selectSchedule)
             selectSchedule(data.schedule)
         }
     }

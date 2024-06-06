@@ -123,7 +123,6 @@ const Remarks = ({ id, sendRemarks }) => {
                 }
                 let response = await server.get(`/patient/findPatientesByFeature/id/${id}`)
                 if (response.data.length > 0) {
-                    console.log(response.data);
                     setRemarks(response.data[0].remarks)
                 }
             }
@@ -144,7 +143,6 @@ const Remarks = ({ id, sendRemarks }) => {
             setFlagClick('false')
             setRemark('')
             setPlacing('')
-            // console.log(remarks);
             // returnRemarks(remarks)
         }
     }

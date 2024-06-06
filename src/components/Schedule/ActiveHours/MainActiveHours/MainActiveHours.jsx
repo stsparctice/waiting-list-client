@@ -52,7 +52,6 @@ const MainActiveHours = () => {
             //בבקשה זו צריך להשלח שם הבריכה
             let response = await getData(`/schedule/getAllActiveHours/${poolName}`)
             response = response[0].schedule
-            console.log(response);
             for (let day of response) {
                 if (day.activeHours) {
                     let minHour = day.activeHours[0].startActiveHour

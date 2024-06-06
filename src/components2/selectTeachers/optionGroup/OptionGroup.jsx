@@ -53,7 +53,6 @@ const OptionGroup = ({ pools, genders, click }) => {
 
             ));
             let data=await server.get('teachers/all')
-            console.log(data,'data teachers');
             //  = await server.post('teachers/findTeacherByCondition', { filter })
             setTeachers(data.data)
         }
@@ -61,7 +60,6 @@ const OptionGroup = ({ pools, genders, click }) => {
         // 0533182179
     }, [])
     const showList = () => {
-        console.log('show listtttttttttttttttt');
         document.querySelector('#content').style.display = 'block'
     }
     // const selectTeach = async() = {
