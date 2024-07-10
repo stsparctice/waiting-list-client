@@ -1,4 +1,4 @@
-import { createSlice, createAsyncThunk, current } from '@reduxjs/toolkit'
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import { getData, postData } from '../services/axios'
 import { stateStatus } from './storeStatus'
 import { hebrewWeekDays } from '../services/dateAndTime'
@@ -55,7 +55,16 @@ export const addSchedule = createAsyncThunk('ps/add', async (poolSchedule, api) 
 export const updateSchedule = createAsyncThunk('ps/update', async (poolSchedule, api) => {
     try {
         const response = await postData('/schedules/update', poolSchedule)
-        return poolSchedule
+        if (response.status === 200) {
+            const { data } = response
+            if (data.id !== poolSchedule.id) {
+
+                return { action: 'replace', id: poolSchedule.id, data }
+            }
+            else {
+                return { action: 'update', data: poolSchedule }
+            }
+        }
     }
     catch (error) {
         return api.rejectWithValue(error.message)
@@ -64,7 +73,7 @@ export const updateSchedule = createAsyncThunk('ps/update', async (poolSchedule,
 
 export const deleteSchedule = createAsyncThunk('ps/delete', async (poolSchedule, api) => {
     try {
-        const response = await postData('/schedules/delete', poolSchedule)
+        await postData('/schedules/delete', poolSchedule)
 
         return poolSchedule
     }
@@ -122,8 +131,23 @@ export const schedulesSlice = createSlice({
             state.error = action.error.message
         })
         builder.addCase(updateSchedule.fulfilled, (state, action) => {
-            let poolScheduleIndex = state.allSchedules.findIndex(g => g.id === action.payload.id)
-            state.allSchedules[poolScheduleIndex] = action.payload
+            console.log(action.payload)
+            const day = state.allSchedules.find(d => d.day.number === action.payload.data.day)
+            console.log({day});
+            switch (action.payload.action) {
+                case 'replace':
+                    //TODO arrange this point
+                    if (day) {
+                        let poolScheduleIndex = state.allSchedules.findIndex(g => g.id === action.payload.id)
+                        day.schedules.splice(poolScheduleIndex, 1,action.payload.data)
+                    }
+                    break
+                case 'update':
+                    break
+                default:
+                    break
+
+            }
         })
         builder.addCase(deleteSchedule.fulfilled, (state, action) => {
             let poolScheduleIndex = state.allSchedules.findIndex(g => g.id === action.payload.id)

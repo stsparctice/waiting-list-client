@@ -6,7 +6,7 @@ import { createUseStyles } from "react-jss"
 import './ScheduleTable.css'
 import DaySchedule from "./DaySchedule"
 import { ScheduleTableContext } from "./ScheduleTableContext"
-import { getTimesList } from "../../../services/dateAndTime"
+import { ScheduleTime, getTimesList } from "../../../services/dateAndTime"
 
 
 
@@ -22,9 +22,6 @@ const useStyles = createUseStyles({
     }
 })
 
-const reduceSchedule = (state, item) => {
-
-}
 
 
 const WeekSchedule = ({ insertEvent, editEvent }) => {
@@ -40,9 +37,10 @@ const WeekSchedule = ({ insertEvent, editEvent }) => {
         insertEvent(clone)
     }
 
-    const openEdittModal = ({day, value}) => {
-        const selectedSchedule = day.schedules.find(({id})=>value.id===id)
-        editEvent({ day, selectedSchedule})
+    const openEdittModal = ({ day, value }) => {
+        console.log({ day, value });
+        const selectedSchedule = day.schedules.find(({ id }) => value.id === id)
+        editEvent({ day, selectedSchedule })
     }
     useEffect(() => {
         if (genderStatus === stateStatus.EMPTY) {
@@ -58,14 +56,21 @@ const WeekSchedule = ({ insertEvent, editEvent }) => {
     }, [setScheduleHours])
 
     useEffect(() => {
+        console.log({poolSchedules});
         const tempSchedule = JSON.parse(JSON.stringify(poolSchedules))
+        console.log({tempSchedule});
         for (let day of tempSchedule) {
+            console.log({day});
             if (day.schedules.length > 0) {
                 for (let sc of day.schedules) {
-                    sc.startHour = new Date(sc.startHour)
-                    sc.endHour = new Date(sc.endHour)
-                    sc.backgroundColor=undefined;
-                    
+                    let time = ScheduleTime.splitTime(sc.startHour)
+                    const start = new ScheduleTime(time)
+                    sc.startHour = start
+                    time = ScheduleTime.splitTime(sc.endHour)
+                    const end = new ScheduleTime(time)
+                    sc.endHour = end
+                    sc.backgroundColor = undefined;
+
                     const gender = genders.find(g => g.id === sc.genderId.id)
                     if (gender)
                         sc.backgroundColor = gender.color
@@ -77,8 +82,6 @@ const WeekSchedule = ({ insertEvent, editEvent }) => {
 
 
     return <>
-    {
-    }
         <div>
             <div className={css.table} >
 
@@ -87,7 +90,7 @@ const WeekSchedule = ({ insertEvent, editEvent }) => {
                     {
                         scheduleHours.map((hour, index) => (
                             <div key={`hour${index}`} className="hour-block table-block">
-                                <span>{hour.getHours().toString().padStart(2, '0')}:{hour.getMinutes().toString().padStart(2, '0')}</span>
+                                <span>{hour.toString()}</span>
                             </div>
                         ))
                     }
@@ -96,9 +99,9 @@ const WeekSchedule = ({ insertEvent, editEvent }) => {
                 {
                     weekSchedule.map(day => (
                         <div className={css.tableDay} key={day.day.number}>
-                            <DaySchedule scheduleDay={day} insertButton={openInsertModal} selectSchedule={(value)=>
+                            <DaySchedule scheduleDay={day} insertButton={openInsertModal} selectSchedule={(value) =>
 
-                                openEdittModal({day, value})}/>
+                                openEdittModal({ day, value })} />
                         </div>
                     ))
                 }

@@ -1,5 +1,4 @@
 import React, { useContext, useEffect, useState } from "react"
-import { useSelector, useDispatch } from "react-redux"
 
 import './ScheduleTable.css'
 import { ScheduleTableContext } from "./ScheduleTableContext"

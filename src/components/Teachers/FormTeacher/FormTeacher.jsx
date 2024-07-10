@@ -53,6 +53,7 @@ const FormTeacher = ({ id, confirm, insert, cancel }) => {
                 teachersGenders: selectedGenders.map(({ item }) => ({ genderId: item.id })),
                 teachersPools: selectedPools.map(({ item }) => ({ poolId: item.id }))
             }
+            console.log({data})
             dispatch(addTeacher(data))
         }
         else {
@@ -191,8 +192,8 @@ const FormTeacher = ({ id, confirm, insert, cancel }) => {
                     <StandartInput text="עיר" type="text" value={val.city} set={(event) => setValue(event, 'city')}></StandartInput>
                     <StandartInput text="הערה" type="text" value={val.annotation} set={(event) => setValue(event, 'annotation')}></StandartInput>
                     <CheckBoxList type={listType.SINGLE} list={teacherGendersList} set={selectTeachersGender}></CheckBoxList>
-                    <CheckBoxList header={'רמת טיפול'} type={listType.MULTIPLE} list={levelsList} set={selectLevel}></CheckBoxList>
                     <CheckBoxList header={'קבוצות'} type={listType.HYBRID} list={genderList} set={selectGender}></CheckBoxList>
+                    <CheckBoxList header={'רמת טיפול'} type={listType.MULTIPLE} list={levelsList} set={selectLevel}></CheckBoxList>
                     <CheckBoxList header={'בריכות'} type={listType.MULTIPLE} list={poolList} set={selectPool}></CheckBoxList>
                     <div className="button-row">
                         <TextButton text="אישור" bgColor="purple" func={confirmForm}></TextButton>

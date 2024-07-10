@@ -11,7 +11,7 @@ import icons from "../../../../../services/iconService"
 import SelectGender from "../../../../SelectGender/SelectGender";
 import Select from "react-select";
 
-import { addSchedule } from "../../../../../store/schedule";
+import { addSchedule, updateSchedule, deleteSchedule } from "../../../../../store/schedule";
 import { getTimesList } from "../../../../../services/dateAndTime";
 import { checkAvailableHours, checkHoursDiff } from "../../../../../services/validations/scheduleValidation";
 
@@ -23,6 +23,7 @@ const useStyles = createUseStyles({
 })
 
 const poolGenderHourActions = {
+    FULLDATA: 'fullData',
     STARTHOUR: 'startHour',
     ENDHOUR: 'endHour',
     GENDER: 'gender'
@@ -43,7 +44,11 @@ const poolGenderHour = (state, item) => {
             state = { day, data: obj, error }
             break
         case poolGenderHourActions.GENDER:
-            obj = { ...data, gender: value }
+            obj = { ...data, genderId: value }
+            state = { day, data: obj, error }
+            break
+        case poolGenderHourActions.FULLDATA:
+            obj = { ...value }
             state = { day, data: obj, error }
             break
         default:
@@ -51,7 +56,7 @@ const poolGenderHour = (state, item) => {
     }
 
     if (state.data.startHour && state.data.endHour) {
-        let diff = checkHoursDiff(state.data.startHour.value, state.data.endHour.value)
+        let diff = checkHoursDiff(state.data.startHour, state.data.endHour)
         if (!diff) {
             state = { ...state, error: 'זמן סיום צריך להיות אחרי זמן התחלה' }
         }
@@ -59,7 +64,7 @@ const poolGenderHour = (state, item) => {
             state = { ...state, error: undefined }
         }
         try {
-            checkAvailableHours(day, state.data.startHour.value, state.data.endHour.value)
+            checkAvailableHours({ day, start: state.data.startHour, end: state.data.endHour, id: state.data.id })
         }
         catch (validationError) {
             state = { ...state, error: validationError }
@@ -74,50 +79,69 @@ const PoolGenderHourForm = ({ insert, confirm, cancel, day, selectedSchedule }) 
     const css = useStyles();
     const dispatch = useDispatch()
     const pool = useSelector(state => state.Schedule.selectedPool)
-    const [object, setObject] = useReducer(poolGenderHour, { day, data: { startHour: undefined, endHour: undefined, gender: undefined }, error: 'undefined' })
+    const [object, setObject] = useReducer(poolGenderHour, { day, data: { startHour: undefined, endHour: undefined, genderId: undefined }, error: 'undefined' })
     const [startHours, setStartHours] = useState([]);
     const [endHours, setEndHours] = useState([]);
     useEffect(() => {
         const starthours = getTimesList()
-        setStartHours(starthours.map((h, i) => ({ label: `${h.getHours().toString().padStart(2, '0')}:${h.getMinutes().toString().padStart(2, '0')}`, value: h })))
+        setStartHours(starthours.map((h) => ({ label: h.toString(), value: h })))
         if (insert) {
-            // setObject({ action: poolGenderHourActions.STARTHOUR, value: selectedSchedule.startHour })
-            // const endhours = getTimesList(day,object.startHour.value )
-            // setEndHours(endhours.map(h => ({ label: `${h.getHours().toString().padStart(2, '0')}:${h.getMinutes().toString().padStart(2, '0')}`, value: h })))
         }
-        else{
-            setObject({ action: poolGenderHourActions.STARTHOUR, value: selectedSchedule.startHour })
+        else {
+            let end = selectedSchedule.endHour.clone()
+            const hours = getTimesList(end.addMinutes(-30))
+            setEndHours(hours.map(h => ({ label: h.toString(), value: h })))
+            setObject({ action: poolGenderHourActions.FULLDATA, value: selectedSchedule })
         }
     }, [insert, selectedSchedule])
 
     const selectStart = (value) => {
-        setObject({ action: poolGenderHourActions.STARTHOUR, value })
-        const hours = getTimesList(day, value.value)
-        setEndHours(hours.map(h => ({ label: `${h.getHours().toString().padStart(2, '0')}:${h.getMinutes().toString().padStart(2, '0')}`, value: h })))
+        setObject({ action: poolGenderHourActions.STARTHOUR, value: value.value })
+        const hours = getTimesList(value.value.clone())
+        setEndHours(hours.map(h => ({ label: h.toString(), value: h })))
     }
 
     const selectEnd = (value) => {
-        setObject({ action: poolGenderHourActions.ENDHOUR, value })
+        setObject({ action: poolGenderHourActions.ENDHOUR, value: value.value })
     }
 
     const selectGroup = (value) => {
-        setObject({ action: poolGenderHourActions.GENDER, value })
+        setObject({ action: poolGenderHourActions.GENDER, value: value.value })
+    }
+
+    const deleteForm = () => {
+        console.log({ object });
+        const { data } = object
+        try {
+            dispatch(deleteSchedule(data))
+        }
+        catch (error) {
+            console.log({ error })
+        }
     }
 
 
     const confirmForm = () => {
+        console.log({ object });
         if (object.error)
             return
-        if (object.data.startHour && object.data.endHour && object.data.gender) {
+
+        if (object.data.startHour && object.data.endHour && object.data.genderId) {
             const data = {
                 swimmingPoolId: pool.id,
                 day: day.day.number,
-                genderId: object.data.gender.value,
-                startHour: object.data.startHour.value.toISOString(),
-                endHour: object.data.endHour.value.toISOString()
+                genderId: object.data.genderId,
+                startHour: object.data.startHour.toString(),
+                endHour: object.data.endHour.toString()
             }
             try {
-                dispatch(addSchedule(data))
+                if (object.data.id) {
+                    data.id = object.data.id
+                    dispatch(updateSchedule(data))
+                }
+                else {
+                    dispatch(addSchedule(data))
+                }
                 cancel()
             }
             catch (error) {
@@ -144,29 +168,33 @@ const PoolGenderHourForm = ({ insert, confirm, cancel, day, selectedSchedule }) 
                     <div className="input-row">
                         <label className={css.label}>משעה:</label>
                         <div className="input-group" >
-                            <Select placeholder="בחר..." options={startHours} onChange={selectStart}></Select>
+                            {console.log(object)}
+                            <Select placeholder="בחר..." options={startHours} value={object.data.startHour ? startHours.find(sh =>
+                                sh.label === object.data.startHour.toString()) : undefined} onChange={selectStart}></Select>
                         </div>
                     </div>
                     <div className="input-row">
                         <label className={css.label}> עד השעה: </label>
                         <div className="input-group" >
-                            <Select placeholder="בחר..." options={endHours} onChange={selectEnd}></Select>
+                            <Select placeholder="בחר..." options={endHours} value={object.data.endHour ? endHours.find(eh =>
+                                eh.label === object.data.endHour.toString()) : undefined} onChange={selectEnd}></Select>
                         </div>
                     </div>
 
                     <div className="input-row">
                         <label className={css.label}>קבוצה: </label>
                         <div className="input-group" >
-                            <SelectGender onSelect={selectGroup} />
+                            <SelectGender onSelect={selectGroup} value={object.data.genderId} />
                         </div>
                     </div>
 
-                    <div>
+                    <div style={{ color: 'red' }}>
                         {object.error ? object.error.message : ''}
                     </div>
 
                     <div className="button-row">
                         <TextButton text="אישור" func={confirmForm}></TextButton>
+                        {insert ? '' : <TextButton text="מחיקה" func={deleteForm}></TextButton>}
                         <TextButton text="ביטול" func={cancel}></TextButton>
                     </div>
                 </div>

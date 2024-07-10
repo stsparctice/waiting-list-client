@@ -1,26 +1,19 @@
 export async function checkHours(timeTable) {
-    let flag = true;
-    timeTable.map(item => {
-        if (!checkHoursForDay(item)) {
-            flag = false;
-        }
-    })
-    return flag;
+    const exist = timeTable.some(item => !checkHoursForDay(item))
+
+    return !exist;
 }
 
 function checkHoursForDay(day) {
-    let flag = true
-    day.hours.map(hour => {
-        if (hour.startHour >= hour.endHour) {
-            flag = false
-        }
-    })
-    return flag
+    console.log({ day })
+    let hour = day.hours.find(hour => hour.startHour >= hour.endHour)
+
+    return hour ? false : true
 }
 
 export async function removalIndexsAndCheckEmptyOption(timeTable) {
-    timeTable.map(day => {
-        day.hours.map((hour, index) => {
+    timeTable.forEach(day => {
+        day.hours.forEach((hour, index) => {
             if (hour.startHour === '' || hour.endHour === '') {
                 day.hours.pop(day.hours[index])
             }
@@ -40,29 +33,47 @@ export const checkHoursDiff = (start, end) => {
     return start.getTime() < end.getTime()
 }
 
-export const checkAvailableHours = (day, start, end) => {
-    if (day.schedules.length === 0)
-        return true
-    const error1 = day.schedules.find(({ startHour, endHour }) => startHour.getTime() < start.getTime() && endHour.getTime() > end.getTime())
-    if (error1) {
-        throw new Error('תווך הזמן שנבחר קיים במערכת')
-    }
+export const checkAvailableHours = ({ day, id = 0, start, end }) => {
+    if (id) {
+        const current = day.schedules.find(schedule => schedule.id === id)
+        console.log({ current });
+        if (start.getTime() < current.startHour.getTime()) {
+            const error = day.schedules.find(({ startHour, endHour, id , genderId}) => id !== current.id && current.genderId.id !==  genderId.id&& startHour.getTime() <= start.getTime() && endHour.getTime() > start.getTime())
+            if (error) {
+                throw new Error('שעת התחלה מתנגשת עם קבוצה קימת')
+            }
+        }
 
-    const error2 = day.schedules.find(({ startHour, endHour }) => startHour.getTime() > start.getTime() && endHour.getTime() < end.getTime())
-    if (error2) {
-        throw new Error('במערכת קיים זמן הכלול בזמנים שנבחרו')
+        if (end.getTime() > current.endHour.getTime()) {
+            const error = day.schedules.find(({ startHour, endHour, id,genderId }) => id !== current.id && current.genderId.id !==  genderId.id&& startHour.getTime() < end.getTime() && endHour.getTime() > end.getTime())
+            if (error) {
+                throw new Error('שעת סיום מתנגשת עם קבוצה קימת')
+            }
+        }
     }
+    else {
+        if (day.schedules.length === 0)
+            return true
+        const error1 = day.schedules.find(({ startHour, endHour }) => startHour.getTime() < start.getTime() && endHour.getTime() > end.getTime())
+        if (error1) {
+            throw new Error('תווך הזמן שנבחר קיים במערכת')
+        }
 
-    const error3 = day.schedules.find(({ startHour }) => startHour.getTime() > start.getTime() && startHour.getTime() < end.getTime())
-    if (error3) {
-        throw new Error('סוף הזמן שנבחר נמצא בזמן הקיים במערכת')
+        const error2 = day.schedules.find(({ startHour, endHour }) => startHour.getTime() > start.getTime() && endHour.getTime() < end.getTime())
+        if (error2) {
+            throw new Error('במערכת קיים זמן הכלול בזמנים שנבחרו')
+        }
+
+        const error3 = day.schedules.find(({ startHour }) => startHour.getTime() > start.getTime() && startHour.getTime() < end.getTime())
+        if (error3) {
+            throw new Error('סוף הזמן שנבחר נמצא בזמן הקיים במערכת')
+        }
+
+        const error4 = day.schedules.find(({ startHour, endHour }) => startHour.getTime() < start.getTime() && start.getTime() < endHour.getTime())
+        if (error4) {
+            throw new Error('תחילת הזמן שנבחר נמצא בזמן הקיים במערכת')
+        }
     }
-
-    const error4 = day.schedules.find(({ startHour, endHour }) => startHour.getTime() < start.getTime() && start.getTime() < endHour.getTime())
-    if (error4) {
-        throw new Error('תחילת הזמן שנבחר נמצא בזמן הקיים במערכת')
-    }
-
     return true;
 }
 

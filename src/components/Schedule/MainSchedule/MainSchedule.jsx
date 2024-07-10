@@ -92,7 +92,6 @@ const MainSchedule = () => {
                     </div>
                     <div className={css.buttonsRow}>
                         <TextButton text={"ימי פעילות"} func={navigateToDays} bgColor={selectedPool.color}></TextButton>
-                        <TextButton text={"מגדרים"} bgColor={selectedPool.color}></TextButton>
                         <TextButton text={"מטפלים"} bgColor={selectedPool.color}></TextButton>
                     </div>
                 </div>
