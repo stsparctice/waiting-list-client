@@ -5,7 +5,6 @@ const useStyles = createUseStyles({
     btn: {
         padding: [8, 20],
         margin: 10,
-        backgroundColor: 'black',
         color: 'white',
         letterSpacing: 1.03,
         borderRadius: 5,
@@ -21,7 +20,7 @@ const useStyles = createUseStyles({
     }
 })
 
-const TextButton = ({ text, bgColor, func }) => {
+const TextButton = ({ text, bgColor='black', func }) => {
     const css = useStyles()
     return <>
 

@@ -13,14 +13,14 @@ const useStyles = createUseStyles({
     dropContainer: {
         position: "relative",
         cursor: "pointer",
-   
+
     },
     dropContent: {
         textDecoration: 'none',
         display: "none",
         position: "absolute",
-        height:'100px',
-        overflow:"auto",
+        height: '100px',
+        overflow: "auto",
 
         '& ul': {
             padding: "0",
@@ -28,8 +28,8 @@ const useStyles = createUseStyles({
             margin: "0"
         },
     },
-    option:{
-        marginBottom:"10px"
+    option: {
+        marginBottom: "10px"
     }
 
 
@@ -39,7 +39,7 @@ const useStyles = createUseStyles({
 
 
 })
-const OptionGroup = ({ pools, genders,click }) => {
+const OptionGroup = ({ pools, genders, click }) => {
     const css = useStyles()
     const [teachers, setTeachers] = useState([])
     let filter = []
@@ -52,30 +52,33 @@ const OptionGroup = ({ pools, genders,click }) => {
                 ))
 
             ));
-            // let data = await server.post('teachers/findTeacherByCondition', { filter })
-            // setTeachers(data.data)
+            let data=await server.get('teachers/all')
+            console.log(data,'data teachers');
+            //  = await server.post('teachers/findTeacherByCondition', { filter })
+            setTeachers(data.data)
         }
         selectTeachers()
         // 0533182179
     }, [])
-    const showList=()=>{
-        document.querySelector('#content').style.display='block'
+    const showList = () => {
+        console.log('show listtttttttttttttttt');
+        document.querySelector('#content').style.display = 'block'
     }
+    // const selectTeach = async() = {
+    //     let fullData=await server.get('teachers/findAllTeachers')
+    // }
     return <>
-<h1>
-    {console.log("i am in optiongroup")}
-</h1>
-      
         {
-            <div className={css.dropContainer} > 
-                <span className={css.dropHeader} onClick={showList}>מטפלים מועדפים</span>
+            <div className={css.dropContainer} >
+                {/* <input type="button" className={css.dropHeader} value="מטפלים מועדפים" onMouseDown={showList}/> */}
+                <span className={css.dropHeader} onClick={showList}>מטפלים מועדפים:</span>
                 <div className={css.dropContent} id="content">
                     <ul >
                         {
                             teachers.length > 0 ?
 
                                 teachers.map((teacher, index) => (
-                                    <li key={index}  className={css.option} onClick={(()=>click(teacher.name,teacher.genders))}> <Option key={index} name={teacher.name} genders={teacher.genders} ></Option></li>
+                                    <li key={index} className={css.option} onClick={(() => click(teacher.name, teacher.genders))}> <Option key={index} name={teacher.name} genders={teacher.genders} ></Option></li>
                                 ))
                                 : ""}
                     </ul>

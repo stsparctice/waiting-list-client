@@ -1,7 +1,7 @@
 import React, { useReducer, useCallback } from "react";
 import OptionGroup from "../optionGroup/OptionGroup";
 
-const Select = () => {
+const Select = ({genders,pools}) => {
 
     const addteacher = (state, action) => {
         if (action.type === 'add')
@@ -20,7 +20,7 @@ const Select = () => {
 
     return <>
         {
-            <OptionGroup pools={["אשדוד", "יד בנימין"]} genders={["נשים", "בנים"]} click={toAddTeacher}></OptionGroup>
+            <OptionGroup pools={pools} genders={genders} click={toAddTeacher}></OptionGroup>
         }
         {
             selectedTeachers.length>0 ?

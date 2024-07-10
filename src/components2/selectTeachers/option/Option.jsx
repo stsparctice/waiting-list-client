@@ -33,9 +33,10 @@ const Option = ({ name, genders }) => {
                     <div className={css.div}> {name}</div>
 
                     <div className={css.genders}>  {
+                        genders?
                         genders.map((item, index) =>
                             <Gender text={item} key={index}></Gender>
-                        )}
+                        ):""}
                     </div>
                 </div >
 

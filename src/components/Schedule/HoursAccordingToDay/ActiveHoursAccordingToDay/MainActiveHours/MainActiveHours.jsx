@@ -23,6 +23,7 @@ const MainActiveHours = ({ day }) => {
     const [insert, setInsert] = useState(false)
     const [showModal, setShowModal] = useState(false)
     const [selectedDay, setSelectedDay] = useState(undefined)
+    const [schedule, setSchedule] = useState(undefined)
     useEffect(() => {
         console.log({ poolId })
         dispatch(getAllSchedules(poolId))
@@ -34,7 +35,7 @@ console.log('useEffect poolschedules')
     }, [poolSchedules])
 
     const openModal = () => {
-        setInsert(true)
+       
         setShowModal(true)
         // setSelectedPool(0)
     }
@@ -46,10 +47,14 @@ console.log('useEffect poolschedules')
 
     const openInsertModal = (day) => {
         setSelectedDay(day)
+        setInsert(true)
         openModal()
     }
 
-    const openEditModal = (day) => {
+    const openEditModal = ({day, selectedSchedule}) => {
+        setSelectedDay(day)
+        setSchedule(selectedSchedule)
+        setInsert(false)
         openModal()
     }
 
@@ -64,7 +69,7 @@ console.log('useEffect poolschedules')
 
 
         {showModal ?
-            <PoolGenderHourForm day={selectedDay} cancel={closeModal} ></PoolGenderHourForm> : <></>}
+            <PoolGenderHourForm day={selectedDay} selectedSchedule={schedule} cancel={closeModal} insert={insert} ></PoolGenderHourForm> : <></>}
     </>
 }
 

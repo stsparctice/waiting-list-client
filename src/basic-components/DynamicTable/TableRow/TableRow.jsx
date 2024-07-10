@@ -5,7 +5,7 @@ import ButtonIcon from "../../ButtonIcon/ButtonIcon";
 import icons from "../../../services/iconService";
 
 
-const TableRow = ({ data, config, updateFunc, deleteFunc }) => {
+const TableRow = ({ data, config, buttons, update, remove }) => {
     const [row, setRow] = useState([])
     useEffect(() => {
         const filteredEntries = Object.entries(data).filter(ent =>
@@ -41,12 +41,15 @@ const TableRow = ({ data, config, updateFunc, deleteFunc }) => {
                 row.map((val, i) => (<Td key={i} datacell={val}></Td>))
             }
 
-            <td style={{ width: 50 }}>
-                <ButtonIcon imgName={icons.EDIT} func={() => updateFunc(data)} btnStyle={{ imgwidth: "17px", imgheight: "17px", height: "35px", width: "35px" }} title={'עדכן'} backgroundColor="green"></ButtonIcon>
-            </td>
-            <td style={{ width: 50 }}>
-                <ButtonIcon imgName={icons.DELETE} func={() => deleteFunc(data)} btnStyle={{ imgwidth: "17px", imgheight: "17px", height: "35px", width: "35px" }} title={'מחק'} backgroundColor="red"></ButtonIcon>
-            </td>
+            {
+                buttons.length > 0 ?
+                    buttons.map((btn, i) => (
+                        <td style={{ width: 50 }} key={`row${i}`}>
+                            <ButtonIcon imgName={btn.icon} func={() => btn['func'](data)} btnStyle={{ imgwidth: "17px", imgheight: "17px", height: "35px", width: "35px" }} title={btn.title} backgroundColor="green"></ButtonIcon>
+                        </td>
+
+                    )) : <></>
+            }
         </tr>
     </>
 }

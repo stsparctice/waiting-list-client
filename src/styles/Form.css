@@ -32,3 +32,7 @@
     flex-direction: column;
     padding: 2px;
 }
+
+.lefticon{
+    float:left
+}

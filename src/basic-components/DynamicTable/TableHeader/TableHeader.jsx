@@ -5,7 +5,8 @@ import Th from "../Th/Th";
 
 const useStyles = createUseStyles({
     tr: {
-
+       
+borderBottom:[1.2, 'solid']
     }
 })
 
